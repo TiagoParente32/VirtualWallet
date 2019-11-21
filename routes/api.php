@@ -19,7 +19,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
-
-Route::middleware('auth:api')->get('teste', function () {
-    return response()->json(['msg' => 'Só um teste'], 200);
-});
