@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 define('YOUR_SERVER_URL', 'http://virtualwallet.test');
 // Check "oauth_clients" table for next 2 values:
-define('CLIENT_ID', '4');
-define('CLIENT_SECRET', 'dDwxlq3JuerYjHOIk9r3Z9ocJtqBJcm7lMDJPMP6');
+define('CLIENT_ID', env('CLIENT_ID'));
+define('CLIENT_SECRET', env('CLIENT_SECRET'));
 
 class LoginControllerAPI extends Controller
 {
@@ -42,4 +42,6 @@ class LoginControllerAPI extends Controller
         \Auth::guard('api')->user()->token()->delete();
         return response()->json(['msg' => 'Token revoked'], 200);
     }
+
+
 }
