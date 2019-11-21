@@ -1846,11 +1846,101 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      title: "Register"
+      title: "Register",
+      userData: {
+        name: null,
+        email: null,
+        password: null,
+        nif: null,
+        photo: null
+      }
     };
+  },
+  methods: {
+    onFileSelected: function onFileSelected(event) {
+      this.userData.photo = event.target.files[0];
+    },
+    register: function register() {
+      console.log(this.userData);
+    },
+    setFocusEmail: function setFocusEmail() {
+      this.$refs.email.focus();
+    },
+    setFocusPassword: function setFocusPassword() {
+      this.$refs.password.focus();
+    },
+    setFocusNif: function setFocusNif() {
+      this.$refs.nif.focus();
+    },
+    setFocusPhoto: function setFocusPhoto() {
+      this.$refs.photo.focus();
+    }
   }
 });
 
@@ -20159,6 +20249,197 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "jumbotron" }, [
       _c("h1", [_vm._v(_vm._s(_vm.title))])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.userData.name,
+            expression: "userData.name"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "name",
+          placeholder: "Your Name",
+          required: ""
+        },
+        domProps: { value: _vm.userData.name },
+        on: {
+          keypress: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.setFocusEmail()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.userData, "name", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.userData.email,
+            expression: "userData.email"
+          }
+        ],
+        ref: "email",
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "email",
+          placeholder: "Your Email",
+          required: ""
+        },
+        domProps: { value: _vm.userData.email },
+        on: {
+          keypress: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.setFocusPassword()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.userData, "email", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model.lazy",
+            value: _vm.userData.password,
+            expression: "userData.password",
+            modifiers: { lazy: true }
+          }
+        ],
+        ref: "password",
+        staticClass: "form-control",
+        attrs: { type: "password", id: "password", required: "" },
+        domProps: { value: _vm.userData.password },
+        on: {
+          keypress: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.setFocusNif()
+          },
+          change: function($event) {
+            return _vm.$set(_vm.userData, "password", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "nif" } }, [_vm._v("Nif")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.userData.nif,
+            expression: "userData.nif"
+          }
+        ],
+        ref: "nif",
+        staticClass: "form-control",
+        attrs: {
+          min: "000000001",
+          max: "999999999",
+          minlength: "9",
+          maxlength: "9",
+          type: "number",
+          id: "nif",
+          required: "",
+          placeholder: "000000000"
+        },
+        domProps: { value: _vm.userData.nif },
+        on: {
+          keypress: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.setFocusPhoto()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.userData, "nif", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "photo" } }, [_vm._v("Photo")]),
+      _vm._v(" "),
+      _c("input", {
+        ref: "photo",
+        attrs: { type: "file", name: "photo", id: "photo", accept: "image/*" },
+        on: {
+          change: _vm.onFileSelected,
+          keypress: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.register()
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-primary",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.register($event)
+              }
+            }
+          },
+          [_vm._v("Register")]
+        )
+      ])
     ])
   ])
 }
