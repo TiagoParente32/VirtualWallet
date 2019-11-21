@@ -17,5 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('walletcount', 'WalletController@getwalletcount');
+
 Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
+
+Route::middleware('auth:api')->put('users/me', 'UserController@update');

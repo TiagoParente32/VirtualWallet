@@ -6,7 +6,7 @@
 
     <div>
       <p class="lead">{{message}}</p>
-      <p class="h6">Number of Wallets : {{walletCount}}</p>
+      <p class="h6">Number of Wallets : {{ walletcount }}</p>
     </div>
   </div>
 </template>
@@ -18,9 +18,15 @@ export default {
       title: "Welcome",
       message:
         "We have waited so long to have you among us. At last, the time has come. We are most delightfully welcoming you to join us today!",
-      walletCount: 300
+      walletcount: undefined
     };
-  }
+  },
+  methods: {
+  },
+  mounted() {
+        axios.get('api/walletcount')
+            .then(response=>{this.walletcount = response.data.walletcount; });
+    }
 };
 </script>
 

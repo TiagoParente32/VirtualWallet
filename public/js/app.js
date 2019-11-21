@@ -1973,8 +1973,16 @@ __webpack_require__.r(__webpack_exports__);
     return {
       title: "Welcome",
       message: "We have waited so long to have you among us. At last, the time has come. We are most delightfully welcoming you to join us today!",
-      walletCount: 300
+      walletcount: undefined
     };
+  },
+  methods: {},
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('api/walletcount').then(function (response) {
+      _this.walletcount = response.data.walletcount;
+    });
   }
 });
 
@@ -1992,7 +2000,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.jumbotron {\n  background-color: lightgray;\n}\n", ""]);
+exports.push([module.i, "\n.jumbotron {\r\n  background-color: lightgray;\n}\r\n", ""]);
 
 // exports
 
@@ -20474,7 +20482,7 @@ var render = function() {
       _c("p", { staticClass: "lead" }, [_vm._v(_vm._s(_vm.message))]),
       _vm._v(" "),
       _c("p", { staticClass: "h6" }, [
-        _vm._v("Number of Wallets : " + _vm._s(_vm.walletCount))
+        _vm._v("Number of Wallets : " + _vm._s(_vm.walletcount))
       ])
     ])
   ])
