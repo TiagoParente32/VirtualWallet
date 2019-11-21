@@ -86,6 +86,9 @@ export default {
   methods: {
     onFileSelected(event) {
       this.userData.photo = event.target.files[0];
+      if (this.userData.photo === undefined) {
+        return;
+      }
     },
     register() {
       console.log(this.userData);
