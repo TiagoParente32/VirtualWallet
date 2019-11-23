@@ -14,7 +14,8 @@
 </head>
 
 <body>
-    <div class="container" id="app">
+        {{-- class="container" --}}
+    <div class="container-fluid" style="padding:0;" id="app">
         @yield('content')
     </div>
 

@@ -21,18 +21,26 @@ export default {
       walletcount: undefined
     };
   },
-  methods: {
-  },
+  methods: {},
   mounted() {
-        axios.get('api/walletcount')
-            .then(response=>{this.walletcount = response.data.walletcount; });
-    }
+    axios.get("api/walletcount").then(response => {
+      this.walletcount = response.data.walletcount;
+    });
+  }
 };
 </script>
 
 <style>
 .jumbotron {
   background-color: lightgray;
+}
+
+html {
+  overflow: scroll;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>
 
