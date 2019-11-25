@@ -21,11 +21,15 @@ export default {
       walletcount: undefined
     };
   },
-  methods: {},
+  methods: {
+    getWalletCount() {
+      axios.get("api/walletcount").then(response => {
+        this.walletcount = response.data.walletcount;
+      });
+    }
+  },
   mounted() {
-    axios.get("api/walletcount").then(response => {
-      this.walletcount = response.data.walletcount;
-    });
+    this.getWalletCount();
   }
 };
 </script>
