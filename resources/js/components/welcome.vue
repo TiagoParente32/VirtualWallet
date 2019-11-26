@@ -23,20 +23,33 @@ export default {
     };
   },
   methods: {
+    getWalletCount() {
+      axios.get("api/walletcount").then(response => {
+        this.walletcount = response.data.walletcount;
+      });
+    }
   },
   mounted() {
-        axios.get('api/walletcount')
-          .then(response=>{this.walletcount = response.data.walletcount; });
         
-        axios.get('/api/authuser')
-          .then(response=>{this.currentUser = response.data.data})
-    }
+    axios.get('/api/authuser')
+      .then(response=>{this.currentUser = response.data.data});
+
+    this.getWalletCount();
+  }
 };
 </script>
 
 <style>
 .jumbotron {
   background-color: lightgray;
+}
+
+html {
+  overflow: scroll;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>
 

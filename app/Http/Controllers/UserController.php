@@ -11,8 +11,13 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function update(Request $request){
-        //$user= Auth::user();
+    public function getMe(Request $request)
+    {
+        return response()->json($request->user(), 200);
+    }
+    public function update(Request $request)
+    {
+
         $logged_user = $request->user();
         
         $validator = Validator::make($request->all(), [
@@ -38,5 +43,4 @@ class UserController extends Controller
         $logged_user = $request->user();
         return response()->json(new UserResource($logged_user), 200);
     }
-
 }
