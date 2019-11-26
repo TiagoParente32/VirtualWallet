@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
+    public function getMe(Request $request)
+    {
+        return response()->json($request->user(), 200);
+    }
+    public function update(Request $request)
+    {
 
-
-
-
-
-    public function update(Request $request){
-        
         $logged_user = $request->user();
 
         $validator = Validator::make($request->all(), [
@@ -25,15 +25,13 @@ class UserController extends Controller
             'password' => 'string|max:255'
         ]);
 
-        if ($validator->fails())
-        {
-            return response(['errors'=>$validator->errors()->all()], 422);
+        if ($validator->fails()) {
+            return response(['errors' => $validator->errors()->all()], 422);
         }
 
-        $logged_user->fill($request->except(['type','nif','active','email']));        
+        $logged_user->fill($request->except(['type', 'nif', 'active', 'email']));
         $logged_user->save();
         return response()->json(new UserResource($logged_user), 200); //Não passar o userResource
 
     }
-
 }

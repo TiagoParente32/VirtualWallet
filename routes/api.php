@@ -21,5 +21,5 @@ Route::get('walletcount', 'WalletController@getwalletcount');
 
 Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
-
 Route::middleware('auth:api')->put('users/me', 'UserController@update');
+Route::middleware('auth:api')->get('users/me', 'UserController@getMe');

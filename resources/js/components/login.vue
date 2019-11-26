@@ -52,10 +52,16 @@ export default {
         })
         .then(response => {
           console.log(response.data.access_token);
-          //localStorage.setItem("user-token", response.data.access_token);
+          this.$store.commit("setToken", response.data.access_token);
+          return axios.get("api/users/me");
+        })
+        .then(response => {
+          console.log(response.data);
+          this.$store.commit("setUser", response.data);
+          this.$router.push("/");
         })
         .catch(err => {
-          //localStorage.removeItem("user-token"); // if the request fails, remove any possible user token if possible
+          this.$store.commit("clearUserAndToken");
           reject(err);
         });
     },
