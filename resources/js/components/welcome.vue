@@ -16,8 +16,9 @@ export default {
   data: function() {
     return {
       title: "Welcome",
+      currentUser: null,
       message:
-        "We have waited so long to have you among us. At last, the time has come. We are most delightfully welcoming you to join us today!",
+        "We have waited so long to have yo u among us. At last, the time has come. We are most delightfully welcoming you to join us today!",
       walletcount: undefined
     };
   },
@@ -25,7 +26,10 @@ export default {
   },
   mounted() {
         axios.get('api/walletcount')
-            .then(response=>{this.walletcount = response.data.walletcount; });
+          .then(response=>{this.walletcount = response.data.walletcount; });
+        
+        axios.get('/api/authuser')
+          .then(response=>{this.currentUser = response.data.data})
     }
 };
 </script>
