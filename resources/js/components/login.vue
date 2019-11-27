@@ -26,6 +26,12 @@
         @keypress.enter="login()"
       />
     </div>
+    <div
+      id="error"
+      class="alert alert-danger"
+      role="alert"
+      hidden
+    >Please type your credentials to login</div>
     <div class="form-group">
       <a class="btn btn-primary" v-on:click.prevent="login">Login</a>
     </div>
@@ -45,13 +51,18 @@ export default {
   },
   methods: {
     login() {
+      if (!this.userData.email || !this.userData.password) {
+        document.querySelector("#error").hidden = false;
+        return;
+      }
+      document.querySelector("#error").hidden = true;
       axios
         .post("api/login", {
           email: this.userData.email,
           password: this.userData.password
         })
         .then(response => {
-          console.log(response.data.access_token);
+          //console.log(response.data.access_token);
           this.$store.commit("setToken", response.data.access_token);
           return axios.get("api/users/me");
         })

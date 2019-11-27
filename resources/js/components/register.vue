@@ -85,13 +85,29 @@ export default {
   },
   methods: {
     onFileSelected(event) {
+      // isto e para o base64 idk
+      //   this.userData.photo = btoa(event.target.files[0]);
       this.userData.photo = event.target.files[0];
+
       if (this.userData.photo === undefined) {
         return;
       }
     },
     register() {
+      //AQUI METER ERROS :)
+      //   if (!this.userData.email || !this.userData.password) {
+      //     document.querySelector("#error").hidden = false;
+      //     return;
+      //   }
       console.log(this.userData);
+      axios
+        .post("api/register", this.userData)
+        .then(response => {
+          this.$router.push("/login");
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
     },
     setFocusEmail() {
       this.$refs.email.focus();

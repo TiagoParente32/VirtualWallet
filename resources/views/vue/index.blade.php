@@ -4,7 +4,7 @@
 
 @section('content')
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <router-link class="navbar-brand" to="/">Welcome</router-link>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">

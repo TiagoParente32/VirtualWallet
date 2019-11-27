@@ -13,17 +13,33 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
+//routes to unauthenticated users
 Route::get('walletcount', 'WalletController@getwalletcount');
-
 Route::post('login', 'LoginControllerAPI@login');
-Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
-Route::middleware('auth:api')->put('me/edit', 'UserController@update');
-#Route::put('me/edit', 'UserController@update');
-Route::middleware('auth:api')->get('authuser','UserController@getauthuser');
-Route::middleware('auth:api')->put('users/me', 'UserController@update');
-Route::middleware('auth:api')->get('users/me', 'UserController@getMe');
+Route::post('register', 'UserController@store');
+Route::post('users/me/photo', 'UserController@updatePhoto');
+
+//group of routes to authenticated users
+Route::group(['middleware' => ['auth:api']], function () {
+
+    //common routes between all types of users
+
+    Route::post('logout', 'LoginControllerAPI@logout');
+    Route::put('me/edit', 'UserController@update');
+    //equivalente ao /users/me temos de decidir qual usar
+    // Route::get('user', function (Request $request) {
+    //     return $request->user();
+    // });
+    //Route::get('authuser', 'UserController@getauthuser');
+    Route::put('users/me', 'UserController@update');
+    Route::get('users/me', 'UserController@getMe');
+
+    //group of routes to users
+    Route::group(['middleware' => 'type:u'], function () { });
+    //group of routes to operators
+    Route::group(['middleware' => 'type:o'], function () { });
+    //group of routes to admins
+    Route::group(['middleware' => 'type:a'], function () { });
+});

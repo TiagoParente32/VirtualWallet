@@ -5,6 +5,13 @@
     </div>
     <div>
       <h2>{{this.$store.state.user.name}}</h2>
+      <img
+        :src="`./storage/fotos/${this.$store.state.user.photo}`"
+        class="img-thumbnail"
+        height="200"
+        width="200"
+      />
+      <br />
 
       <label for="email">Email</label>
       <input

@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Wallet');
     }
+
+    public function isOfType($type)
+    {
+        return $this->type === $type;
+    }
 }
