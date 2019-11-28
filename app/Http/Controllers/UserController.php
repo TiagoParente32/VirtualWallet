@@ -38,8 +38,6 @@ class UserController extends Controller
             $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
             $user->photo = $fileName;
             $request->photo->move(public_path('storage/fotos'), $fileName);
-        } else {
-            $user->photo = 'default.png';
         }
 
         $user->password =  Hash::make($request->password);
@@ -98,8 +96,6 @@ class UserController extends Controller
             $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
             $user->photo = $fileName;
             $request->photo->move(public_path('storage/fotos'), $fileName);
-        } else {
-            $user->photo = 'default.png';
         }
 
         $user->save();

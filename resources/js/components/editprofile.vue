@@ -66,7 +66,7 @@ export default {
     return {
       title: "Edit Profile",
       name: this.$store.state.user.name || "",
-      photo: "",
+      photo: this.$store.state.user.name || "",
       nif: this.$store.state.user.nif || "",
       password: "",
       passwordConfirmation: "",
@@ -101,6 +101,7 @@ export default {
         .post("api/me/edit", formData)
         .then(response => {
           this.$store.commit("setUser", response.data);
+          this.$router.push("/users/me/profile");
         })
         .catch(err => {
           console.log(err.response.data);
