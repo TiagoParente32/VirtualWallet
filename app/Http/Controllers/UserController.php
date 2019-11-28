@@ -18,8 +18,8 @@ class UserController extends Controller
         $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'nif' => 'required|numeric|between:100000000,999999999',
-            'password' => 'required|string|min:3'
+            'nif' => 'required | numeric|between:100000000,999999999',
+            'password' => 'required|string|min:3|max:16',
         ]);
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
@@ -29,6 +29,12 @@ class UserController extends Controller
 
 
         if ($request->hasFile('photo')) {
+            $validatePhoto = Validator::make($request->only('photo'), [
+                'photo' => 'image'
+            ]);
+            if ($validatePhoto->fails()) {
+                return response()->json(['message' => $validatePhoto->errors()->all()], 400);
+            }
             $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
             $user->photo = $fileName;
             $request->photo->move(public_path('storage/fotos'), $fileName);
@@ -36,23 +42,12 @@ class UserController extends Controller
             $user->photo = 'default.png';
         }
 
-
         $user->password =  Hash::make($request->password);
         $user->save();
         return response()->json($user, 200);
     }
 
 
-    // public function addImageToStorage($filename, $image)
-    // {
-    //     $foldername = 'public/storage/fotos';
-    //     $exists = Storage::disk('local')->exists($foldername . $filename);
-    //     if ($exists) {
-    //         Storage::disk('local')->delete($foldername . $filename);
-    //     }
-    //     //copia para o novo file
-    //     Storage::disk('local')->put($foldername . $filename, File::get($image));
-    // }
 
     public function getMe(Request $request)
     {
@@ -62,24 +57,53 @@ class UserController extends Controller
     public function update(Request $request)
     {
 
-        $logged_user = $request->user();
+        //return response()->json($request, 400);
+        $user = $request->user();
+        //limpar empty fields
+        array_filter($request->all());
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'string|max:255',
-            'photo' => '',
-            'password' => 'string|max:255',
-            'nif' => ''
+
+        $validator = Validator::make($request->only('name', 'nif', 'password', 'passwordConfirmation', 'currentPassword'), [
+            'name' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:3|max:16',
+            'passwordConfirmation' => 'nullable|string|min:3|max:16|same:password',
+            'currentPassword'  => 'nullable|string|min:3|max:16',
+            'nif' => 'nullable|numeric|between:100000000,999999999'
         ]);
 
         if ($validator->fails()) {
-            return response(['errors' => $validator->errors()->all()], 422);
+            return response()->json(['message' => $validator->errors()->all()], 400);
         }
 
-        //user->fill($request->except(['type','active','email']));
-        //user->save();
-        $logged_user->fill($request->except(['type', 'active', 'email']));
-        $logged_user->save();
-        return response()->json(new UserResource($logged_user), 200);
+        $user->fill($request->except(['type', 'active', 'email', 'password', 'photo']));
+
+        if (!is_null($request->password)) {
+            //caso a current password nao seja igual a do user nao alterar
+            if (!Hash::check($request->currentPassword, $user->password)) {
+                return response()->json(
+                    ['message' => 'Current Password! Wrong'],
+                    400
+                );
+            }
+            $user->password = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('photo')) {
+            $validatePhoto = Validator::make($request->only('photo'), [
+                'photo' => 'image'
+            ]);
+            if ($validatePhoto->fails()) {
+                return response()->json(['message' => $validatePhoto->errors()->all()], 400);
+            }
+            $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+            $user->photo = $fileName;
+            $request->photo->move(public_path('storage/fotos'), $fileName);
+        } else {
+            $user->photo = 'default.png';
+        }
+
+        $user->save();
+        return response()->json($user, 200);
     }
 
 

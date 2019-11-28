@@ -26,7 +26,7 @@ const routes = [{
     path: '/register',
     component: Register
 }, {
-    path: '/me/edit',
+    path: '/users/me/edit',
     component: EditProfile
 }, {
     path: '/login',
@@ -37,7 +37,7 @@ const routes = [{
     component: Logout
 },
 {
-    path: '/profile',
+    path: '/users/me/profile',
     component: Profile
 }]
 const router = new VueRouter({

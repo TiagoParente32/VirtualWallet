@@ -1895,25 +1895,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       title: "Edit Profile",
-      name: null,
-      photo: null,
-      nif: null,
-      password: null
+      name: this.$store.state.user.name || "",
+      photo: "",
+      nif: this.$store.state.user.nif || "",
+      password: "",
+      passwordConfirmation: "",
+      currentPassword: ""
     };
   },
   methods: {
+    onFileSelected: function onFileSelected(event) {
+      this.photo = event.target.files[0];
+
+      if (this.photo === undefined) {
+        return;
+      }
+    },
     submit: function submit() {
-      var user = {
-        name: this.name,
-        photo: this.photo,
-        nif: this.nif,
-        passsword: this.password
-      };
-      axios.put('/api/me/edit', user).then();
+      var _this = this;
+
+      //tou a mostrar o erro no backend , mas podes meter aqui um erro tambem
+      //   if (this.password != this.passwordConfirmation) {
+      //     return;
+      //   }
+      var formData = new FormData();
+      formData.append("photo", this.photo);
+      formData.append("name", this.name);
+      formData.append("password", this.password);
+      formData.append("passwordConfirmation", this.passwordConfirmation);
+      formData.append("currentPassword", this.currentPassword);
+      formData.append("nif", this.nif);
+      formData.append("_method", "PUT"); //console.log(user);
+      //console.log(formData.get("photo"));
+
+      axios.post("api/me/edit", formData).then(function (response) {
+        _this.$store.commit("setUser", response.data);
+      })["catch"](function (err) {
+        console.log(err.response.data);
+      });
     },
     setFocusEmail: function setFocusEmail() {
       this.$refs.email.focus();
@@ -2349,7 +2377,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.jumbotron {\r\n  background-color: lightgray;\n}\nhtml {\r\n  overflow: scroll;\n}\n::-webkit-scrollbar {\r\n  width: 0px;\r\n  background: transparent; /* make scrollbar transparent */\n}\r\n", ""]);
+exports.push([module.i, "\n.jumbotron {\n  background-color: lightgray;\n}\nhtml {\n  overflow: scroll;\n}\n::-webkit-scrollbar {\n  width: 0px;\n  background: transparent; /* make scrollbar transparent */\n}\n", ""]);
 
 // exports
 
@@ -20651,10 +20679,13 @@ var render = function() {
       _vm._v(" "),
       _c("label", { attrs: { for: "photo" } }, [_vm._v("Photo")]),
       _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
       _c("input", {
         ref: "photo",
         attrs: { type: "file", name: "photo", id: "photo", accept: "image/*" },
         on: {
+          change: _vm.onFileSelected,
           keypress: function($event) {
             if (
               !$event.type.indexOf("key") &&
@@ -20666,6 +20697,8 @@ var render = function() {
           }
         }
       }),
+      _vm._v(" "),
+      _c("br"),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
@@ -20711,6 +20744,32 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _c("label", { attrs: { for: "passwordConfirmation" } }, [
+        _vm._v("Current Password")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.currentPassword,
+            expression: "currentPassword"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: { type: "password", id: "password" },
+        domProps: { value: _vm.currentPassword },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.currentPassword = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
       _c("label", { attrs: { for: "password" } }, [_vm._v("Password")]),
       _vm._v(" "),
       _c("input", {
@@ -20722,7 +20781,6 @@ var render = function() {
             expression: "password"
           }
         ],
-        ref: "password",
         staticClass: "form-control",
         attrs: { type: "password", id: "password" },
         domProps: { value: _vm.password },
@@ -20735,6 +20793,34 @@ var render = function() {
           }
         }
       }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "passwordConfirmation" } }, [
+        _vm._v("Password confirmation")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.passwordConfirmation,
+            expression: "passwordConfirmation"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: { type: "password", id: "password" },
+        domProps: { value: _vm.passwordConfirmation },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.passwordConfirmation = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c(
@@ -37468,7 +37554,7 @@ var routes = [{
   path: '/register',
   component: _components_register__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
-  path: '/me/edit',
+  path: '/users/me/edit',
   component: _components_editprofile__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
   path: '/login',
@@ -37477,7 +37563,7 @@ var routes = [{
   path: '/logout',
   component: _components_logout__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
-  path: '/profile',
+  path: '/users/me/profile',
   component: _components_profile__WEBPACK_IMPORTED_MODULE_7__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
