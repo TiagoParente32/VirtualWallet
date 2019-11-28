@@ -28,6 +28,10 @@ class UserController extends Controller
         $user = new User();
         $user->fill($request->except(['photo', 'password', 'type', 'active']));
 
+        $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+        $user->photo = $fileName;
+        $request->photo->move(public_path('storage/fotos'), $fileName);
+
         $user->password =  Hash::make($request->password);
         $user->save();
         return response()->json($user, 200);

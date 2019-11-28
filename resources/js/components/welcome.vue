@@ -30,10 +30,6 @@ export default {
     }
   },
   mounted() {
-        
-    axios.get('/api/authuser')
-      .then(response=>{this.currentUser = response.data.data});
-
     this.getWalletCount();
   }
 };

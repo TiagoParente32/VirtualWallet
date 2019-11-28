@@ -2132,6 +2132,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2230,18 +2236,16 @@ __webpack_require__.r(__webpack_exports__);
         name: null,
         email: null,
         password: null,
-        nif: null,
-        photo: null
-      }
+        nif: null
+      },
+      photo: null
     };
   },
   methods: {
     onFileSelected: function onFileSelected(event) {
-      // isto e para o base64 idk
-      //   this.userData.photo = btoa(event.target.files[0]);
-      this.userData.photo = event.target.files[0];
+      this.photo = event.target.files[0];
 
-      if (this.userData.photo === undefined) {
+      if (this.photo === undefined) {
         return;
       }
     },
@@ -2254,7 +2258,13 @@ __webpack_require__.r(__webpack_exports__);
       //     return;
       //   }
       console.log(this.userData);
-      axios.post("api/register", this.userData).then(function (response) {
+      var formData = new FormData();
+      formData.append("photo", this.photo);
+      formData.append("name", this.userData.name);
+      formData.append("email", this.userData.email);
+      formData.append("password", this.userData.password);
+      formData.append("nif", this.userData.nif);
+      axios.post("api/register", formData).then(function (response) {
         _this.$router.push("/login");
       })["catch"](function (err) {
         console.log(err.response.data);
@@ -2318,11 +2328,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
-
-    axios.get('/api/authuser').then(function (response) {
-      _this2.currentUser = response.data.data;
-    });
     this.getWalletCount();
   }
 });
@@ -2341,7 +2346,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.jumbotron {\r\n  background-color: lightgray;\n}\nhtml {\r\n  overflow: scroll;\n}\n::-webkit-scrollbar {\r\n  width: 0px;\r\n  background: transparent; /* make scrollbar transparent */\n}\r\n", ""]);
+exports.push([module.i, "\n.jumbotron {\n  background-color: lightgray;\n}\nhtml {\n  overflow: scroll;\n}\n::-webkit-scrollbar {\n  width: 0px;\n  background: transparent; /* make scrollbar transparent */\n}\n", ""]);
 
 // exports
 
@@ -20944,14 +20949,27 @@ var render = function() {
     _c("div", [
       _c("h2", [_vm._v(_vm._s(this.$store.state.user.name))]),
       _vm._v(" "),
-      _c("img", {
-        staticClass: "img-thumbnail",
-        attrs: {
-          src: "./storage/fotos/" + this.$store.state.user.photo,
-          height: "200",
-          width: "200"
-        }
-      }),
+      this.$store.state.user.photo !== null
+        ? _c("div", [
+            _c("img", {
+              staticClass: "img-thumbnail",
+              attrs: {
+                src: "./storage/fotos/" + this.$store.state.user.photo,
+                height: "200",
+                width: "200"
+              }
+            })
+          ])
+        : _c("div", [
+            _c("img", {
+              staticClass: "img-thumbnail",
+              attrs: {
+                src: "./storage/fotos/default.png",
+                height: "200",
+                width: "200"
+              }
+            })
+          ]),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),

@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 /app/Http/Controllers/LoginControllerAPI.php
 
+/public/css
+/public/js

@@ -25,7 +25,7 @@ const routes = [{
 }, {
     path: '/register',
     component: Register
-},{
+}, {
     path: '/me/edit',
     component: EditProfile
 }, {

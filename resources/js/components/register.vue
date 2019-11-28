@@ -78,18 +78,15 @@ export default {
         name: null,
         email: null,
         password: null,
-        nif: null,
-        photo: null
-      }
+        nif: null
+      },
+      photo: null
     };
   },
   methods: {
     onFileSelected(event) {
-      // isto e para o base64 idk
-      //   this.userData.photo = btoa(event.target.files[0]);
-      this.userData.photo = event.target.files[0];
-
-      if (this.userData.photo === undefined) {
+      this.photo = event.target.files[0];
+      if (this.photo === undefined) {
         return;
       }
     },
@@ -100,8 +97,15 @@ export default {
       //     return;
       //   }
       console.log(this.userData);
+
+      let formData = new FormData();
+      formData.append("photo", this.photo);
+      formData.append("name", this.userData.name);
+      formData.append("email", this.userData.email);
+      formData.append("password", this.userData.password);
+      formData.append("nif", this.userData.nif);
       axios
-        .post("api/register", this.userData)
+        .post("api/register", formData)
         .then(response => {
           this.$router.push("/login");
         })

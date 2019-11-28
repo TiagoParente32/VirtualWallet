@@ -5,12 +5,18 @@
     </div>
     <div>
       <h2>{{this.$store.state.user.name}}</h2>
-      <img
-        :src="`./storage/fotos/${this.$store.state.user.photo}`"
-        class="img-thumbnail"
-        height="200"
-        width="200"
-      />
+      <div v-if="this.$store.state.user.photo !== null">
+        <img
+          :src="`./storage/fotos/${this.$store.state.user.photo}`"
+          class="img-thumbnail"
+          height="200"
+          width="200"
+        />
+      </div>
+      <div v-else>
+        <img :src="`./storage/fotos/default.png`" class="img-thumbnail" height="200" width="200" />
+      </div>
+
       <br />
 
       <label for="email">Email</label>
