@@ -16,7 +16,7 @@
         @keypress.enter="setFocusPhoto()"
       />
       <br>
-      <label for="photo">Photo</label>
+      <label for="photo">Photo</label><br>
       <input
         type="file"
         name="photo"
@@ -25,7 +25,7 @@
         ref="photo"
         @keypress.enter="setFocusNif()"
       /> 
-      <br>
+      <br><br>
       <label for="nif">Nif</label>
       <input
         v-model="nif"
@@ -46,8 +46,15 @@
         type="password"
         id="password"
         class="form-control"
-        ref="password"
       />
+      <label for="passwordConfirmation">Password confirmation</label>
+      <input
+        v-model="passwordConfirmation"
+        type="password"
+        id="password"
+        class="form-control"
+      />
+      <br>
       <div class="form-group">
         <a class="btn btn-primary" v-on:click.prevent="submit()">Save changes</a>
       </div>
@@ -60,22 +67,29 @@ export default {
   data: function() {
     return {
       title: "Edit Profile",
-      name: null,
+      name: this.$store.state.user.name,
       photo: null,
-      nif: null,
-      password: null
+      nif: this.$store.state.user.nif,
+      password: null,
+      passwordConfirmation: null
     };
   },
   methods: {
     submit(){
-      let user = {
-        name: this.name,
-        photo: this.photo,
-        nif: this.nif,
-        passsword: this.password
+      if(this.password != this.passwordConfirmation){
+        return;
       }
-       axios.put('/api/me/edit', user)
-        .then();
+      
+      let user = this.$store.state.user;
+      user.name =  this.name;
+      user.photo = this.photo;
+      user.nif = this.nif;
+      user.password = this.password;
+      console.log(user);
+
+      axios.put('/api/me/edit', user)
+      .then(this.$store.commit("setUser", user));
+      
     },
     setFocusEmail() {
       this.$refs.email.focus();

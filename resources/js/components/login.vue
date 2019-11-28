@@ -32,6 +32,12 @@
       role="alert"
       hidden
     >Please type your credentials to login</div>
+    <div
+      id="wrongCredentials"
+      class="alert alert-danger"
+      role="alert"
+      hidden
+    >Wrong credentials</div>
     <div class="form-group">
       <a class="btn btn-primary" v-on:click.prevent="login">Login</a>
     </div>
@@ -72,6 +78,7 @@ export default {
           this.$router.push("/");
         })
         .catch(err => {
+          document.querySelector("#wrongCredentials").hidden = false;
           this.$store.commit("clearUserAndToken");
           reject(err);
         });

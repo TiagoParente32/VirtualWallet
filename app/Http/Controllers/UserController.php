@@ -20,7 +20,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'nif' => 'required | numeric|between:100000000,999999999',
-            'password' => 'required|string|min:3'
+            'password' => 'required|string|min:3',
+            'photo' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
         ]);
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
@@ -37,18 +38,6 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-
-    // public function addImageToStorage($filename, $image)
-    // {
-    //     $foldername = 'public/storage/fotos';
-    //     $exists = Storage::disk('local')->exists($foldername . $filename);
-    //     if ($exists) {
-    //         Storage::disk('local')->delete($foldername . $filename);
-    //     }
-    //     //copia para o novo file
-    //     Storage::disk('local')->put($foldername . $filename, File::get($image));
-    // }
-
     public function getMe(Request $request)
     {
         return response()->json($request->user(), 200);
@@ -61,9 +50,9 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'string|max:255',
-            'photo' => '',
+            'photo' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
             'password' => 'string|max:255',
-            'nif' => ''
+            'nif' => 'numeric|between:100000000,999999999'
         ]);
 
         if ($validator->fails()) {
@@ -72,16 +61,9 @@ class UserController extends Controller
 
         //user->fill($request->except(['type','active','email']));
         //user->save();
-        $logged_user->fill($request->except(['type', 'active', 'email']));
+        $logged_user->fill($request->except(['type', 'active', 'email', 'password']));
+        $logged_user->password = Hash::make($request->password);
         $logged_user->save();
-        return response()->json(new UserResource($logged_user), 200);
-    }
-
-
-
-    public function getauthuser(Request $request)
-    {
-        $logged_user = $request->user();
         return response()->json(new UserResource($logged_user), 200);
     }
 }
