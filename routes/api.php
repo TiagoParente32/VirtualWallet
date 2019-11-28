@@ -19,7 +19,6 @@ Route::get('walletcount', 'WalletController@getwalletcount');
 Route::post('login', 'LoginControllerAPI@login');
 
 Route::post('register', 'UserController@store');
-Route::post('users/me/photo', 'UserController@updatePhoto');
 
 //group of routes to authenticated users
 Route::group(['middleware' => ['auth:api']], function () {

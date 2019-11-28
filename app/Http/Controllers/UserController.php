@@ -15,7 +15,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        //falta foto
         $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
