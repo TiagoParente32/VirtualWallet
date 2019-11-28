@@ -3,38 +3,32 @@
     <div class="jumbotron">
       <h1>{{ title }}</h1>
     </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="inputEmail"
-        class="form-control"
-        required
-        v-model="userData.email"
-        @keypress.enter="setFocus()"
-      />
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        id="inputPassword"
-        class="form-control"
-        required
-        ref="password"
-        v-model="userData.password"
-        @keypress.enter="login()"
-      />
-    </div>
-    <div
-      id="error"
-      class="alert alert-danger"
-      role="alert"
-      hidden
-    >Please type your credentials to login</div>
-    <div class="form-group">
-      <a class="btn btn-primary" v-on:click.prevent="login">Login</a>
-    </div>
+    <form>
+      <div class="form-group col-auto">
+        <label for="email">Email</label>
+        <input type="email" id="inputEmail" class="form-control" required v-model="userData.email" />
+      </div>
+      <div class="form-group col-auto">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="inputPassword"
+          class="form-control"
+          required
+          ref="password"
+          v-model="userData.password"
+        />
+      </div>
+      <div
+        id="error"
+        class="alert alert-danger"
+        role="alert"
+        hidden
+      >Please type your credentials to login</div>
+      <div class="form-group col-auto">
+        <button type="button" class="btn btn-primary" v-on:click.prevent="login">Login</button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -67,17 +61,16 @@ export default {
           return axios.get("api/users/me");
         })
         .then(response => {
-          console.log(response.data);
+          //console.log(response.data);
           this.$store.commit("setUser", response.data);
           this.$router.push("/");
         })
         .catch(err => {
           this.$store.commit("clearUserAndToken");
-          reject(err);
+          //console.log(err.response.data.msg);
+          document.querySelector("#error").hidden = false;
+          document.querySelector("#error").innerHTML = err.response.data.msg;
         });
-    },
-    setFocus() {
-      this.$refs.password.focus();
     }
   }
 };

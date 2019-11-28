@@ -19,7 +19,7 @@ class UserController extends Controller
         $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'nif' => 'required | numeric|between:100000000,999999999',
+            'nif' => 'required|numeric|between:100000000,999999999',
             'password' => 'required|string|min:3'
         ]);
         if ($valid->fails()) {
@@ -28,9 +28,15 @@ class UserController extends Controller
         $user = new User();
         $user->fill($request->except(['photo', 'password', 'type', 'active']));
 
-        $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
-        $user->photo = $fileName;
-        $request->photo->move(public_path('storage/fotos'), $fileName);
+
+        if ($request->hasFile('photo')) {
+            $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+            $user->photo = $fileName;
+            $request->photo->move(public_path('storage/fotos'), $fileName);
+        } else {
+            $user->photo = 'default.png';
+        }
+
 
         $user->password =  Hash::make($request->password);
         $user->save();
