@@ -21,7 +21,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'nif' => 'required | numeric|between:100000000,999999999',
             'password' => 'required|string|min:3',
-            'photo' => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+            'photo' => 'mimes:jpeg,jpg,png,gif|max:10000000'
         ]);
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
