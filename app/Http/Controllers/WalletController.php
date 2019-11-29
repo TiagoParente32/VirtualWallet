@@ -14,4 +14,10 @@ class WalletController extends Controller
         return response()->json(['walletcount' => $walletcount], 200);
     }
 
+    public function getWallet(Request $request)
+    {
+        $wallet = DB::table('wallets')->where('email','=', $request->user()->email)->get();
+        return response()->json($wallet, 200);
+    }
+
 }

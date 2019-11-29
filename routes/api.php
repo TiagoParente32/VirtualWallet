@@ -30,6 +30,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::put('users/me', 'UserController@update');
     Route::get('users/me', 'UserController@getMe');
 
+    Route::get('users/me/wallet', 'WalletController@getWallet');
+    Route::get('users/me/movements', 'MovementController@getWalletMovements');
+
+
     //group of routes to users
     Route::group(['middleware' => 'type:u'], function () { });
     //group of routes to operators
