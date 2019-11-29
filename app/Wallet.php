@@ -10,7 +10,7 @@ class Wallet extends Model
         'email', 'balance'
     ];
 
-    public function wallet()
+    public function user()
     {
         return $this->belongsTo('App\User', 'id');
     }

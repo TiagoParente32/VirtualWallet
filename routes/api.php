@@ -26,12 +26,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     //common routes between all types of users
 
     Route::post('logout', 'LoginControllerAPI@logout');
-    Route::put('me/edit', 'UserController@update');
-    //equivalente ao /users/me temos de decidir qual usar
-    // Route::get('user', function (Request $request) {
-    //     return $request->user();
-    // });
-    //Route::get('authuser', 'UserController@getauthuser');
+    Route::put('users/me/edit', 'UserController@update');
     Route::put('users/me', 'UserController@update');
     Route::get('users/me', 'UserController@getMe');
 

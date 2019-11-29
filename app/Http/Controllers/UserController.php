@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Wallet;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +28,6 @@ class UserController extends Controller
         $user = new User();
         $user->fill($request->except(['photo', 'password', 'type', 'active']));
 
-
         if ($request->hasFile('photo')) {
             $validatePhoto = Validator::make($request->only('photo'), [
                 'photo' => 'image'
@@ -38,10 +38,20 @@ class UserController extends Controller
             $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
             $user->photo = $fileName;
             $request->photo->move(public_path('storage/fotos'), $fileName);
+        } else {
+            $user->photo = 'default.png';
         }
 
         $user->password =  Hash::make($request->password);
+        $user->type = 'u';
         $user->save();
+
+        $wallet = new Wallet;
+        $wallet->id = $user->id;
+        $wallet->email = $user->email;
+        $wallet->balance = 0;
+        $wallet->save();
+
         return response()->json($user, 200);
     }
 
@@ -100,13 +110,5 @@ class UserController extends Controller
 
         $user->save();
         return response()->json($user, 200);
-    }
-
-
-
-    public function getauthuser(Request $request)
-    {
-        $logged_user = $request->user();
-        return response()->json(new UserResource($logged_user), 200);
     }
 }

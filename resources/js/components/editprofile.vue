@@ -98,7 +98,7 @@ export default {
       //console.log(user);
       //console.log(formData.get("photo"));
       axios
-        .post("api/me/edit", formData)
+        .post("api/users/me/edit", formData)
         .then(response => {
           this.$store.commit("setUser", response.data);
           this.$router.push("/users/me/profile");
