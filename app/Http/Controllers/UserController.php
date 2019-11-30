@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Wallet;
+use App\Movement;
+use App\Http\Resources\WalletResource;
+use App\Http\Resources\MovementResource;
+
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
@@ -54,8 +58,6 @@ class UserController extends Controller
 
         return response()->json($user, 200);
     }
-
-
 
     public function getMe(Request $request)
     {
@@ -110,5 +112,19 @@ class UserController extends Controller
 
         $user->save();
         return response()->json($user, 200);
+    }
+
+    public function getWallet(Request $request)
+    {
+        $wallet = $request->user()->wallet;
+        return response()->json($wallet, 200);
+    }
+
+    public function getMovements(Request $request)
+    {
+        //add ->whereNotNull('transfer_wallet_id') para testar como trasnferwallet
+        $movements = Movement::where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
+        $movements = $movements->orderBy('date', 'desc')->paginate(5);
+        return MovementResource::collection($movements);
     }
 }
