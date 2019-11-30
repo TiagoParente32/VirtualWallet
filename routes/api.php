@@ -37,7 +37,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     //group of routes to users
     Route::group(['middleware' => 'type:u'], function () { });
     //group of routes to operators
-    Route::group(['middleware' => 'type:o'], function () { });
+    Route::group(['middleware' => 'type:o'], function () { 
+        Route::post('movement/create', 'MovementController@store');
+    });
     //group of routes to admins
     Route::group(['middleware' => 'type:a'], function () { });
 });

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movement extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'type', 'transfer', 'transfer_movement_id', 'type_payment', 'iban',
         'mb_entity_code', 'mb_payment_reference', 'description', 'source_description',
