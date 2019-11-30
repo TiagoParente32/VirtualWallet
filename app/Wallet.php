@@ -17,11 +17,11 @@ class Wallet extends Model
 
     public function movements()
     {
-        return $this->hasMany('App\Movements');
+        return $this->hasMany('App\Movement', 'wallet_id');
     }
 
     public function transfer_wallet()
     {
-        return $this->hasMany('App\Movements', 'transfer_wallet_id');
+        return $this->hasMany('App\Movement', 'transfer_wallet_id');
     }
 }

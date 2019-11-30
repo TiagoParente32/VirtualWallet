@@ -5,6 +5,10 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router'
 import store from './stores/store';
 
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue)
+
 Vue.use(VueRouter);
 
 
@@ -18,6 +22,7 @@ import EditProfile from './components/editprofile'
 import Login from './components/login'
 import Logout from './components/logout'
 import Profile from './components/profile'
+import Wallet from './components/wallet'
 
 const routes = [{
     path: '/',
@@ -25,9 +30,6 @@ const routes = [{
 }, {
     path: '/register',
     component: Register
-}, {
-    path: '/users/me/edit',
-    component: EditProfile
 }, {
     path: '/login',
     component: Login
@@ -39,6 +41,14 @@ const routes = [{
 {
     path: '/users/me/profile',
     component: Profile
+},
+{
+    path: '/users/me/edit',
+    component: EditProfile
+},
+{
+    path: '/users/me/wallet',
+    component: Wallet
 }]
 const router = new VueRouter({
     //mode: 'history',

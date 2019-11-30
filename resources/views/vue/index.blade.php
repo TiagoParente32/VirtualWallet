@@ -23,9 +23,11 @@
             <li class="nav-item">
                 <router-link class="nav-link" to="/users/me/profile" v-if="this.$store.state.token" >Profile</router-link>
             </li>
-
             <li class="nav-item">
                 <router-link class="nav-link" to="/users/me/edit" v-if="this.$store.state.token" >Edit Profile</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link class="nav-link" to="/users/me/wallet" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Wallet</router-link>
             </li>
         </ul>
     </div>
