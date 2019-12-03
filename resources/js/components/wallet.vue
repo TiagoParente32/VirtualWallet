@@ -33,7 +33,8 @@
           <div v-else>
             <td>Not A Transfer</td>
           </div>
-          <td>{{ movement.category.name}}</td>
+          <td v-if="movement.category == null">NA</td>
+          <td v-else>{{movement.category.name}}</td>
           <td>{{ movement.date }}</td>
           <td>{{ movement.start_balance }}</td>
           <td>{{ movement.end_balance }}</td>

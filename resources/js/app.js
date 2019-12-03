@@ -5,9 +5,9 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router'
 import store from './stores/store';
 
-import BootstrapVue from 'bootstrap-vue'
+//import BootstrapVue from 'bootstrap-vue'
 
-Vue.use(BootstrapVue)
+//Vue.use(BootstrapVue)
 
 Vue.use(VueRouter);
 
