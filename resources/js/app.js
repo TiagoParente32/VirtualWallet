@@ -7,6 +7,9 @@ import store from './stores/store';
 
 import BootstrapVue from 'bootstrap-vue'
 
+import Paginate from 'vuejs-paginate'
+Vue.component('paginate', Paginate)
+
 Vue.use(BootstrapVue)
 
 Vue.use(VueRouter);
@@ -25,31 +28,32 @@ import Profile from './components/profile'
 import Wallet from './components/wallet'
 
 const routes = [{
-    path: '/',
-    component: Welcome
-}, {
-    path: '/register',
-    component: Register
-}, {
-    path: '/login',
-    component: Login
-},
-{
-    path: '/logout',
-    component: Logout
-},
-{
-    path: '/users/me/profile',
-    component: Profile
-},
-{
-    path: '/users/me/edit',
-    component: EditProfile
-},
-{
-    path: '/users/me/wallet',
-    component: Wallet
-}]
+        path: '/',
+        component: Welcome
+    }, {
+        path: '/register',
+        component: Register
+    }, {
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/logout',
+        component: Logout
+    },
+    {
+        path: '/users/me/profile',
+        component: Profile
+    },
+    {
+        path: '/users/me/edit',
+        component: EditProfile
+    },
+    {
+        path: '/users/me/wallet',
+        component: Wallet
+    }
+]
 const router = new VueRouter({
     //mode: 'history',
     routes // == routes:routes
@@ -57,7 +61,7 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    router,//==router:router
+    router, //==router:router
     store,
     data: {
 

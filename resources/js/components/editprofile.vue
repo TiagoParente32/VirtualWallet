@@ -1,60 +1,117 @@
 <template>
   <div>
-    <div class="jumbotron">
+    <!-- <div class="jumbotron">
       <h1>{{ title }}</h1>
-    </div>
+    </div>-->
+    <div class="row">
+      <div class="col-md-2">
+        <div class="list-group">
+          <router-link
+            class="nav-link list-group-item list-group-item-action active"
+            to="/users/me/edit"
+            v-if="this.$store.state.token"
+          >Edit Profile</router-link>
+          <router-link
+            class="nav-link list-group-item list-group-item-action"
+            to="/users/me/profile"
+            v-if="this.$store.state.token"
+          >Profile</router-link>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Edit Profile</h4>
+                <hr />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <form>
+                  <div>
+                    <div>
+                      <label for="name">Name</label>
+                      <input
+                        v-model="name"
+                        name="name"
+                        type="text"
+                        id="name"
+                        class="form-control"
+                        placeholder="Name"
+                      />
+                    </div>
 
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input
-        v-model="name"
-        name="name"
-        type="text"
-        id="name"
-        class="form-control"
-        placeholder="Your Name"
-        @keypress.enter="setFocusPhoto()"
-      />
-      <br />
-      <label for="photo">Photo</label>
-      <br />
-      <input
-        type="file"
-        name="photo"
-        id="photo"
-        accept="image/*"
-        @change="onFileSelected"
-        ref="photo"
-        @keypress.enter="setFocusNif()"
-      />
-      <br />
-      <br />
-      <label for="nif">Nif</label>
-      <input
-        v-model="nif"
-        min="000000001"
-        max="999999999"
-        minlength="9"
-        maxlength="9"
-        type="number"
-        id="nif"
-        class="form-control"
-        placeholder="000000000"
-        ref="nif"
-        @keypress.enter="setFocusPassword()"
-      />
-      <label for="passwordConfirmation">Current Password</label>
-      <input v-model="currentPassword" type="password" id="password" class="form-control" />
+                    <div>
+                      <label for="photo">Photo</label>
+                      <div class="custom-file">
+                        <label id="photoLabel" class="custom-file-label" for="photo">Choose Photo</label>
+                        <input
+                          class="custom-file-input"
+                          type="file"
+                          name="photo"
+                          id="photo"
+                          accept="image/*"
+                          @change="onFileSelected"
+                        />
+                      </div>
+                    </div>
 
-      <label for="password">Password</label>
-      <input v-model="password" type="password" id="password" class="form-control" />
+                    <div>
+                      <label for="nif">Nif</label>
+                      <input
+                        v-model="nif"
+                        min="100000000"
+                        max="999999999"
+                        minlength="9"
+                        maxlength="9"
+                        type="number"
+                        id="nif"
+                        class="form-control"
+                        placeholder="000000000"
+                      />
+                    </div>
 
-      <label for="passwordConfirmation">Password confirmation</label>
-      <input v-model="passwordConfirmation" type="password" id="password" class="form-control" />
+                    <div>
+                      <label for="passwordCurrent">Current Password</label>
+                      <input
+                        v-model="currentPassword"
+                        type="password"
+                        id="password"
+                        class="form-control"
+                      />
+                    </div>
 
-      <br />
-      <div class="form-group">
-        <a class="btn btn-primary" v-on:click.prevent="submit()">Save changes</a>
+                    <div>
+                      <label for="password">Password</label>
+                      <input v-model="password" type="password" id="password" class="form-control" />
+                    </div>
+
+                    <div>
+                      <label for="passwordConfirmation">Password confirmation</label>
+                      <input
+                        v-model="passwordConfirmation"
+                        type="password"
+                        id="password"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                  <!-- end form group -->
+                  <br />
+                  <div class="text-center">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      v-on:click.prevent="submit()"
+                    >Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -79,6 +136,9 @@ export default {
       if (this.photo === undefined) {
         return;
       }
+      var filename = this.photo.name;
+      var element = document.getElementById("photoLabel");
+      element.innerHTML = filename;
     },
     submit() {
       //tou a mostrar o erro no backend , mas podes meter aqui um erro tambem
@@ -106,22 +166,13 @@ export default {
         .catch(err => {
           console.log(err.response.data);
         });
-    },
-    setFocusEmail() {
-      this.$refs.email.focus();
-    },
-    setFocusPassword() {
-      this.$refs.password.focus();
-    },
-    setFocusNif() {
-      this.$refs.nif.focus();
-    },
-    setFocusPhoto() {
-      this.$refs.photo.focus();
     }
   }
 };
 </script>
 
 <style>
+/* .active {
+  background-color: black !important;
+} */
 </style>
