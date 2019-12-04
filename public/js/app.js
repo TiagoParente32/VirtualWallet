@@ -2462,9 +2462,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      opened: [],
       balance: "",
       movements: [],
       movementsPagination: null,
@@ -2481,12 +2506,21 @@ __webpack_require__.r(__webpack_exports__);
         _this.balance = response.data.balance;
         return axios.get("api/users/me/wallet/movements?page=".concat(movementsPageNr));
       }).then(function (response) {
-        //console.log(response);
+        console.log(response);
         _this.movements = response.data.data;
         _this.movementsPagination = response.data.meta;
       });
     },
-    details: function details() {}
+    details: function details() {},
+    toggle: function toggle(id) {
+      var index = this.opened.indexOf(id);
+
+      if (index > -1) {
+        this.opened.splice(index, 1);
+      } else {
+        this.opened.push(id);
+      }
+    }
   },
   mounted: function mounted() {
     this.getWallet();
@@ -53631,75 +53665,130 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.movements, function(movement) {
-            return _c(
-              "tr",
-              {
-                key: movement.id,
-                class: {
-                  "table-success": movement.type == "i",
-                  "table-danger": movement.type == "e"
-                },
-                attrs: { align: "center" }
-              },
-              [
-                _c("td", [_vm._v(_vm._s(movement.id))]),
-                _vm._v(" "),
-                movement.type == "e"
-                  ? _c("td", [_vm._v("Expense")])
-                  : movement.type == "i"
-                  ? _c("td", [_vm._v("Income")])
-                  : _vm._e(),
-                _vm._v(" "),
-                movement.transfer_wallet == null
-                  ? _c("td", [_vm._v("NA")])
-                  : _c("td", [_vm._v(_vm._s(movement.transfer_wallet.email))]),
-                _vm._v(" "),
-                movement.transfer == 0
-                  ? [
-                      movement.type_payment == "c"
-                        ? _c("td", [_vm._v("Cash")])
-                        : movement.type_payment == "bt"
-                        ? _c("td", [_vm._v("Bank Transfer")])
-                        : movement.type_payment == "mb"
-                        ? _c("td", [_vm._v("MB Payment")])
-                        : _vm._e()
-                    ]
-                  : [_c("td", [_vm._v("Transfer")])],
-                _vm._v(" "),
-                movement.category == null
-                  ? _c("td", [_vm._v("NA")])
-                  : _c("td", [_vm._v(_vm._s(movement.category.name))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(movement.date))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(movement.value) + "€")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(movement.start_balance) + "€")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(movement.end_balance) + "€")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary btn-sm",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.details($event)
-                        }
-                      }
+          [
+            _vm._l(_vm.movements, function(movement) {
+              return [
+                _c(
+                  "tr",
+                  {
+                    key: movement.id,
+                    class: {
+                      "table-success": movement.type == "i",
+                      "table-danger": movement.type == "e",
+                      opened: _vm.opened.includes(movement.id)
                     },
-                    [_vm._v("Details")]
-                  )
-                ])
-              ],
-              2
-            )
-          }),
-          0
+                    attrs: { align: "center" },
+                    on: {
+                      click: function($event) {
+                        return _vm.toggle(movement.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("td", [_vm._v(_vm._s(movement.id))]),
+                    _vm._v(" "),
+                    movement.type == "e"
+                      ? _c("td", [_vm._v("Expense")])
+                      : movement.type == "i"
+                      ? _c("td", [_vm._v("Income")])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    movement.transfer_wallet == null
+                      ? _c("td", [_vm._v("NA")])
+                      : _c("td", [
+                          _vm._v(_vm._s(movement.transfer_wallet.email))
+                        ]),
+                    _vm._v(" "),
+                    movement.transfer == 0
+                      ? [
+                          movement.type_payment == "c"
+                            ? _c("td", [_vm._v("Cash")])
+                            : movement.type_payment == "bt"
+                            ? _c("td", [_vm._v("Bank Transfer")])
+                            : movement.type_payment == "mb"
+                            ? _c("td", [_vm._v("MB Payment")])
+                            : _vm._e()
+                        ]
+                      : [_c("td", [_vm._v("Transfer")])],
+                    _vm._v(" "),
+                    movement.category == null
+                      ? _c("td", [_vm._v("NA")])
+                      : _c("td", [_vm._v(_vm._s(movement.category.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(movement.date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(movement.value) + "€")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(movement.start_balance) + "€")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(movement.end_balance) + "€")]),
+                    _vm._v(" "),
+                    _vm._m(1, true)
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _vm.opened.includes(movement.id)
+                  ? _c("div", { key: movement.id + "-details" }, [
+                      movement.transfer_wallet != null
+                        ? _c("div", [
+                            movement.transfer_wallet.user.photo !== null
+                              ? _c("div", [
+                                  _c("img", {
+                                    staticClass: "img-thumbnail",
+                                    attrs: {
+                                      src:
+                                        "./storage/fotos/" +
+                                        movement.transfer_wallet.user.photo,
+                                      height: "200",
+                                      width: "200"
+                                    }
+                                  })
+                                ])
+                              : _c("div", [
+                                  _c("img", {
+                                    staticClass: "img-thumbnail",
+                                    attrs: {
+                                      src: "./storage/fotos/default.png",
+                                      height: "200",
+                                      width: "200"
+                                    }
+                                  })
+                                ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v("Description: " + _vm._s(movement.description))
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v(
+                          "Source Description: " +
+                            _vm._s(movement.source_description)
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("IBAN: " + _vm._s(movement.iban))]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v(
+                          "MB Entity Code: " + _vm._s(movement.mb_entity_code)
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v(
+                          "MB Payment Reference" +
+                            _vm._s(movement.mb_payment_reference)
+                        )
+                      ])
+                    ])
+                  : _vm._e()
+              ]
+            })
+          ],
+          2
         )
       ]),
       _vm._v(" "),
@@ -53768,6 +53857,18 @@ var staticRenderFns = [
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary btn-sm", attrs: { type: "button" } },
+        [_vm._v("Details")]
+      )
+    ])
   }
 ]
 render._withStripped = true

@@ -29,7 +29,8 @@ class MovementResource extends JsonResource
             'description' => $this->description,
             'source_description' => $this->source_description,
             'mb_entity_code' => $this->mb_entity_code,
-            'mb_payment_reference' => $this->mb_payment_reference
+            'mb_payment_reference' => $this->mb_payment_reference,
+            'iban' => $this->iban
         ];
 
         return parent::toArray($request);
