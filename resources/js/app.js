@@ -27,6 +27,7 @@ import Login from './components/login'
 import Logout from './components/logout'
 import Profile from './components/profile'
 import Wallet from './components/wallet'
+import Users from './components/usersList'
 
 const routes = [{
     path: '/',
@@ -53,6 +54,10 @@ const routes = [{
 {
     path: '/users/me/wallet',
     component: Wallet
+},
+{
+    path: '/users',
+    component: Users
 }
 ]
 const router = new VueRouter({
