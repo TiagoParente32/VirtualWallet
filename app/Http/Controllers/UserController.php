@@ -202,8 +202,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if($request->user()  === $user){
-            return response()->json(['message' => "cant delete myself"], 400);
+        if($request->user()->id == $id){
+            return response()->json(['message' => "cant delete yourself"], 400);
         }
         if($user->type === "u"){
             return response()->json(['message' => "cant delete users, Only Operators Or Admins"], 400);
