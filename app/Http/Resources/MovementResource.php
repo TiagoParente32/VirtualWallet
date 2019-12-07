@@ -19,7 +19,7 @@ class MovementResource extends JsonResource
             'id' => $this->id,
             'type' => $this->type,
             'transfer' => $this->transfer,
-            'transfer_wallet' => new WalletResource($this->transfer_wallet),
+            'transfer_wallet' => new WalletMovementsResource($this->transfer_wallet),
             'type_payment' => $this->type_payment,
             'category' => $this->category,
             'date' => $this->date,

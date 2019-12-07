@@ -17,11 +17,18 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-
+    public function index(Request $request){
+        if ($request->has('page')) {
+            return UserResource::collection(User::paginate(5));
+        } else {
+            return UserResource::collection(User::all());
+        }
+    }
+    //store USer
     public function store(Request $request)
     {
         $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]*$/',
             'email' => 'required|string|email|max:255|unique:users',
             'nif' => 'required | numeric|between:100000000,999999999',
             'password' => 'required|string|min:3|max:16',
@@ -58,7 +65,70 @@ class UserController extends Controller
 
         return response()->json($user, 200);
     }
+    public function storeOperator(Request $request)
+    {
+        $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
+            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]*$/',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:3|max:16',
+        ]);
+        if ($valid->fails()) {
+            return response()->json(['message' => $valid->errors()->all()], 400);
+        }
+        $user = new User();
+        $user->fill($request->only('name', 'email'));
 
+        if ($request->hasFile('photo')) {
+            $validatePhoto = Validator::make($request->only('photo'), [
+                'photo' => 'image'
+            ]);
+            if ($validatePhoto->fails()) {
+                return response()->json(['message' => $validatePhoto->errors()->all()], 400);
+            }
+            $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+            $user->photo = $fileName;
+            $request->photo->move(public_path('storage/fotos'), $fileName);
+        } else {
+            $user->photo = 'default.png';
+        }
+
+        $user->password =  Hash::make($request->password);
+        $user->type = 'o';
+        $user->save();
+        return response()->json($user, 200);
+    }
+    public function storeAdministrator(Request $request)
+    {
+        $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
+            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]*$/',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:3|max:16',
+        ]);
+        if ($valid->fails()) {
+            return response()->json(['message' => $valid->errors()->all()], 400);
+        }
+        $user = new User();
+        $user->fill($request->only('name', 'email'));
+
+        if ($request->hasFile('photo')) {
+            $validatePhoto = Validator::make($request->only('photo'), [
+                'photo' => 'image'
+            ]);
+            if ($validatePhoto->fails()) {
+                return response()->json(['message' => $validatePhoto->errors()->all()], 400);
+            }
+            $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+            $user->photo = $fileName;
+            $request->photo->move(public_path('storage/fotos'), $fileName);
+        } else {
+            $user->photo = 'default.png';
+        }
+
+        $user->password =  Hash::make($request->password);
+        $user->type = 'a';
+        $user->save();
+        return response()->json($user, 200);
+    }
     public function getMe(Request $request)
     {
         return response()->json($request->user(), 200);
@@ -127,4 +197,33 @@ class UserController extends Controller
         $movements = $movements->orderBy('date', 'desc')->paginate(10);
         return MovementResource::collection($movements);
     }
+
+    public function destroy(Request $request,$id)
+    {
+        $user = User::findOrFail($id);
+
+        if($request->user()  === $user){
+            return response()->json(['message' => "cant delete myself"], 400);
+        }
+        if($user->type === "u"){
+            return response()->json(['message' => "cant delete users, Only Operators Or Admins"], 400);
+        }
+        $user->delete();
+        return response()->json(null, 204);
+    }
+
+
+    public function DeactivateReactivateUser(Request $request,$id)
+    {
+        $user = User::findOrFail($id);
+
+        if($user->type !== "u"){
+            return response()->json(['message' => "cant deactivate or reactivate Operators Or Admins"], 400);
+        }
+
+        $user->active = !$user->active;
+        $user->save();
+        return response()->json($user, 200);
+    }
+
 }
