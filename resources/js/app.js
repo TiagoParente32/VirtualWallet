@@ -11,7 +11,7 @@ import store from './stores/store';
 import Paginate from 'vuejs-paginate'
 Vue.component('paginate', Paginate)
 
-Vue.use(BootstrapVue)
+//Vue.use(BootstrapVue)
 
 Vue.use(VueRouter);
 
