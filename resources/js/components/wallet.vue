@@ -2,83 +2,25 @@
   <div>
     <h1>Balance</h1>
     <h2>{{balance}} €</h2>
-    <table class="table table-bordered table-hover">
-      <thead class="thead-dark" align="center">
-        <tr>
-          <th>ID</th>
-          <th>Type</th>
-          <th>Transfer e-mail</th>
-          <th>Type Payment</th>
-          <th>Category</th>
-          <th>Date</th>
-          <th>Value (€)</th>
-          <th>Start Balance (€)</th>
-          <th>End Balance (€)</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="movement in movements">
-          <tr
-            :key="movement.id"
-            v-bind:class="{'table-success': (movement.type == 'i'), 'table-danger' : (movement.type == 'e'), opened: opened.includes(movement.id)}"
-            align="center"
-            @click="toggle(movement.id)"
-          >
-            <td>{{ movement.id }}</td>
-            <td v-if="movement.type == 'e'">Expense</td>
-            <td v-else-if="movement.type == 'i'">Income</td>
 
-            <td v-if="movement.transfer_wallet == null">NA</td>
-            <td v-else>{{movement.transfer_wallet.email}}</td>
-            <!-- <td>{{ movement.transfer_wallet.user.photo}}</td>  para ir buscar a foto do user da outra wallet-->
-            <template v-if="movement.transfer == 0">
-              <td v-if="movement.type_payment == 'c'">Cash</td>
-              <td v-else-if="movement.type_payment == 'bt'">Bank Transfer</td>
-              <td v-else-if="movement.type_payment == 'mb'">MB Payment</td>
-            </template>
-            <template v-else>
-              <td>Transfer</td>
-            </template>
-            <td v-if="movement.category == null">NA</td>
-            <td v-else>{{movement.category.name}}</td>
-            <td>{{ movement.date }}</td>
-            <td>{{ movement.value }}€</td>
-            <td>{{ movement.start_balance }}€</td>
-            <td>{{ movement.end_balance }}€</td>
-            <td>
-              <button type="button" class="btn btn-primary btn-sm">Details</button>
-            </td>
-          </tr>
-          <div :key="movement.id + '-details'" v-if="opened.includes(movement.id)">
-            <div v-if="movement.transfer_wallet != null">
-              <div v-if="movement.transfer_wallet.user.photo !== null">
-                <img
-                  :src="`./storage/fotos/${movement.transfer_wallet.user.photo}`"
-                  class="img-thumbnail"
-                  height="200"
-                  width="200"
-                />
-              </div>
-              <div v-else>
-                <img
-                  :src="'./storage/fotos/default.png'"
-                  class="img-thumbnail"
-                  height="200"
-                  width="200"
-                />
-              </div>
-            </div>
+    <wallet-list
+      v-bind:movements="movements"
+      :opened="opened"
+      @toggle="toggle"
+      @edit-movement="editMovement"
+    ></wallet-list>
 
-            <p>Description: {{movement.description}}</p>
-            <p>Source Description: {{movement.source_description}}</p>
-            <p>IBAN: {{movement.iban}}</p>
-            <p>MB Entity Code: {{movement.mb_entity_code}}</p>
-            <p>MB Payment Reference{{movement.mb_payment_reference}}</p>
-          </div>
-        </template>
-      </tbody>
-    </table>
+    <div class="alert alert-success" v-if="showSuccess">
+      <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
+      <strong>{{ successMessage }}</strong>
+    </div>
+
+    <movement-edit
+      v-if="editingMovement"
+      v-bind:currentMovement="currentMovement"
+      @save-movement="saveMovement"
+      @cancel-edit="cancelEdit"
+    ></movement-edit>
     <br />
     <paginate
       class="d-flex justify-content-center"
@@ -99,6 +41,8 @@
 </template>
 
 <script>
+import WalletList from "./walletList";
+import MovementEdit from "./walletEdit";
 export default {
   data() {
     return {
@@ -106,7 +50,17 @@ export default {
       balance: "",
       movements: [],
       movementsPagination: null,
-      movementsPage: null
+      movementsPage: null,
+      editingMovement: false,
+      showSuccess: false,
+      showFailure: false,
+      successMessage: "",
+      failMessage: "",
+      currentMovement: null,
+      put: {
+        category: null,
+        description: null
+      }
     };
   },
   methods: {
@@ -121,7 +75,7 @@ export default {
           );
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           this.movements = response.data.data;
           this.movementsPagination = response.data.meta;
         });
@@ -134,10 +88,50 @@ export default {
       } else {
         this.opened.push(id);
       }
+    },
+    editMovement: function(movement) {
+      this.currentMovement = Object.assign({}, movement);
+      if (!this.currentMovement.category) {
+        this.currentMovement.category = {};
+      }
+      this.editingMovement = true;
+      this.showSuccess = false;
+      //     var elmnt = document.getElementById("edit");
+      //     console.log(elmnt);
+      //   elmnt.scrollIntoView();
+    },
+    saveMovement: function(movement) {
+      this.editingMovement = false;
+      console.log(movement);
+      this.put.category = movement.category.id;
+      this.put.description = movement.description;
+      //console.log(this.put);
+      axios.put("api/movements/" + movement.id, this.put).then(response => {
+        this.showSuccess = true;
+        this.successMessage = "Movement Updated";
+        // Copies response.data.data properties to this.currentMovement
+        // without changing this.currentMovement reference
+        console.log(response.data);
+        Object.assign(this.currentMovement, response.data.data);
+        Object.assign(
+          this.movements.find(m => m.id == response.data.data.id),
+          response.data.data
+        );
+        this.currentMovement = null;
+        this.editingMovement = false;
+      });
+    },
+    cancelEdit: function() {
+      this.showSuccess = false;
+      this.editingMovement = false;
     }
   },
   mounted() {
     this.getWallet();
+  },
+  components: {
+    "wallet-list": WalletList,
+    "movement-edit": MovementEdit
   }
 };
 </script>

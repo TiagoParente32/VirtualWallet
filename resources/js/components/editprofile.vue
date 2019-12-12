@@ -78,14 +78,21 @@
                       <input
                         v-model="currentPassword"
                         type="password"
-                        id="password"
+                        id="passwordCurrent"
                         class="form-control"
+                        autocomplete="off"
                       />
                     </div>
 
                     <div>
                       <label for="password">Password</label>
-                      <input v-model="password" type="password" id="password" class="form-control" />
+                      <input
+                        v-model="password"
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        autocomplete="off"
+                      />
                     </div>
 
                     <div>
@@ -93,8 +100,9 @@
                       <input
                         v-model="passwordConfirmation"
                         type="password"
-                        id="password"
+                        id="passwordConfirmation"
                         class="form-control"
+                        autocomplete="off"
                       />
                     </div>
                   </div>

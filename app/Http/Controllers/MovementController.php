@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Wallet;
 use App\Movement;
 use App\Category;
+use App\Http\Resources\MovementResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -90,7 +91,7 @@ class MovementController extends Controller
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
         }
-        if($request->transfer){
+        if ($request->transfer) {
             $valid = Validator::make($request->only('email', 'source_description'), [
                 'email' => 'required|string|email|max:255',
                 'source_description' => 'required | string | max:500'
@@ -99,22 +100,22 @@ class MovementController extends Controller
                 return response()->json(['message' => $valid->errors()->all()], 400);
             }
             $expense_movement->source_description = $request->source_description;
-        }elseif (!$request->transfer) {//exclusive for payment to an external entity
-            $valid = Validator::make($request->only('transfer', 'type_payment' ), [
+        } elseif (!$request->transfer) { //exclusive for payment to an external entity
+            $valid = Validator::make($request->only('transfer', 'type_payment'), [
                 'transfer' => 'required|in:0,1',
                 'type_payment' => 'required | in:mb,bt',
             ]);
             if ($valid->fails()) {
                 return response()->json(['message' => $valid->errors()->all()], 400);
             }
-            if($request->type_payment == 'bt'){
+            if ($request->type_payment == 'bt') {
                 $valid = Validator::make($request->only('iban'), [
                     'iban' => 'required|regex:/([A-Z]){2}[0-9]{23}/'
                 ]);
                 if ($valid->fails()) {
                     return response()->json(['message' => $valid->errors()->all()], 400);
                 }
-            }elseif($request->type_payment == 'mb'){
+            } elseif ($request->type_payment == 'mb') {
                 $valid = Validator::make($request->only('mb_entity_code', 'mb_payment_reference'), [
                     'mb_entity_code' => 'required|numeric|digits:5',
                     'mb_payment_reference' => 'required|numeric|digits:9'
@@ -128,18 +129,18 @@ class MovementController extends Controller
         //For all types of payments
         $valid = Validator::make($request->only('value', 'category_id'), [
             'value' => 'required|numeric|between:0.01,5000.00',
-            'category_id' => 'required|numeric|digits_between:1,10' 
+            'category_id' => 'required|numeric|digits_between:1,10'
         ]);
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
         }
 
         //Para transferencias
-        $receiver_wallet = Wallet::where('email', '=', $request->email)->get()->first(); 
+        $receiver_wallet = Wallet::where('email', '=', $request->email)->get()->first();
 
         //Para pagamentos por multibanco
         $sender_wallet = $request->user()->wallet;
-        
+
         $expense_movement->wallet_id = $sender_wallet->id;
         $expense_movement->type = "e";
         $income_movement->type = "i";
@@ -156,23 +157,23 @@ class MovementController extends Controller
         $expense_movement->start_balance = $request->user()->wallet->balance;
         $expense_movement->end_balance = $expense_movement->start_balance - $request->value;
         $receiver_wallet->balance += $expense_movement->value;
-        $sender_wallet->balance -= $request->value;        
+        $sender_wallet->balance -= $request->value;
         $expense_movement->date = $income_movement->date = date('Y-m-d H:i:s');
 
         $sender_wallet->save();
         $expense_movement->save();
 
-        if($request->transfer){
+        if ($request->transfer) {
             $receiver_wallet->save();
             $income_movement->save();
         }
 
         //É necessário fazer o save dos dois movimentos porque só assim é possível aceder aos ids de cada movimentos pq só são criados aquando do save()
-        $expense_movement->transfer_movement_id = $income_movement->id; 
-        $income_movement->transfer_movement_id = $expense_movement->id; 
+        $expense_movement->transfer_movement_id = $income_movement->id;
+        $income_movement->transfer_movement_id = $expense_movement->id;
 
         $expense_movement->save();
-        if($request->transfer){
+        if ($request->transfer) {
             $income_movement->save();
         }
         return response()->json([$receiver_wallet, $expense_movement, $sender_wallet, $income_movement], 200);
@@ -193,12 +194,12 @@ class MovementController extends Controller
             return response()->json(['message' => $validator->errors()->all()], 400);
         }
 
-        $newMovement = Movement::where('id',$movement->id)->firstOrFail();
+        $newMovement = Movement::where('id', $movement->id)->firstOrFail();
         $newMovement->fill($request->only(['description']));
         $newMovement->category_id = $request->category;
 
         $newMovement->save();
 
-        return response()->json($newMovement, 200);
+        return new MovementResource($newMovement);
     }
 }
