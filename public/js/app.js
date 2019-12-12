@@ -2504,7 +2504,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       axios.patch("api/users/".concat(id)).then(function (response) {
-        _this3.getUsers(_this3.usersPage);
+        Object.assign(_this3.users.find(function (u) {
+          return u.id == response.data.data.id;
+        }), response.data.data);
       });
     }
   },
@@ -2884,7 +2886,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .active {\n  background-color: black !important;\n} */\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* .active {\r\n  background-color: black !important;\r\n} */\r\n", ""]);
 
 // exports
 
@@ -2903,7 +2905,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nimg {\r\n  height: 70px;\r\n  width: 70px;\n}\r\n", ""]);
+exports.push([module.i, "\nimg {\n  height: 70px;\n  width: 70px;\n}\n", ""]);
 
 // exports
 
@@ -2922,7 +2924,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.jumbotron {\r\n  background-color: lightgray;\n}\nhtml {\r\n  overflow: scroll;\n}\n::-webkit-scrollbar {\r\n  width: 0px;\r\n  background: transparent; /* make scrollbar transparent */\n}\r\n", ""]);
+exports.push([module.i, "\n.jumbotron {\n  background-color: lightgray;\n}\nhtml {\n  overflow: scroll;\n}\n::-webkit-scrollbar {\n  width: 0px;\n  background: transparent; /* make scrollbar transparent */\n}\n", ""]);
 
 // exports
 
@@ -22089,7 +22091,7 @@ var render = function() {
         _c(
           "tbody",
           _vm._l(_vm.users, function(user) {
-            return _c("tr", { key: user.id }, [
+            return _c("tr", { key: user.id, attrs: { align: "center" } }, [
               user.photo !== null
                 ? _c("td", [
                     _c("img", {
@@ -22112,25 +22114,37 @@ var render = function() {
                     })
                   ]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.name))]),
+              _c("td", { staticClass: "align-middle" }, [
+                _vm._v(_vm._s(user.name))
+              ]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.email))]),
+              _c("td", { staticClass: "align-middle" }, [
+                _vm._v(_vm._s(user.email))
+              ]),
               _vm._v(" "),
               user.type == "a"
-                ? _c("td", [_vm._v("Administator")])
+                ? _c("td", { staticClass: "align-middle" }, [
+                    _vm._v("Administator")
+                  ])
                 : user.type == "o"
-                ? _c("td", [_vm._v("Operator")])
-                : _c("td", [_vm._v("User")]),
+                ? _c("td", { staticClass: "align-middle" }, [
+                    _vm._v("Operator")
+                  ])
+                : _c("td", { staticClass: "align-middle" }, [_vm._v("User")]),
               _vm._v(" "),
               user.active
-                ? _c("td", [_vm._v("Active")])
-                : _c("td", [_vm._v("Inactive")]),
+                ? _c("td", { staticClass: "align-middle" }, [_vm._v("Active")])
+                : _c("td", { staticClass: "align-middle" }, [
+                    _vm._v("Inactive")
+                  ]),
               _vm._v(" "),
               user.balance
-                ? _c("td", [_vm._v("Has Money")])
-                : _c("td", [_vm._v("Empty")]),
+                ? _c("td", { staticClass: "align-middle" }, [
+                    _vm._v("Has Money")
+                  ])
+                : _c("td", { staticClass: "align-middle" }, [_vm._v("Empty")]),
               _vm._v(" "),
-              _c("td", [
+              _c("td", { staticClass: "align-middle" }, [
                 user.type == "a" || user.type == "o"
                   ? _c(
                       "button",
@@ -22218,23 +22232,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Photo")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Email")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Type")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Active")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Balance")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
-      ])
-    ])
+    return _c(
+      "thead",
+      { staticClass: "thead-dark", attrs: { align: "center" } },
+      [
+        _c("tr", [
+          _c("th", [_vm._v("Photo")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Name")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Email")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Type")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Active")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Balance")]),
+          _vm._v(" "),
+          _c("th", [_vm._v("Actions")])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true

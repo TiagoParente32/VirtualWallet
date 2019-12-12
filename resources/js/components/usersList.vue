@@ -1,7 +1,7 @@
 <template>
   <div>
     <table class="table table-striped">
-      <thead>
+      <thead class="thead-dark" align="center">
         <tr>
           <th>Photo</th>
           <th>Name</th>
@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="user in users" :key="user.id" align="center">
           <td v-if="user.photo !== null">
             <img
               :src="`./storage/fotos/${user.photo}`"
@@ -30,17 +30,17 @@
               width="200"
             />
           </td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td v-if="user.type == 'a'">Administator</td>
-          <td v-else-if="user.type == 'o'">Operator</td>
-          <td v-else>User</td>
-          <td v-if="user.active">Active</td>
-          <td v-else>Inactive</td>
-          <td v-if="user.balance">Has Money</td>
-          <td v-else>Empty</td>
+          <td class="align-middle">{{ user.name }}</td>
+          <td class="align-middle">{{ user.email }}</td>
+          <td class="align-middle" v-if="user.type == 'a'">Administator</td>
+          <td class="align-middle" v-else-if="user.type == 'o'">Operator</td>
+          <td class="align-middle" v-else>User</td>
+          <td class="align-middle" v-if="user.active">Active</td>
+          <td class="align-middle" v-else>Inactive</td>
+          <td class="align-middle" v-if="user.balance">Has Money</td>
+          <td class="align-middle" v-else>Empty</td>
 
-          <td>
+          <td class="align-middle">
             <button
               v-if="user.type == 'a' || user.type == 'o'"
               class="btn btn-sm btn-danger"
@@ -102,7 +102,10 @@ export default {
     },
     activateUser(id) {
       axios.patch(`api/users/${id}`).then(response => {
-        this.getUsers(this.usersPage);
+        Object.assign(
+          this.users.find(u => u.id == response.data.data.id),
+          response.data.data
+        );
       });
     }
   },

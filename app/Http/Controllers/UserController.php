@@ -223,7 +223,7 @@ class UserController extends Controller
 
         $user->active = !$user->active;
         $user->save();
-        return response()->json($user, 200);
+        return new UserResource($user);
     }
 
     public function filterUsers(Request $request){
