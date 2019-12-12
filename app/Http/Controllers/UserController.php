@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     public function index(Request $request){
         if ($request->has('page')) {
-            return UserResource::collection(User::paginate(5));
+            return UserResource::collection(User::paginate(10));
         } else {
             return UserResource::collection(User::all());
         }
@@ -224,6 +224,26 @@ class UserController extends Controller
         $user->active = !$user->active;
         $user->save();
         return response()->json($user, 200);
+    }
+
+    public function filterUsers(Request $request){
+        $users = User::where('id','>',0);
+
+        if($request->has('type')){
+            $users = $users->where('type','=',$request->type);
+        }
+        if($request->has('name')){
+            $users = $users->where('name','=',$request->name);
+        }
+        if($request->has('email')){
+            $users = $users->where('email','=',$request->email);
+        }
+        if($request->has('active')){
+            $users = $users->where('active','=',$request->active);
+        }
+
+        $users = $users->paginate(10);
+        return UserResource::collection($users);
     }
 
 }

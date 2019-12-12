@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Wallet;
-use App\Movement;
 use App\Category;
+
 use App\Http\Resources\MovementResource;
+use App\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +20,41 @@ class MovementController extends Controller
         $wallet_id = DB::table('wallets')->where('email', '=', $request->user()->email)->pluck('id');
         $movements = DB::table('movements')->where('wallet_id', '=', $wallet_id)->get();
         return response()->json($movements, 200);
+    }
+
+    public function filterWalletMovements(Request $request)
+    {
+        $movements = Movement::where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
+        if ($request->has('id')) {
+            $movements = $movements->where('id', $request->id);
+        }
+        if ($request->has('type')) {
+            $movements = $movements->where('type', $request->type);
+        }
+        if ($request->has('category_id')) {
+            $movements = $movements->where('category_id', $request->category_id);
+        }
+        if ($request->has('type_payment')) {
+            $movements = $movements->where('type_payment', $request->type_payment);
+        }
+        if ($request->has('transfer')) {
+            $movements = $movements->where('transfer', $request->transfer);
+            if ($request->has('id')->transfer_email) {
+                $wallet = Wallet::where('email', $request->transfer_email)->get();
+                $movements = $movements->where('transfer_wallet_id', $wallet[0]->id)->orWhere('wallet_id', $wallet[0]->id);;
+            }
+        }
+        if ($request->dataMax < $request->dataMin) {
+            return;
+        }
+        if ($request->has('dataMin')) {
+            $movements = $movements->where('date', '>=', $request->dataMin);
+        }
+        if ($request->has('dataMax')) {
+            $movements = $movements->where('date', '<=', $request->dataMax);
+        }
+        $movements = $movements->paginate(10);
+        return MovementResource::collection($movements);
     }
 
     public function store(Request $request)

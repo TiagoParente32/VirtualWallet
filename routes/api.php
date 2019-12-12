@@ -43,18 +43,20 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('users/me/wallet/movements', 'UserController@getMovements');
         //Route::post('movement/create', 'MovementController@store');
         Route::put('movements/{movement}','MovementController@update');
+        Route::get('users/me/wallet/movements/filter', 'MovementController@filterWalletMovements');
     });
     //group of routes to operators
-    Route::group(['middleware' => 'type:o'], function () { 
+    Route::group(['middleware' => 'type:o'], function () {
         //Route::post('movement/create', 'MovementController@store');
     });
     //group of routes to admins
-    Route::group(['middleware' => 'type:a'], function () { 
+    Route::group(['middleware' => 'type:a'], function () {
         Route::post('users/operator','UserController@storeOperator');
         Route::post('users/administrator','UserController@storeAdministrator');
         Route::get('users','UserController@index');
         Route::delete('users/{id}','UserController@destroy');
         Route::patch('users/{id}','UserController@DeactivateReactivateUser');
+        Route::get('users/filter','UserController@filterUsers');
     });
 
 });
