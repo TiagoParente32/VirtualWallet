@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('users','UserController@index');
         Route::delete('users/{id}','UserController@destroy');
         Route::patch('users/{id}','UserController@DeactivateReactivateUser');
-        Route::get('users/filter','UserController@filterUsers');
+        Route::post('users/filter','UserController@filterUsers');
     });
 
 });

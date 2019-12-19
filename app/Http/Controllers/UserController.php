@@ -229,16 +229,16 @@ class UserController extends Controller
     public function filterUsers(Request $request){
         $users = User::where('id','>',0);
 
-        if($request->has('type')){
+        if($request->has('type') && $request->type !== null){
             $users = $users->where('type','=',$request->type);
         }
-        if($request->has('name')){
-            $users = $users->where('name','=',$request->name);
+        if($request->has('name') && $request->name !== null){
+            $users = $users->where('name','like','%'. $request->name .'%');
         }
-        if($request->has('email')){
-            $users = $users->where('email','=',$request->email);
+        if($request->has('email') &&  $request->email !== null){
+            $users = $users->where('email','like','%' . $request->email . '%');
         }
-        if($request->has('active')){
+        if($request->has('active') && $request->active !== null){
             $users = $users->where('active','=',$request->active);
         }
 

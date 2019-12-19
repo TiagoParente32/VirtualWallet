@@ -1,5 +1,40 @@
 <template>
-  <div>
+  <div class="container">
+    <div>
+      <div class="row">
+        <div class="col">
+          <label for="name">Name</label>
+          <input type="text" id="name" class="form-control" v-model="filterData.name" />
+        </div>
+        <div class="col">
+          <label for="email">Email</label>
+          <input type="text" id="email" class="form-control" v-model="filterData.email" />
+        </div>
+        <div class="col">
+          <label for="type">Type</label>
+          <select class="form-control" id="type" name="type" v-model="filterData.type">
+            <option
+              v-for="option in optionsType"
+              :key="option.value"
+              v-bind:value="option.value"
+            >{{ option.text }}</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="active">Active/Inactive</label>
+          <select class="form-control" id="active" name="active" v-model="filterData.active">
+            <option
+              v-for="option in optionsActive"
+              :key="option.value"
+              v-bind:value="option.value"
+            >{{ option.text }}</option>
+          </select>
+        </div>
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary" v-on:click.prevent="filter">Submit</button>
+    </div>
+    <br />
     <table class="table table-striped">
       <thead class="thead-dark" align="center">
         <tr>
@@ -65,7 +100,7 @@
       class="d-flex justify-content-center"
       v-model="usersPage"
       :page-count="usersPagination !== null && usersPagination.total !== 0 ? usersPagination.last_page : 0"
-      :click-handler="this.getUsers"
+      :click-handler="this.filter"
       :margin-pages="2"
       :page-range="5"
       :container-class="'pagination'"
@@ -85,7 +120,24 @@ export default {
     return {
       users: [],
       usersPagination: null,
-      usersPage: null
+      usersPage: null,
+      optionsType: [
+        { text: "All", value: null },
+        { text: "User", value: "u" },
+        { text: "Operator", value: "o" },
+        { text: "Admin", value: "a" }
+      ],
+      optionsActive: [
+        { text: "All", value: null },
+        { text: "Active", value: true },
+        { text: "Inactive", value: false }
+      ],
+      filterData: {
+        name: null,
+        email: null,
+        type: null,
+        active: null
+      }
     };
   },
   methods: {
@@ -107,10 +159,20 @@ export default {
           response.data.data
         );
       });
+    },
+    filter(usersPageNr = 1) {
+      //console.log(this.filterData);
+      axios
+        .post(`api/users/filter?page=${usersPageNr}`, this.filterData)
+        .then(response => {
+          //console.log(response);
+          this.users = response.data.data;
+          this.usersPagination = response.data.meta;
+        });
     }
   },
   mounted() {
-    this.getUsers();
+    this.filter();
   }
 };
 </script>

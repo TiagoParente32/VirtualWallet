@@ -2475,12 +2475,76 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       users: [],
       usersPagination: null,
-      usersPage: null
+      usersPage: null,
+      optionsType: [{
+        text: "All",
+        value: null
+      }, {
+        text: "User",
+        value: "u"
+      }, {
+        text: "Operator",
+        value: "o"
+      }, {
+        text: "Admin",
+        value: "a"
+      }],
+      optionsActive: [{
+        text: "All",
+        value: null
+      }, {
+        text: "Active",
+        value: true
+      }, {
+        text: "Inactive",
+        value: false
+      }],
+      filterData: {
+        name: null,
+        email: null,
+        type: null,
+        active: null
+      }
     };
   },
   methods: {
@@ -2508,10 +2572,21 @@ __webpack_require__.r(__webpack_exports__);
           return u.id == response.data.data.id;
         }), response.data.data);
       });
+    },
+    filter: function filter() {
+      var _this4 = this;
+
+      var usersPageNr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      //console.log(this.filterData);
+      axios.post("api/users/filter?page=".concat(usersPageNr), this.filterData).then(function (response) {
+        //console.log(response);
+        _this4.users = response.data.data;
+        _this4.usersPagination = response.data.meta;
+      });
     }
   },
   mounted: function mounted() {
-    this.getUsers();
+    this.filter();
   }
 });
 
@@ -22084,7 +22159,175 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "container" },
     [
+      _c("div", [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filterData.name,
+                  expression: "filterData.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "name" },
+              domProps: { value: _vm.filterData.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filterData, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col" }, [
+            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filterData.email,
+                  expression: "filterData.email"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "email" },
+              domProps: { value: _vm.filterData.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filterData, "email", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col" }, [
+            _c("label", { attrs: { for: "type" } }, [_vm._v("Type")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterData.type,
+                    expression: "filterData.type"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "type", name: "type" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.filterData,
+                      "type",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              _vm._l(_vm.optionsType, function(option) {
+                return _c(
+                  "option",
+                  { key: option.value, domProps: { value: option.value } },
+                  [_vm._v(_vm._s(option.text))]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col" }, [
+            _c("label", { attrs: { for: "active" } }, [
+              _vm._v("Active/Inactive")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterData.active,
+                    expression: "filterData.active"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "active", name: "active" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.filterData,
+                      "active",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              _vm._l(_vm.optionsActive, function(option) {
+                return _c(
+                  "option",
+                  { key: option.value, domProps: { value: option.value } },
+                  [_vm._v(_vm._s(option.text))]
+                )
+              }),
+              0
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "submit" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.filter($event)
+              }
+            }
+          },
+          [_vm._v("Submit")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
       _c("table", { staticClass: "table table-striped" }, [
         _vm._m(0),
         _vm._v(" "),
@@ -22204,7 +22447,7 @@ var render = function() {
             _vm.usersPagination !== null && _vm.usersPagination.total !== 0
               ? _vm.usersPagination.last_page
               : 0,
-          "click-handler": this.getUsers,
+          "click-handler": this.filter,
           "margin-pages": 2,
           "page-range": 5,
           "container-class": "pagination",
