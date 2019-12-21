@@ -43,7 +43,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('users/me/wallet/movements', 'UserController@getMovements');
         //Route::post('movement/create', 'MovementController@store');
         Route::put('movements/{movement}','MovementController@update');
-        Route::get('users/me/wallet/movements/filter', 'MovementController@filterWalletMovements');
+        Route::post('users/me/wallet/movements/filter', 'MovementController@filterWalletMovements');
     });
     //group of routes to operators
     Route::group(['middleware' => 'type:o'], function () {
