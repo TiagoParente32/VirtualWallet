@@ -25,6 +25,7 @@ import Profile from './components/profile'
 import Wallet from './components/wallet'
 import Users from './components/usersList'
 import WalletStats from './components/walletStats';
+import CreateMovement from './components/createMovement';
 
 const routes = [{
     path: '/',
@@ -59,6 +60,10 @@ const routes = [{
 {
     path: '/users',
     component: Users
+},
+{
+    path: '/users/me/movements/create',
+    component: CreateMovement
 }
 ]
 const router = new VueRouter({

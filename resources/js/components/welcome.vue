@@ -16,7 +16,6 @@ export default {
   data: function() {
     return {
       title: "Welcome",
-      currentUser: null,
       message:
         "We have waited so long to have yo u among us. At last, the time has come. We are most delightfully welcoming you to join us today!",
       walletcount: undefined
@@ -39,13 +38,13 @@ export default {
 .jumbotron {
   background-color: lightgray;
 }
-
+/*
 html {
   overflow: scroll;
 }
 ::-webkit-scrollbar {
   width: 0px;
-  background: transparent; /* make scrollbar transparent */
-}
+  background: transparent; // make scrollbar transparent
+} */
 </style>
 

@@ -33,6 +33,7 @@
       </div>
       <br />
       <button type="submit" class="btn btn-primary" v-on:click.prevent="filter">Submit</button>
+      <button type="button" class="btn btn-link" v-on:click.prevent="clear">Clear all</button>
     </div>
     <br />
     <table class="table table-striped">
@@ -169,6 +170,13 @@ export default {
           this.users = response.data.data;
           this.usersPagination = response.data.meta;
         });
+    },
+    clear: function() {
+      this.filterData.name = null;
+      this.filterData.email = null;
+      this.filterData.type = null;
+      this.filterData.active = null;
+      this.filter();
     }
   },
   mounted() {

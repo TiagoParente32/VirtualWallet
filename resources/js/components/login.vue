@@ -51,10 +51,7 @@ export default {
       }
       document.querySelector("#error").hidden = true;
       axios
-        .post("api/login", {
-          email: this.userData.email,
-          password: this.userData.password
-        })
+        .post("api/login", this.userData)
         .then(response => {
           //console.log(response.data.access_token);
           this.$store.commit("setToken", response.data.access_token);

@@ -4,8 +4,8 @@
       <h1>{{ title }}</h1>
     </div>
     <form>
-      <div class="form-group">
-        <div class="col">
+      <div>
+        <div>
           <label for="name">Name</label>
           <input
             type="text"
@@ -16,7 +16,7 @@
             v-model="userData.name"
           />
         </div>
-        <div class="col">
+        <div>
           <label for="email">Email</label>
           <input
             type="text"

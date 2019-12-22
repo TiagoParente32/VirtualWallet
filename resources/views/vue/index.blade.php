@@ -30,6 +30,9 @@
                 <router-link class="nav-link" to="/users/me/wallet" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Wallet</router-link>
             </li>
             <li class="nav-item">
+                <router-link class="nav-link" to="/users/me/movements/create" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Create Movement</router-link>
+            </li>
+            <li class="nav-item">
                 <router-link class="nav-link" to="/users" v-if="this.$store.state.token && this.$store.state.user.type === 'a'" >Users</router-link>
             </li>
         </ul>
@@ -42,7 +45,7 @@
 <router-link to="/me/edit">Edit Personal Information</router-link>
 <router-link to="/login">Login</router-link> --}}
 
-<router-view style="padding:20px;"></router-view>
+<router-view class="container" style="padding:20px;"></router-view>
 
 @endsection
 @section('pagescript')

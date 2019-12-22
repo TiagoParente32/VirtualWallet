@@ -173,29 +173,14 @@ export default {
       axios.get("api/users/me/wallet").then(response => {
         //console.log(response);
         this.balance = response.data.balance;
-        axios
-          .get(`api/users/me/wallet/movements?page=${movementsPageNr}`)
-          .then(response => {
-            //console.log(response);
-            this.movements = response.data.data;
-            this.movementsPagination = response.data.meta;
-          });
+        // axios
+        //   .get(`api/users/me/wallet/movements?page=${movementsPageNr}`)
+        //   .then(response => {
+        //     //console.log(response);
+        //     this.movements = response.data.data;
+        //     this.movementsPagination = response.data.meta;
+        //   });
       });
-
-      axios
-        .get("api/users/me/wallet")
-        .then(response => {
-          this.balance = response.data.balance;
-          return axios.post(
-            `/api/users/me/wallet/movements/filter?page=${movementsPageNr}`,
-            this.filterData
-          );
-        })
-        .then(response => {
-          //console.log(response);
-          this.movements = response.data.data;
-          this.movementsPagination = response.data.meta;
-        });
     },
     details() {},
     toggle(id) {
@@ -267,10 +252,7 @@ export default {
     }
   },
   mounted() {
-    // this.loaded = false;
-    // this.getWallet();
-    // this.loaded = true;
-    //this.getWallet();
+    this.getWallet();
     this.filter();
   },
   components: {

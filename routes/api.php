@@ -35,19 +35,19 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('categories','CategoryController@index');
 
     //Criar grupo para os dois tipos de utilizadores ou criar duas rotas a apontar para o mesmo metodo
-    Route::post('movement/create', 'MovementController@store');
+    //Route::post('movement/create', 'MovementController@store');
 
     //group of routes to users
     Route::group(['middleware' => 'type:u'], function () {
         Route::get('users/me/wallet', 'UserController@getWallet');
         Route::get('users/me/wallet/movements', 'UserController@getMovements');
-        //Route::post('movement/create', 'MovementController@store');
+        Route::post('movement/create', 'MovementController@storeAsUser');
         Route::put('movements/{movement}','MovementController@update');
         Route::post('users/me/wallet/movements/filter', 'MovementController@filterWalletMovements');
     });
     //group of routes to operators
     Route::group(['middleware' => 'type:o'], function () {
-        //Route::post('movement/create', 'MovementController@store');
+        Route::post('movement/create', 'MovementController@storeAsOperator');
     });
     //group of routes to admins
     Route::group(['middleware' => 'type:a'], function () {

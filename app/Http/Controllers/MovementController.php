@@ -51,14 +51,14 @@ class MovementController extends Controller
         }
         if ($request->has('dataMax') && $request->dataMax !== null){ //Postman: usar as datas entre aspas
             $movements = $movements->where('date', '<=', $request->dataMax);
-        } 
+        }
         if ($request->has('dataMin') && $request->dataMin !== null){
             $movements = $movements->where('date', '>=', $request->dataMin);
         }
         $movements->where(function($query) use($request){
             $query->where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
         });
-        $movements = $movements->paginate(10);
+        $movements = $movements->orderBy('date', 'desc')->paginate(10);
         return MovementResource::collection($movements);
     }
 
