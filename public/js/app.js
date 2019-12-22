@@ -2766,6 +2766,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -57047,8 +57048,10 @@ var render = function() {
                 }
               }
             })
-          ]),
-          _vm._v(" "),
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col" }, [
             _c("label", { attrs: { for: "type_payment" } }, [
               _vm._v("Type of Payment:")

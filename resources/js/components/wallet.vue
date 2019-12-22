@@ -31,7 +31,8 @@
           <label for="dataMin">Until:</label>
           <input type="date" id="dateMin" class="form-control" v-model="filterData.dataMax" />
         </div>
-
+      </div>
+      <div class="row">
         <div class="col">
           <label for="type_payment">Type of Payment:</label>
           <select
