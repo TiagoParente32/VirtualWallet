@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     //CATEGORIES
     Route::get('categories','CategoryController@index');
+    Route::get('categories/{type}','CategoryController@getByType');
 
     //Criar grupo para os dois tipos de utilizadores ou criar duas rotas a apontar para o mesmo metodo
     //Route::post('movement/create', 'MovementController@store');

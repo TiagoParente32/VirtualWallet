@@ -44,9 +44,12 @@ export default {
   },
   methods: {
     getCategories: function() {
-      axios.get("api/categories").then(response => {
-        this.categories = response.data.data;
-      });
+      console.log(this.currentMovement.type);
+      axios
+        .get("api/categories/" + this.currentMovement.type)
+        .then(response => {
+          this.categories = response.data.data;
+        });
     },
     saveMovement: function() {
       console.log(this.currentMovement);
@@ -58,6 +61,11 @@ export default {
   },
   mounted() {
     this.getCategories();
+  },
+  watch: {
+    currentMovement: function() {
+      this.getCategories();
+    }
   }
 };
 </script>

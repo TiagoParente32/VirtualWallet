@@ -12,4 +12,12 @@ class CategoryController extends Controller
     {
         return CategoryResource::collection(Category::all());
     }
+
+
+    public function getByType(Request $request,$type){
+
+        $categories = Category::where('type','=',$type)->get();
+        //return $categories;
+        return CategoryResource::collection($categories);
+    }
 }

@@ -36,7 +36,17 @@ export default {
 
 <style>
 .jumbotron {
-  background-color: lightgray;
+  background-color: #343a40;
+}
+.jumbotron h1 {
+  color: #fff;
+}
+
+.jumbotron h2 {
+  color: #fff;
+}
+.jumbotron label {
+  color: #fff;
 }
 /*
 html {
