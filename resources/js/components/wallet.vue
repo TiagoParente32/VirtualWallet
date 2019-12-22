@@ -2,6 +2,7 @@
   <div>
     <h1>Balance</h1>
     <h2>{{balance}} €</h2>
+    <router-link to="/users/me/wallet/statistics">wallet stats</router-link>
 
     <wallet-list
       v-bind:movements="movements"
@@ -37,15 +38,18 @@
       :next-class="'page-item'"
       :next-link-class="'page-link'"
     ></paginate>
+    <!-- <wallet-chart v-if="this.loaded" :chartdata="movements" :options="options" /> -->
   </div>
 </template>
 
 <script>
 import WalletList from "./walletList";
 import MovementEdit from "./walletEdit";
+import WalletStats from "./walletStats";
 export default {
   data() {
     return {
+      loaded: false,
       opened: [],
       balance: "",
       movements: [],
@@ -60,25 +64,25 @@ export default {
       put: {
         category: null,
         description: null
+      },
+      options: {
+        responsive: true
       }
     };
   },
   methods: {
     getWallet(movementsPageNr = 1) {
-      axios
-        .get("api/users/me/wallet")
-        .then(response => {
-          //console.log(response);
-          this.balance = response.data.balance;
-          return axios.get(
-            `api/users/me/wallet/movements?page=${movementsPageNr}`
-          );
-        })
-        .then(response => {
-          //console.log(response);
-          this.movements = response.data.data;
-          this.movementsPagination = response.data.meta;
-        });
+      axios.get("api/users/me/wallet").then(response => {
+        //console.log(response);
+        this.balance = response.data.balance;
+        axios
+          .get(`api/users/me/wallet/movements?page=${movementsPageNr}`)
+          .then(response => {
+            //console.log(response);
+            this.movements = response.data.data;
+            this.movementsPagination = response.data.meta;
+          });
+      });
     },
     details() {},
     toggle(id) {
@@ -127,11 +131,14 @@ export default {
     }
   },
   mounted() {
+    this.loaded = false;
     this.getWallet();
+    this.loaded = true;
   },
   components: {
     "wallet-list": WalletList,
-    "movement-edit": MovementEdit
+    "movement-edit": MovementEdit,
+    "wallet-chart": WalletStats
   }
 };
 </script>

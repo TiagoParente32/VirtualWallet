@@ -194,6 +194,9 @@ class UserController extends Controller
     {
         //add ->whereNotNull('transfer_wallet_id') para testar como trasnferwallet
         $movements = Movement::where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
+        if(!$request->has('page')){
+           return MovementResource::collection($movements->get());
+        }
         $movements = $movements->orderBy('date', 'desc')->paginate(10);
         return MovementResource::collection($movements);
     }
