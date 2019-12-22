@@ -24,35 +24,40 @@ class MovementController extends Controller
 
     public function filterWalletMovements(Request $request)
     {
-        $movements = Movement::where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
-        if ($request->has('id')) {
-            $movements = $movements->where('id', $request->id);
+        $movements = Movement::query();
+        if ($request->has('id') && $request->id !== null){
+            $movements = $movements->where('id','=', $request->id);
         }
-        if ($request->has('type')) {
-            $movements = $movements->where('type', $request->type);
+        if ($request->has('type') && $request->type !== null){
+            $movements = $movements->where('type','=', $request->type);
         }
-        if ($request->has('category_id')) {
-            $movements = $movements->where('category_id', $request->category_id);
+        if ($request->has('category_id') && $request->category_id !== null){
+            $movements = $movements->where('category_id','=', $request->category_id);
         }
-        if ($request->has('type_payment')) {
-            $movements = $movements->where('type_payment', $request->type_payment);
+        if ($request->has('type_payment') && $request->type_payment !== null){
+            $movements = $movements->where('type_payment','=', $request->type_payment);
         }
-        if ($request->has('transfer')) {
-            $movements = $movements->where('transfer', $request->transfer);
-            if ($request->has('id')->transfer_email) {
-                $wallet = Wallet::where('email', $request->transfer_email)->get();
-                $movements = $movements->where('transfer_wallet_id', $wallet[0]->id)->orWhere('wallet_id', $wallet[0]->id);;
+        if ($request->has('transfer') && $request->transfer !== null){
+            $movements = $movements->where('transfer','=', $request->transfer);
+            if ($request->has('transfer_email') && $request->transfer_email !== null){
+                $wallet = Wallet::where('email','like','%'.$request->transfer_email.'%')->get();
+                $movements = $movements->where(function($query) use($wallet){
+                    $query->where('transfer_wallet_id','=', $wallet[0]->id)->orWhere('wallet_id','=', $wallet[0]->id)->get();
+                });
             }
         }
         if ($request->dataMax < $request->dataMin) {
             return;
         }
-        if ($request->has('dataMin')) {
+        if ($request->has('dataMax') && $request->dataMax !== null){ //Postman: usar as datas entre aspas
+            $movements = $movements->where('date', '<=', $request->dataMax);
+        } 
+        if ($request->has('dataMin') && $request->dataMin !== null){
             $movements = $movements->where('date', '>=', $request->dataMin);
         }
-        if ($request->has('dataMax')) {
-            $movements = $movements->where('date', '<=', $request->dataMax);
-        }
+        $movements->where(function($query) use($request){
+            $query->where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
+        });
         $movements = $movements->paginate(10);
         return MovementResource::collection($movements);
     }
