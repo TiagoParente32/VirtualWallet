@@ -18,13 +18,13 @@
       <template v-for="movement in movements">
         <tr
           :key="movement.id"
-          v-bind:class="{'table-success': (movement.type == 'i'), 'table-danger' : (movement.type == 'e'), opened: opened.includes(movement.id), active : currentMovement === movement}"
+          v-bind:class="{'table-success': (movement.type == 'i'), 'table-danger' : (movement.type == 'e'), active : currentMovement === movement}"
           align="center"
         >
           <td>{{ movement.id }}</td>
           <td v-if="movement.type == 'e'">Expense</td>
           <td v-else-if="movement.type == 'i'">Income</td>
-          <td v-if="movement.transfer_wallet == null">NA</td>
+          <td v-if="movement.transfer_wallet == null">-</td>
           <td v-else>{{movement.transfer_wallet.email}}</td>
           <template v-if="movement.transfer == 0">
             <td v-if="movement.type_payment == 'c'">Cash</td>
@@ -34,7 +34,7 @@
           <template v-else>
             <td>Transfer</td>
           </template>
-          <td v-if="movement.category == null">NA</td>
+          <td v-if="movement.category == null">-</td>
           <td v-else>{{movement.category.name}}</td>
           <td>{{ movement.date }}</td>
           <td>{{ movement.value }}€</td>
@@ -44,8 +44,9 @@
             <button
               type="button"
               class="btn btn-primary btn-sm"
-              @click.prevent="toggle(movement.id)"
+              @click.prevent="detailsMovement(movement)"
             >Details</button>
+
             <button
               type="button"
               class="btn btn-primary btn-sm"
@@ -60,10 +61,10 @@
 
 <script>
 export default {
-  props: ["movements", "currentMovement", "opened"],
+  props: ["movements", "currentMovement"],
   methods: {
-    toggle(id) {
-      this.$emit("toggle", id);
+    detailsMovement(movement) {
+      this.$emit("details-movement", movement);
     },
     editMovement(movement) {
       this.$emit("edit-movement", movement);

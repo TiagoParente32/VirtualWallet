@@ -80,10 +80,11 @@
 
     <wallet-list
       v-bind:movements="movements"
-      :opened="opened"
-      @toggle="toggle"
+      @details-movement="detailsMovement"
       @edit-movement="editMovement"
     ></wallet-list>
+
+    <movement-details v-if="movementDetails" v-bind:currentMovement="currentMovement"></movement-details>
 
     <div class="alert alert-success" v-if="showSuccess">
       <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
@@ -120,6 +121,7 @@
 import WalletList from "./walletList";
 import MovementEdit from "./walletEdit";
 import WalletStats from "./walletStats";
+import MovementDetails from "./walletDetails";
 export default {
   data() {
     return {
@@ -166,7 +168,8 @@ export default {
         type_payment: null,
         transfer: null,
         transfer_email: null
-      }
+      },
+      movementDetails: false
     };
   },
   methods: {
@@ -175,14 +178,9 @@ export default {
         this.balance = response.data.balance;
       });
     },
-    details() {},
-    toggle(id) {
-      const index = this.opened.indexOf(id);
-      if (index > -1) {
-        this.opened.splice(index, 1);
-      } else {
-        this.opened.push(id);
-      }
+    detailsMovement(movement) {
+      this.currentMovement = Object.assign({}, movement);
+      this.movementDetails = !this.movementDetails;
     },
     editMovement: function(movement) {
       this.currentMovement = Object.assign({}, movement);
@@ -251,7 +249,8 @@ export default {
   components: {
     "wallet-list": WalletList,
     "movement-edit": MovementEdit,
-    "wallet-chart": WalletStats
+    "wallet-chart": WalletStats,
+    "movement-details": MovementDetails
   }
 };
 </script>

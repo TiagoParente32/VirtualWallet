@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     getCategories: function() {
-      console.log(this.currentMovement.type);
+      //console.log(this.currentMovement.type);
       axios
         .get("api/categories/" + this.currentMovement.type)
         .then(response => {
@@ -52,7 +52,7 @@ export default {
         });
     },
     saveMovement: function() {
-      console.log(this.currentMovement);
+      //console.log(this.currentMovement);
       this.$emit("save-movement", this.currentMovement);
     },
     cancelEdit: function() {
