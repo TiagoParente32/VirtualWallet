@@ -1978,16 +1978,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       movementData: {
-        typeOfTransfer: null,
+        transfer: null,
         value: null,
-        category: null,
+        category_id: null,
         description: null,
-        typeOfPayment: null,
+        type_payment: null,
         iban: null,
-        entity: null,
-        reference: null,
-        destinationEmail: null,
-        sourceDescription: null
+        mb_entity_code: null,
+        mb_payment_reference: null,
+        email: null,
+        source_description: null
       },
       categories: [],
       optionsTransfer: [{
@@ -2012,6 +2012,18 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("api/categories/e").then(function (response) {
         _this.categories = response.data.data;
+      });
+    },
+    createMovement: function createMovement() {
+      var _this2 = this;
+
+      console.log(this.movementData);
+      axios.post("api/movement/create", this.movementData).then(function (response) {
+        console.log(response);
+
+        _this2.$router.push("/users/me/wallet");
+      })["catch"](function (err) {
+        console.log(err.response.data);
       });
     }
   },
@@ -2995,14 +3007,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var movementsPageNr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get("api/users/me/wallet").then(function (response) {
-        //console.log(response);
-        _this.balance = response.data.balance; // axios
-        //   .get(`api/users/me/wallet/movements?page=${movementsPageNr}`)
-        //   .then(response => {
-        //     //console.log(response);
-        //     this.movements = response.data.data;
-        //     this.movementsPagination = response.data.meta;
-        //   });
+        _this.balance = response.data.balance;
       });
     },
     details: function details() {},
@@ -55831,8 +55836,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.movementData.typeOfTransfer,
-                expression: "movementData.typeOfTransfer"
+                value: _vm.movementData.transfer,
+                expression: "movementData.transfer"
               }
             ],
             staticClass: "form-control",
@@ -55849,7 +55854,7 @@ var render = function() {
                   })
                 _vm.$set(
                   _vm.movementData,
-                  "typeOfTransfer",
+                  "transfer",
                   $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                 )
               }
@@ -55910,8 +55915,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.movementData.category,
-                expression: "movementData.category"
+                value: _vm.movementData.category_id,
+                expression: "movementData.category_id"
               }
             ],
             staticClass: "form-control",
@@ -55928,7 +55933,7 @@ var render = function() {
                   })
                 _vm.$set(
                   _vm.movementData,
-                  "category",
+                  "category_id",
                   $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                 )
               }
@@ -55971,7 +55976,7 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _vm.movementData.typeOfTransfer == 0
+      _vm.movementData.transfer == 0
         ? _c("div", [
             _c("div", [
               _c("label", { attrs: { for: "type" } }, [
@@ -55985,8 +55990,8 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.movementData.typeOfPayment,
-                      expression: "movementData.typeOfPayment"
+                      value: _vm.movementData.type_payment,
+                      expression: "movementData.type_payment"
                     }
                   ],
                   staticClass: "form-control",
@@ -56003,7 +56008,7 @@ var render = function() {
                         })
                       _vm.$set(
                         _vm.movementData,
-                        "typeOfPayment",
+                        "type_payment",
                         $event.target.multiple
                           ? $$selectedVal
                           : $$selectedVal[0]
@@ -56022,7 +56027,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm.movementData.typeOfPayment == "bt"
+            _vm.movementData.type_payment == "bt"
               ? _c("div", [
                   _c("label", { attrs: { for: "iban" } }, [_vm._v("IBAN")]),
                   _vm._v(" "),
@@ -56055,7 +56060,7 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _vm.movementData.typeOfPayment == "mb"
+            _vm.movementData.type_payment == "mb"
               ? _c("div", [
                   _c("label", { attrs: { for: "entity" } }, [_vm._v("Entity")]),
                   _vm._v(" "),
@@ -56064,8 +56069,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.movementData.entity,
-                        expression: "movementData.entity"
+                        value: _vm.movementData.mb_entity_code,
+                        expression: "movementData.mb_entity_code"
                       }
                     ],
                     staticClass: "form-control",
@@ -56075,7 +56080,7 @@ var render = function() {
                       pattern: "\\b\\d{5}\\b",
                       id: "entity"
                     },
-                    domProps: { value: _vm.movementData.entity },
+                    domProps: { value: _vm.movementData.mb_entity_code },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
@@ -56083,7 +56088,7 @@ var render = function() {
                         }
                         _vm.$set(
                           _vm.movementData,
-                          "entity",
+                          "mb_entity_code",
                           $event.target.value
                         )
                       }
@@ -56099,8 +56104,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.movementData.reference,
-                        expression: "movementData.reference"
+                        value: _vm.movementData.mb_payment_reference,
+                        expression: "movementData.mb_payment_reference"
                       }
                     ],
                     staticClass: "form-control",
@@ -56110,7 +56115,7 @@ var render = function() {
                       pattern: "\\b\\d{9}\\b",
                       id: "reference"
                     },
-                    domProps: { value: _vm.movementData.reference },
+                    domProps: { value: _vm.movementData.mb_payment_reference },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
@@ -56118,7 +56123,7 @@ var render = function() {
                         }
                         _vm.$set(
                           _vm.movementData,
-                          "reference",
+                          "mb_payment_reference",
                           $event.target.value
                         )
                       }
@@ -56129,7 +56134,7 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _vm.movementData.typeOfTransfer == 1
+      _vm.movementData.transfer == 1
         ? _c("div", [
             _c("div", [
               _c("label", { attrs: { for: "destinationEmail" } }, [
@@ -56141,8 +56146,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.movementData.destinationEmail,
-                    expression: "movementData.destinationEmail"
+                    value: _vm.movementData.email,
+                    expression: "movementData.email"
                   }
                 ],
                 staticClass: "form-control",
@@ -56152,17 +56157,13 @@ var render = function() {
                   placeholder: "Email",
                   required: ""
                 },
-                domProps: { value: _vm.movementData.destinationEmail },
+                domProps: { value: _vm.movementData.email },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(
-                      _vm.movementData,
-                      "destinationEmail",
-                      $event.target.value
-                    )
+                    _vm.$set(_vm.movementData, "email", $event.target.value)
                   }
                 }
               })
@@ -56178,8 +56179,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.movementData.sourceDescription,
-                    expression: "movementData.sourceDescription"
+                    value: _vm.movementData.source_description,
+                    expression: "movementData.source_description"
                   }
                 ],
                 staticClass: "form-control",
@@ -56188,7 +56189,7 @@ var render = function() {
                   name: "sourceDescription",
                   id: "sourceDescription"
                 },
-                domProps: { value: _vm.movementData.sourceDescription },
+                domProps: { value: _vm.movementData.source_description },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
@@ -56196,7 +56197,7 @@ var render = function() {
                     }
                     _vm.$set(
                       _vm.movementData,
-                      "sourceDescription",
+                      "source_description",
                       $event.target.value
                     )
                   }
@@ -56208,7 +56209,22 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.createMovement($event)
+              }
+            }
+          },
+          [_vm._v("Create")]
+        )
+      ])
     ])
   ])
 }
@@ -56219,18 +56235,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "jumbotron" }, [
       _c("h1", [_vm._v("Create Movement")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Login")]
-      )
     ])
   }
 ]

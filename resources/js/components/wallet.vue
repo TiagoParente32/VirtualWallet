@@ -172,15 +172,7 @@ export default {
   methods: {
     getWallet(movementsPageNr = 1) {
       axios.get("api/users/me/wallet").then(response => {
-        //console.log(response);
         this.balance = response.data.balance;
-        // axios
-        //   .get(`api/users/me/wallet/movements?page=${movementsPageNr}`)
-        //   .then(response => {
-        //     //console.log(response);
-        //     this.movements = response.data.data;
-        //     this.movementsPagination = response.data.meta;
-        //   });
       });
     },
     details() {},

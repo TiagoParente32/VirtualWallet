@@ -133,7 +133,7 @@ class MovementController extends Controller
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
         }
-        if ($request->transfer) {
+        if ($request->transfer == 1) {
             $valid = Validator::make($request->only('email', 'source_description'), [
                 'email' => 'required|string|email|max:255',
                 'source_description' => 'required | string | max:500'
@@ -142,7 +142,7 @@ class MovementController extends Controller
                 return response()->json(['message' => $valid->errors()->all()], 400);
             }
             $expense_movement->source_description = $request->source_description;
-        } elseif (!$request->transfer) { //exclusive for payment to an external entity
+        } elseif ($request->transfer == 0) { //exclusive for payment to an external entity
             $valid = Validator::make($request->only('transfer', 'type_payment'), [
                 'transfer' => 'required|in:0,1',
                 'type_payment' => 'required | in:mb,bt',
@@ -157,6 +157,7 @@ class MovementController extends Controller
                 if ($valid->fails()) {
                     return response()->json(['message' => $valid->errors()->all()], 400);
                 }
+                $expense_movement->iban = $request->iban;
             } elseif ($request->type_payment == 'mb') {
                 $valid = Validator::make($request->only('mb_entity_code', 'mb_payment_reference'), [
                     'mb_entity_code' => 'required|numeric|digits:5',
@@ -165,57 +166,58 @@ class MovementController extends Controller
                 if ($valid->fails()) {
                     return response()->json(['message' => $valid->errors()->all()], 400);
                 }
+                $expense_movement->mb_entity_code = $request->mb_entity_code;
+                $expense_movement->mb_payment_reference = $request->mb_payment_reference;
             }
             $expense_movement->type_payment = $request->type_payment;
         }
         //For all types of payments
-        $valid = Validator::make($request->only('value', 'category_id'), [
+        $valid = Validator::make($request->only('value', 'category_id','description'), [
             'value' => 'required|numeric|between:0.01,5000.00',
-            'category_id' => 'required|numeric|digits_between:1,10'
+            'category_id' => 'required|numeric',
+            'description' => 'required|string|max:500'
         ]);
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
         }
 
-        //Para transferencias
-        $receiver_wallet = Wallet::where('email', '=', $request->email)->get()->first();
-
         //Para pagamentos por multibanco
         $sender_wallet = $request->user()->wallet;
-
         $expense_movement->wallet_id = $sender_wallet->id;
-        $expense_movement->type = "e";
-        $income_movement->type = "i";
+        $expense_movement->description = $request->description;
+        $expense_movement->value = $request->value;
         $expense_movement->category_id = $request->category_id;
-
-        $expense_movement->transfer_wallet_id = $receiver_wallet->id;
-        $income_movement->transfer_wallet_id = $sender_wallet->id;
-        $income_movement->transfer = $expense_movement->transfer = $request->transfer;
-
-        $income_movement->wallet_id = $receiver_wallet->id;
-        $income_movement->start_balance = $receiver_wallet->balance;
-        $income_movement->end_balance = $receiver_wallet->balance + $request->value;
-        $income_movement->value = $expense_movement->value = $request->value;
+        $expense_movement->type = "e";
         $expense_movement->start_balance = $request->user()->wallet->balance;
         $expense_movement->end_balance = $expense_movement->start_balance - $request->value;
-        $receiver_wallet->balance += $expense_movement->value;
         $sender_wallet->balance -= $request->value;
-        $expense_movement->date = $income_movement->date = date('Y-m-d H:i:s');
+        $expense_movement->date = date('Y-m-d H:i:s');
+        $expense_movement->transfer = $request->transfer;
 
         $sender_wallet->save();
         $expense_movement->save();
 
-        if ($request->transfer) {
+
+        $receiver_wallet = null;
+        if($request->transfer == 1){
+            //Para transferencias
+            $receiver_wallet = Wallet::where('email', '=', $request->email)->get()->first();
+            $income_movement->type = "i";
+            $income_movement->transfer_wallet_id = $sender_wallet->id;
+            $income_movement->transfer =  $request->transfer;
+            $income_movement->wallet_id = $receiver_wallet->id;
+            $income_movement->start_balance = $receiver_wallet->balance;
+            $income_movement->end_balance = $receiver_wallet->balance + $request->value;
+            $income_movement->value = $expense_movement->value = $request->value;
+            $receiver_wallet->balance += $expense_movement->value;
+            $income_movement->date = date('Y-m-d H:i:s');
             $receiver_wallet->save();
             $income_movement->save();
-        }
-
-        //É necessário fazer o save dos dois movimentos porque só assim é possível aceder aos ids de cada movimentos pq só são criados aquando do save()
-        $expense_movement->transfer_movement_id = $income_movement->id;
-        $income_movement->transfer_movement_id = $expense_movement->id;
-
-        $expense_movement->save();
-        if ($request->transfer) {
+            //É necessário fazer o save dos dois movimentos porque só assim é possível aceder aos ids de cada movimentos pq só são criados aquando do save()
+            $expense_movement->transfer_movement_id = $income_movement->id;
+            $income_movement->transfer_movement_id = $expense_movement->id;
+            $expense_movement->transfer_wallet_id = $receiver_wallet->id;
+            $expense_movement->save();
             $income_movement->save();
         }
         return response()->json([$receiver_wallet, $expense_movement, $sender_wallet, $income_movement], 200);

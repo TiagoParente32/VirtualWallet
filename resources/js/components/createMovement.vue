@@ -6,7 +6,7 @@
     <div>
       <div>
         <label for="type">Type of Transfer</label>
-        <select class="form-control" id="type" name="type" v-model="movementData.typeOfTransfer">
+        <select class="form-control" id="type" name="type" v-model="movementData.transfer">
           <option
             v-for="option in optionsTransfer"
             :key="option.value"
@@ -35,7 +35,7 @@
           class="form-control"
           id="category_id"
           name="category"
-          v-model="movementData.category"
+          v-model="movementData.category_id"
         >
           <option
             v-for="category in categories"
@@ -55,10 +55,10 @@
           v-model="movementData.description"
         />
       </div>
-      <div v-if="movementData.typeOfTransfer == 0">
+      <div v-if="movementData.transfer == 0">
         <div>
           <label for="type">Type of Payment</label>
-          <select class="form-control" id="type" name="type" v-model="movementData.typeOfPayment">
+          <select class="form-control" id="type" name="type" v-model="movementData.type_payment">
             <option
               v-for="option in optionsPayment"
               :key="option.value"
@@ -67,7 +67,7 @@
           </select>
         </div>
 
-        <div v-if="movementData.typeOfPayment == 'bt'">
+        <div v-if="movementData.type_payment == 'bt'">
           <label for="iban">IBAN</label>
           <input
             type="text"
@@ -79,7 +79,7 @@
           />
         </div>
 
-        <div v-if="movementData.typeOfPayment == 'mb'">
+        <div v-if="movementData.type_payment == 'mb'">
           <label for="entity">Entity</label>
           <input
             type="text"
@@ -87,7 +87,7 @@
             name="entity"
             pattern="\b\d{5}\b"
             id="entity"
-            v-model="movementData.entity"
+            v-model="movementData.mb_entity_code"
           />
 
           <label for="reference">Reference</label>
@@ -97,12 +97,12 @@
             name="reference"
             pattern="\b\d{9}\b"
             id="reference"
-            v-model="movementData.reference"
+            v-model="movementData.mb_payment_reference"
           />
         </div>
       </div>
 
-      <div v-if="movementData.typeOfTransfer == 1">
+      <div v-if="movementData.transfer == 1">
         <div>
           <label for="destinationEmail">Email of the destination wallet</label>
           <input
@@ -111,7 +111,7 @@
             class="form-control"
             placeholder="Email"
             required
-            v-model="movementData.destinationEmail"
+            v-model="movementData.email"
           />
         </div>
 
@@ -122,13 +122,13 @@
             class="form-control"
             name="sourceDescription"
             id="sourceDescription"
-            v-model="movementData.sourceDescription"
+            v-model="movementData.source_description"
           />
         </div>
       </div>
       <br />
       <div>
-        <button type="button" class="btn btn-primary">Login</button>
+        <button type="button" class="btn btn-primary" v-on:click.prevent="createMovement">Create</button>
       </div>
     </div>
   </div>
@@ -139,16 +139,16 @@ export default {
   data() {
     return {
       movementData: {
-        typeOfTransfer: null,
+        transfer: null,
         value: null,
-        category: null,
+        category_id: null,
         description: null,
-        typeOfPayment: null,
+        type_payment: null,
         iban: null,
-        entity: null,
-        reference: null,
-        destinationEmail: null,
-        sourceDescription: null
+        mb_entity_code: null,
+        mb_payment_reference: null,
+        email: null,
+        source_description: null
       },
       categories: [],
       optionsTransfer: [
@@ -166,6 +166,18 @@ export default {
       axios.get("api/categories/e").then(response => {
         this.categories = response.data.data;
       });
+    },
+    createMovement: function() {
+      console.log(this.movementData);
+      axios
+        .post("api/movement/create", this.movementData)
+        .then(response => {
+          console.log(response);
+          this.$router.push("/users/me/wallet");
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
     }
   },
   mounted() {
