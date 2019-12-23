@@ -51,12 +51,22 @@
         </tr>
       </tbody>
     </table>
+    <a
+      style="color: white; float: right;"
+      class="btn btn-primary btn-sm"
+      v-on:click.prevent="close()"
+    >Close</a>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["currentMovement"]
+  props: ["currentMovement"],
+  methods: {
+    close() {
+      this.$emit("close");
+    }
+  }
 };
 </script>
 

@@ -2934,6 +2934,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -3015,8 +3019,19 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     detailsMovement: function detailsMovement(movement) {
+      // console.log(movement);
+      // console.log(this.currentMovement);
+      // if (!this.currentMovement) {
+      //   this.currentMovement = {};
+      //   this.currentMovement.id = {};
+      // }
+      // if (this.currentMovement.id == movement.id) {
+      //   this.movementDetails = false;
+      // } else {
+      //   this.movementDetails = true;
+      // }
       this.currentMovement = Object.assign({}, movement);
-      this.movementDetails = !this.movementDetails;
+      this.movementDetails = true;
     },
     editMovement: function editMovement(movement) {
       this.currentMovement = Object.assign({}, movement);
@@ -3076,6 +3091,9 @@ __webpack_require__.r(__webpack_exports__);
       this.filterData.transfer = null;
       this.filterData.transfer_email = null;
       this.filter();
+    },
+    close: function close() {
+      this.movementDetails = false;
     }
   },
   mounted: function mounted() {
@@ -3209,8 +3227,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["currentMovement"]
+  props: ["currentMovement"],
+  methods: {
+    close: function close() {
+      this.$emit("close");
+    }
+  }
 });
 
 /***/ }),
@@ -57863,7 +57891,8 @@ var render = function() {
       _vm._v(" "),
       _vm.movementDetails
         ? _c("movement-details", {
-            attrs: { currentMovement: _vm.currentMovement }
+            attrs: { currentMovement: _vm.currentMovement },
+            on: { close: _vm.close }
           })
         : _vm._e(),
       _vm._v(" "),
@@ -58024,7 +58053,22 @@ var render = function() {
           2
         )
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "a",
+      {
+        staticClass: "btn btn-primary btn-sm",
+        staticStyle: { color: "white", float: "right" },
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.close()
+          }
+        }
+      },
+      [_vm._v("Close")]
+    )
   ])
 }
 var staticRenderFns = [

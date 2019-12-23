@@ -84,7 +84,11 @@
       @edit-movement="editMovement"
     ></wallet-list>
 
-    <movement-details v-if="movementDetails" v-bind:currentMovement="currentMovement"></movement-details>
+    <movement-details
+      v-if="movementDetails"
+      v-bind:currentMovement="currentMovement"
+      @close="close"
+    ></movement-details>
 
     <div class="alert alert-success" v-if="showSuccess">
       <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
@@ -179,8 +183,19 @@ export default {
       });
     },
     detailsMovement(movement) {
+      // console.log(movement);
+      // console.log(this.currentMovement);
+      // if (!this.currentMovement) {
+      //   this.currentMovement = {};
+      //   this.currentMovement.id = {};
+      // }
+      // if (this.currentMovement.id == movement.id) {
+      //   this.movementDetails = false;
+      // } else {
+      //   this.movementDetails = true;
+      // }
       this.currentMovement = Object.assign({}, movement);
-      this.movementDetails = !this.movementDetails;
+      this.movementDetails = true;
     },
     editMovement: function(movement) {
       this.currentMovement = Object.assign({}, movement);
@@ -240,6 +255,9 @@ export default {
       this.filterData.transfer = null;
       this.filterData.transfer_email = null;
       this.filter();
+    },
+    close() {
+      this.movementDetails = false;
     }
   },
   mounted() {
