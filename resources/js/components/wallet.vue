@@ -106,7 +106,7 @@
       class="d-flex justify-content-center"
       v-model="movementsPage"
       :page-count="movementsPagination !== null && movementsPagination.total !== 0 ? movementsPagination.last_page : 0"
-      :click-handler="this.getWallet"
+      :click-handler="this.filter"
       :margin-pages="2"
       :page-range="5"
       :container-class="'pagination'"
@@ -177,7 +177,7 @@ export default {
     };
   },
   methods: {
-    getWallet(movementsPageNr = 1) {
+    getWallet() {
       axios.get("api/users/me/wallet").then(response => {
         this.balance = response.data.balance;
       });
