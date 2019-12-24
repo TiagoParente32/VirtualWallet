@@ -22,7 +22,7 @@ class MovementController extends Controller
         return response()->json($movements, 200);
     }
 
-    public function filterWalletMovements(Request $request)
+    public function filterWalletMovements (Request $request)
     {
         $movements = Movement::query();
         if ($request->has('id') && $request->id !== null){
@@ -58,8 +58,14 @@ class MovementController extends Controller
         $movements->where(function($query) use($request){
             $query->where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
         });
-        $movements = $movements->orderBy('date', 'desc')->paginate(10);
+        if($request->has('page')){
+            $movements = $movements->orderBy('date', 'desc')->paginate(10);
+            return MovementResource::collection($movements);
+        }
+        //para o grafico nao preciso de pagination e preciso de data ascendente
+        $movements = $movements->orderBy('date', 'asc')->get();
         return MovementResource::collection($movements);
+
     }
 
     public function store(Request $request)

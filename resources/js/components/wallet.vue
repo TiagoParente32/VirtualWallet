@@ -80,10 +80,15 @@
 
     <wallet-list
       v-bind:movements="movements"
-      :opened="opened"
-      @toggle="toggle"
+      @details-movement="detailsMovement"
       @edit-movement="editMovement"
     ></wallet-list>
+
+    <movement-details
+      v-if="movementDetails"
+      v-bind:currentMovement="currentMovement"
+      @close="close"
+    ></movement-details>
 
     <div class="alert alert-success" v-if="showSuccess">
       <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
@@ -101,7 +106,7 @@
       class="d-flex justify-content-center"
       v-model="movementsPage"
       :page-count="movementsPagination !== null && movementsPagination.total !== 0 ? movementsPagination.last_page : 0"
-      :click-handler="this.getWallet"
+      :click-handler="this.filter"
       :margin-pages="2"
       :page-range="5"
       :container-class="'pagination'"
@@ -120,6 +125,7 @@
 import WalletList from "./walletList";
 import MovementEdit from "./walletEdit";
 import WalletStats from "./walletStats";
+import MovementDetails from "./walletDetails";
 export default {
   data() {
     return {
@@ -166,23 +172,30 @@ export default {
         type_payment: null,
         transfer: null,
         transfer_email: null
-      }
+      },
+      movementDetails: false
     };
   },
   methods: {
-    getWallet(movementsPageNr = 1) {
+    getWallet() {
       axios.get("api/users/me/wallet").then(response => {
         this.balance = response.data.balance;
       });
     },
-    details() {},
-    toggle(id) {
-      const index = this.opened.indexOf(id);
-      if (index > -1) {
-        this.opened.splice(index, 1);
-      } else {
-        this.opened.push(id);
-      }
+    detailsMovement(movement) {
+      // console.log(movement);
+      // console.log(this.currentMovement);
+      // if (!this.currentMovement) {
+      //   this.currentMovement = {};
+      //   this.currentMovement.id = {};
+      // }
+      // if (this.currentMovement.id == movement.id) {
+      //   this.movementDetails = false;
+      // } else {
+      //   this.movementDetails = true;
+      // }
+      this.currentMovement = Object.assign({}, movement);
+      this.movementDetails = true;
     },
     editMovement: function(movement) {
       this.currentMovement = Object.assign({}, movement);
@@ -242,6 +255,9 @@ export default {
       this.filterData.transfer = null;
       this.filterData.transfer_email = null;
       this.filter();
+    },
+    close() {
+      this.movementDetails = false;
     }
   },
   mounted() {
@@ -251,7 +267,8 @@ export default {
   components: {
     "wallet-list": WalletList,
     "movement-edit": MovementEdit,
-    "wallet-chart": WalletStats
+    "wallet-chart": WalletStats,
+    "movement-details": MovementDetails
   },
   sockets: {
     connect() {

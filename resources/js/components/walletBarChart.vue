@@ -1,8 +1,8 @@
 
 <script>
-import { Line } from "vue-chartjs";
+import { Bar } from "vue-chartjs";
 export default {
-  extends: Line,
+  extends: Bar,
   props: {
     chartData: {
       type: Array,
@@ -15,16 +15,16 @@ export default {
   },
 
   mounted() {
-    //console.log(this.chartLabels);
-    //console.log(this.chartData);
+    console.log(this.chartLabels);
+    console.log(this.chartData);
     //this.renderChart(this.chartLabels, this.chartData, this.options);
     this.renderChart(
       {
-        labels: this.chartLabels,
+        labels: this.chartLabels.map(d => d.name),
         datasets: [
           {
-            label: "Balance",
-            backgroundColor: "#f87979",
+            label: "Expense per Category",
+            backgroundColor: "#4267B2",
             data: this.chartData
           }
         ]
@@ -54,10 +54,18 @@ export default {
   },
   watch: {
     chartData() {
-      this.renderChart(this.chartLabels, this.chartData, this.options);
+      this.renderChart(
+        this.chartLabels.map(d => d.name),
+        this.chartData,
+        this.options
+      );
     },
     chartLabels() {
-      this.renderChart(this.chartLabels, this.chartData, this.options);
+      this.renderChart(
+        this.chartLabels.map(d => d.name),
+        this.chartData,
+        this.options
+      );
     }
   }
 };

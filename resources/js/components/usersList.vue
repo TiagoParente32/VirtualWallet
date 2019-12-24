@@ -169,6 +169,9 @@ export default {
           //console.log(response);
           this.users = response.data.data;
           this.usersPagination = response.data.meta;
+        })
+        .catch(err => {
+          console.log(err.response.data);
         });
     },
     clear: function() {
