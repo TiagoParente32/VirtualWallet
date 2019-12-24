@@ -135,6 +135,7 @@
 </template>
 
 <script>
+//import { Socket } from 'dgram';
 export default {
   data() {
     return {
@@ -174,6 +175,7 @@ export default {
         .then(response => {
           console.log(response);
           this.$router.push("/users/me/wallet");
+          this.$socket.emit("userUpdated",  this.movementData.email);
         })
         .catch(err => {
           console.log(err.response.data);
@@ -182,6 +184,13 @@ export default {
   },
   mounted() {
     this.getCategories();
+  },
+  sockets:{
+    connect() {
+      console.log(
+          "socket connected (socketID = " + this.$socket.id + ")"
+      );
+    }
   }
 };
 </script>

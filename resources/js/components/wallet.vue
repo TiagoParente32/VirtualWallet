@@ -252,6 +252,19 @@ export default {
     "wallet-list": WalletList,
     "movement-edit": MovementEdit,
     "wallet-chart": WalletStats
+  },
+  sockets: {
+    connect() {
+      console.log(
+          "socket connected (socketID = " + this.$socket.id + ")"
+      );
+    },
+    updateData(email){
+      if(email == this.$store.state.user.email){
+        console.log("A mostrar movimentos atualizados");
+        this.clear();
+      }
+    }
   }
 };
 </script>

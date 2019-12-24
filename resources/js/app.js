@@ -15,7 +15,12 @@ Vue.component('paginate', Paginate)
 
 Vue.use(VueRouter);
 
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://127.0.0.1:8080'
+})); 
 
+import VueSocketIO from "vue-socket.io";
 import Welcome from './components/welcome'
 import Register from './components/register'
 import EditProfile from './components/editprofile'
