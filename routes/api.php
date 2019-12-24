@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('movement/create', 'MovementController@storeAsUser');
         Route::put('movements/{movement}','MovementController@update');
         Route::post('users/me/wallet/movements/filter', 'MovementController@filterWalletMovements');
+        Route::get('users/me/wallet/movements/sumExpensesPerCategory/{type}','MovementController@sumExpensesPerCategory');
     });
     //group of routes to operators
     Route::group(['middleware' => 'type:o'], function () {

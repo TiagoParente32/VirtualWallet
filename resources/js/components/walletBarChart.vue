@@ -11,20 +11,28 @@ export default {
     chartLabels: {
       type: Array,
       required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    color: {
+      type: String,
+      required: true
     }
   },
 
   mounted() {
-    console.log(this.chartLabels);
-    console.log(this.chartData);
+    // console.log(this.chartLabels);
+    // console.log(this.chartData);
     //this.renderChart(this.chartLabels, this.chartData, this.options);
     this.renderChart(
       {
-        labels: this.chartLabels.map(d => d.name),
+        labels: this.chartLabels,
         datasets: [
           {
-            label: "Expense per Category",
-            backgroundColor: "#4267B2",
+            label: this.title,
+            backgroundColor: this.color,
             data: this.chartData
           }
         ]

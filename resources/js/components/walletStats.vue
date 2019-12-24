@@ -3,22 +3,53 @@
     <div class="jumbotron">
       <h1>Balance last 30 days</h1>
     </div>
-    <wallet-balance-chart v-if="this.loaded" :chartData="chartdata" :chartLabels="chartlabels"></wallet-balance-chart>
-    <wallet-category-chart
+
+    <line-chart v-if="this.loaded" :chartData="chartdata" :chartLabels="chartlabels"></line-chart>
+    <br />
+    <div class="jumbotron">
+      <h1>Expenses/Income per Category last 30 days</h1>
+    </div>
+    <bar-chart
       v-if="this.loaded"
       :chartData="chartBarData"
       :chartLabels="chartBarLabels"
-    ></wallet-category-chart>
+      :title="expense"
+      :color="colorExp"
+    ></bar-chart>
+    <br />
+    <bar-chart
+      v-if="this.loaded"
+      :chartData="chartBarIncomeData"
+      :chartLabels="chartBarIncomeLabels"
+      :title="income"
+      :color="colorInc"
+    ></bar-chart>
+    <br />
+    <pie-chart
+      v-if="this.loaded"
+      :chartData="chartBarIncomeData"
+      :chartLabels="chartBarIncomeLabels"
+      :colors="colorArrayInc"
+    ></pie-chart>
+    <br />
+    <pie-chart
+      v-if="this.loaded"
+      :chartData="chartBarData"
+      :chartLabels="chartBarLabels"
+      :colors="colorArrayExp"
+    ></pie-chart>
   </div>
 </template>
 
 <script>
 import WalletChart from "./walletChart";
 import WalletBarChart from "./walletBarChart";
+import WalletPieChart from "./walletPieChart";
 export default {
   components: {
-    "wallet-balance-chart": WalletChart,
-    "wallet-category-chart": WalletBarChart
+    "line-chart": WalletChart,
+    "bar-chart": WalletBarChart,
+    "pie-chart": WalletPieChart
   },
   data() {
     return {
@@ -26,11 +57,19 @@ export default {
       chartlabels: [],
       chartBarData: [],
       chartBarLabels: [],
+      chartBarIncomeData: [],
+      chartBarIncomeLabels: [],
       loaded: false,
       filterData: {
         dataMin: null,
         dataMax: null
-      }
+      },
+      expense: "Expense per Category",
+      income: "Income per Category",
+      colorInc: "#008000",
+      colorExp: "#f87979",
+      colorArrayInc: [],
+      colorArrayExp: []
     };
   },
   methods: {
@@ -54,11 +93,35 @@ export default {
           console.log(err.response.data);
         });
     },
-    requestCategories() {
+    requestExpensesCategories() {
       axios
-        .get("/api/categories")
+        .get("/api/users/me/wallet/movements/sumExpensesPerCategory/e")
         .then(response => {
-          this.chartBarLabels = response.data.data;
+          //console.log("categorias");
+          //console.log(response.data);
+          this.chartBarLabels = response.data.map(d => {
+            return d.name;
+          });
+
+          this.chartBarData = response.data.map(d => {
+            return d.sum;
+          });
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
+    },
+    requestIncomeCategories() {
+      axios
+        .get("/api/users/me/wallet/movements/sumExpensesPerCategory/i")
+        .then(response => {
+          this.chartBarIncomeLabels = response.data.map(d => {
+            return d.name;
+          });
+
+          this.chartBarIncomeData = response.data.map(d => {
+            return d.sum;
+          });
         })
         .catch(err => {
           console.log(err.response.data);
@@ -66,7 +129,8 @@ export default {
     }
   },
   mounted() {
-    this.requestCategories();
+    this.requestIncomeCategories();
+    this.requestExpensesCategories();
     this.requestData();
   }
 };

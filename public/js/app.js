@@ -3133,19 +3133,25 @@ __webpack_require__.r(__webpack_exports__);
     chartLabels: {
       type: Array,
       required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    color: {
+      type: String,
+      required: true
     }
   },
   mounted: function mounted() {
-    console.log(this.chartLabels);
-    console.log(this.chartData); //this.renderChart(this.chartLabels, this.chartData, this.options);
-
+    // console.log(this.chartLabels);
+    // console.log(this.chartData);
+    //this.renderChart(this.chartLabels, this.chartData, this.options);
     this.renderChart({
-      labels: this.chartLabels.map(function (d) {
-        return d.name;
-      }),
+      labels: this.chartLabels,
       datasets: [{
-        label: "Expense per Category",
-        backgroundColor: "#4267B2",
+        label: this.title,
+        backgroundColor: this.color,
         data: this.chartData
       }]
     }, {
@@ -3207,14 +3213,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    //console.log(this.chartLabels);
-    //console.log(this.chartData);
-    //this.renderChart(this.chartLabels, this.chartData, this.options);
     this.renderChart({
       labels: this.chartLabels,
       datasets: [{
         label: "Balance",
-        backgroundColor: "#f87979",
+        backgroundColor: "#4267B2",
         data: this.chartData
       }]
     }, {
@@ -3495,6 +3498,54 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/walletPieChart.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/walletPieChart.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
+  props: {
+    chartData: {
+      type: Array,
+      required: true
+    },
+    chartLabels: {
+      type: Array,
+      required: true
+    }
+  },
+  mounted: function mounted() {
+    this.renderChart({
+      labels: this.chartLabels,
+      datasets: [{
+        label: "Income",
+        backgroundColor: ["#63b598", "#ce7d78", "#ea9e70", "#a48a9e", "#c6e1e8", "#648177", "#0d5ac1", "#f205e6", "#1c0365", "#14a9ad", "#4ca2f9", "#a4e43f", "#d298e2", "#6119d0", "#d2737d", "#c0a43c", "#f2510e", "#651be6", "#79806e", "#61da5e", "#cd2f00", "#21d52e", "#d00043", "#b47162", "#1ec227", "#4f0f6f", "#1d1d58", "#947002", "#bde052", "#e08c56", "#28fcfd", "#bb09b", "#36486a", "#d02e29", "#1ae6db", "#3e464c", "#a84a8f", "#911e7e", "#3f16d9", "#0f525f", "#ac7c0a", "#b4c086", "#c9d730", "#30cc49", "#3d6751", "#fb4c03", "#640fc1", "#62c03e", "#d3493a", "#88aa0b", "#406df9"],
+        data: this.chartData
+      }]
+    }, {
+      borderWidth: "10px",
+      hoverBorderWidth: "10px"
+    });
+  },
+  watch: {
+    chartData: function chartData() {
+      this.renderChart(this.chartLabels, this.chartData, this.options);
+    },
+    chartLabels: function chartLabels() {
+      this.renderChart(this.chartLabels, this.chartData, this.options);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/walletStats.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/walletStats.vue?vue&type=script&lang=js& ***!
@@ -3506,6 +3557,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _walletChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./walletChart */ "./resources/js/components/walletChart.vue");
 /* harmony import */ var _walletBarChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./walletBarChart */ "./resources/js/components/walletBarChart.vue");
+/* harmony import */ var _walletPieChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./walletPieChart */ "./resources/js/components/walletPieChart.vue");
 //
 //
 //
@@ -3520,12 +3572,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    "wallet-balance-chart": _walletChart__WEBPACK_IMPORTED_MODULE_0__["default"],
-    "wallet-category-chart": _walletBarChart__WEBPACK_IMPORTED_MODULE_1__["default"]
+    "line-chart": _walletChart__WEBPACK_IMPORTED_MODULE_0__["default"],
+    "bar-chart": _walletBarChart__WEBPACK_IMPORTED_MODULE_1__["default"],
+    "pie-chart": _walletPieChart__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -3533,11 +3616,19 @@ __webpack_require__.r(__webpack_exports__);
       chartlabels: [],
       chartBarData: [],
       chartBarLabels: [],
+      chartBarIncomeData: [],
+      chartBarIncomeLabels: [],
       loaded: false,
       filterData: {
         dataMin: null,
         dataMax: null
-      }
+      },
+      expense: "Expense per Category",
+      income: "Income per Category",
+      colorInc: "#008000",
+      colorExp: "#f87979",
+      colorArrayInc: [],
+      colorArrayExp: []
     };
   },
   methods: {
@@ -3560,18 +3651,40 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err.response.data);
       });
     },
-    requestCategories: function requestCategories() {
+    requestExpensesCategories: function requestExpensesCategories() {
       var _this2 = this;
 
-      axios.get("/api/categories").then(function (response) {
-        _this2.chartBarLabels = response.data.data;
+      axios.get("/api/users/me/wallet/movements/sumExpensesPerCategory/e").then(function (response) {
+        //console.log("categorias");
+        //console.log(response.data);
+        _this2.chartBarLabels = response.data.map(function (d) {
+          return d.name;
+        });
+        _this2.chartBarData = response.data.map(function (d) {
+          return d.sum;
+        });
+      })["catch"](function (err) {
+        console.log(err.response.data);
+      });
+    },
+    requestIncomeCategories: function requestIncomeCategories() {
+      var _this3 = this;
+
+      axios.get("/api/users/me/wallet/movements/sumExpensesPerCategory/i").then(function (response) {
+        _this3.chartBarIncomeLabels = response.data.map(function (d) {
+          return d.name;
+        });
+        _this3.chartBarIncomeData = response.data.map(function (d) {
+          return d.sum;
+        });
       })["catch"](function (err) {
         console.log(err.response.data);
       });
     }
   },
   mounted: function mounted() {
-    this.requestCategories();
+    this.requestIncomeCategories();
+    this.requestExpensesCategories();
     this.requestData();
   }
 });
@@ -19816,7 +19929,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nimg {\n  height: 70px;\n  width: 70px;\n}\n", ""]);
+exports.push([module.i, "\nimg {\r\n  height: 70px;\r\n  width: 70px;\n}\r\n", ""]);
 
 // exports
 
@@ -58519,16 +58632,59 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       this.loaded
-        ? _c("wallet-balance-chart", {
+        ? _c("line-chart", {
             attrs: { chartData: _vm.chartdata, chartLabels: _vm.chartlabels }
           })
         : _vm._e(),
       _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
       this.loaded
-        ? _c("wallet-category-chart", {
+        ? _c("bar-chart", {
             attrs: {
               chartData: _vm.chartBarData,
-              chartLabels: _vm.chartBarLabels
+              chartLabels: _vm.chartBarLabels,
+              title: _vm.expense,
+              color: _vm.colorExp
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      this.loaded
+        ? _c("bar-chart", {
+            attrs: {
+              chartData: _vm.chartBarIncomeData,
+              chartLabels: _vm.chartBarIncomeLabels,
+              title: _vm.income,
+              color: _vm.colorInc
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      this.loaded
+        ? _c("pie-chart", {
+            attrs: {
+              chartData: _vm.chartBarIncomeData,
+              chartLabels: _vm.chartBarIncomeLabels,
+              colors: _vm.colorArrayInc
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      this.loaded
+        ? _c("pie-chart", {
+            attrs: {
+              chartData: _vm.chartBarData,
+              chartLabels: _vm.chartBarLabels,
+              colors: _vm.colorArrayExp
             }
           })
         : _vm._e()
@@ -58543,6 +58699,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "jumbotron" }, [
       _c("h1", [_vm._v("Balance last 30 days")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron" }, [
+      _c("h1", [_vm._v("Expenses/Income per Category last 30 days")])
     ])
   }
 ]
@@ -75718,6 +75882,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_walletList_vue_vue_type_template_id_1891c142___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/walletPieChart.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/walletPieChart.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _walletPieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./walletPieChart.vue?vue&type=script&lang=js& */ "./resources/js/components/walletPieChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _walletPieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/walletPieChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/walletPieChart.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/walletPieChart.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_walletPieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./walletPieChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/walletPieChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_walletPieChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

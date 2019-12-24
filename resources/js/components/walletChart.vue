@@ -15,16 +15,13 @@ export default {
   },
 
   mounted() {
-    //console.log(this.chartLabels);
-    //console.log(this.chartData);
-    //this.renderChart(this.chartLabels, this.chartData, this.options);
     this.renderChart(
       {
         labels: this.chartLabels,
         datasets: [
           {
             label: "Balance",
-            backgroundColor: "#f87979",
+            backgroundColor: "#4267B2",
             data: this.chartData
           }
         ]
