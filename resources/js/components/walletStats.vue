@@ -3,41 +3,58 @@
     <div class="jumbotron">
       <h1>Balance last 30 days</h1>
     </div>
-
     <line-chart v-if="this.loaded" :chartData="chartdata" :chartLabels="chartlabels"></line-chart>
     <br />
+
     <div class="jumbotron">
-      <h1>Expenses/Income per Category last 30 days</h1>
+      <h1>Expenses per Category last 30 days</h1>
     </div>
-    <bar-chart
-      v-if="this.loaded"
-      :chartData="chartBarData"
-      :chartLabels="chartBarLabels"
-      :title="expense"
-      :color="colorExp"
-    ></bar-chart>
+    <div class="row">
+      <div class="col-8">
+        <bar-chart
+          v-if="this.loaded"
+          :chartData="chartBarData"
+          :chartLabels="chartBarLabels"
+          :title="expense"
+          :color="colorExp"
+        ></bar-chart>
+        <br />
+      </div>
+      <div class="col-4">
+        <pie-chart
+          v-if="this.loaded"
+          :chartData="chartBarData"
+          :chartLabels="chartBarLabels"
+          :colors="colorArrayExp"
+        ></pie-chart>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <h1>Income per Category last 30 days</h1>
+    </div>
+    <div class="row">
+      <div class="col-8">
+        <bar-chart
+          v-if="this.loaded"
+          :chartData="chartBarIncomeData"
+          :chartLabels="chartBarIncomeLabels"
+          :title="income"
+          :color="colorInc"
+        ></bar-chart>
+      </div>
+      <div class="col-4">
+        <pie-chart
+          v-if="this.loaded"
+          :chartData="chartBarIncomeData"
+          :chartLabels="chartBarIncomeLabels"
+          :colors="colorArrayInc"
+        ></pie-chart>
+      </div>
+    </div>
+
     <br />
-    <bar-chart
-      v-if="this.loaded"
-      :chartData="chartBarIncomeData"
-      :chartLabels="chartBarIncomeLabels"
-      :title="income"
-      :color="colorInc"
-    ></bar-chart>
+
     <br />
-    <pie-chart
-      v-if="this.loaded"
-      :chartData="chartBarIncomeData"
-      :chartLabels="chartBarIncomeLabels"
-      :colors="colorArrayInc"
-    ></pie-chart>
-    <br />
-    <pie-chart
-      v-if="this.loaded"
-      :chartData="chartBarData"
-      :chartLabels="chartBarLabels"
-      :colors="colorArrayExp"
-    ></pie-chart>
   </div>
 </template>
 
