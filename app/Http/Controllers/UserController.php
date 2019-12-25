@@ -65,8 +65,11 @@ class UserController extends Controller
 
         return response()->json($user, 200);
     }
-    public function storeOperator(Request $request)
+    public function storeOperatorOrAdmin(Request $request)
     {
+        if($request->type == 'u'){
+            return response()->json(['message' => "cant create users, Only Operators Or Admins"], 400);
+        }
         $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
             'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]*$/',
             'email' => 'required|string|email|max:255|unique:users',
@@ -93,42 +96,42 @@ class UserController extends Controller
         }
 
         $user->password =  Hash::make($request->password);
-        $user->type = 'o';
+        $user->type = $request->type;
         $user->save();
         return response()->json($user, 200);
     }
-    public function storeAdministrator(Request $request)
-    {
-        $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
-            'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]*$/',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:3|max:16',
-        ]);
-        if ($valid->fails()) {
-            return response()->json(['message' => $valid->errors()->all()], 400);
-        }
-        $user = new User();
-        $user->fill($request->only('name', 'email'));
+    // public function storeAdministrator(Request $request)
+    // {
+    //     $valid = Validator::make($request->only('name', 'email', 'nif', 'password'), [
+    //         'name' => 'required|string|max:255|regex:/^[a-zA-Z\s]*$/',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:3|max:16',
+    //     ]);
+    //     if ($valid->fails()) {
+    //         return response()->json(['message' => $valid->errors()->all()], 400);
+    //     }
+    //     $user = new User();
+    //     $user->fill($request->only('name', 'email'));
 
-        if ($request->hasFile('photo')) {
-            $validatePhoto = Validator::make($request->only('photo'), [
-                'photo' => 'image'
-            ]);
-            if ($validatePhoto->fails()) {
-                return response()->json(['message' => $validatePhoto->errors()->all()], 400);
-            }
-            $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
-            $user->photo = $fileName;
-            $request->photo->move(public_path('storage/fotos'), $fileName);
-        } else {
-            $user->photo = 'default.png';
-        }
+    //     if ($request->hasFile('photo')) {
+    //         $validatePhoto = Validator::make($request->only('photo'), [
+    //             'photo' => 'image'
+    //         ]);
+    //         if ($validatePhoto->fails()) {
+    //             return response()->json(['message' => $validatePhoto->errors()->all()], 400);
+    //         }
+    //         $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+    //         $user->photo = $fileName;
+    //         $request->photo->move(public_path('storage/fotos'), $fileName);
+    //     } else {
+    //         $user->photo = 'default.png';
+    //     }
 
-        $user->password =  Hash::make($request->password);
-        $user->type = 'a';
-        $user->save();
-        return response()->json($user, 200);
-    }
+    //     $user->password =  Hash::make($request->password);
+    //     $user->type = 'a';
+    //     $user->save();
+    //     return response()->json($user, 200);
+    // }
     public function getMe(Request $request)
     {
         return response()->json($request->user(), 200);

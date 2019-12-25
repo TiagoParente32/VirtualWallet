@@ -37,6 +37,9 @@
                 <router-link class="nav-link" to="/movements/create/income" v-if="this.$store.state.token && this.$store.state.user.type === 'o'" >Create Movement</router-link>
             </li>
             <li class="nav-item">
+                <router-link class="nav-link" to="/users/create" v-if="this.$store.state.token && this.$store.state.user.type === 'a'" >Create Users</router-link>
+            </li>
+            <li class="nav-item">
                 <router-link class="nav-link" to="/users" v-if="this.$store.state.token && this.$store.state.user.type === 'a'" >Users</router-link>
             </li>
         </ul>

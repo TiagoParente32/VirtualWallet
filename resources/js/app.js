@@ -48,7 +48,7 @@ function onlyAdmins(to, from, next) {
 function onlyOperators(to, from, next) {
     requireAuth(to, from, next);
     let user = JSON.parse(sessionStorage.getItem('user'));
-    if (user.type === 'o' && user.active == 1) {
+    if (user.type == 'o') {
         next();
     } else {
         next('/profile');
@@ -58,7 +58,7 @@ function onlyOperators(to, from, next) {
 function onlyUsers(to, from, next) {
     requireAuth(to, from, next);
     let user = JSON.parse(sessionStorage.getItem('user'));
-    if (user.type === 'u' && user.active == 1) {
+    if (user.type == 'u') {
         next();
     } else {
         next('/profile');
@@ -76,6 +76,7 @@ import Users from './components/usersList'
 import WalletStats from './components/walletStats';
 import CreateMovement from './components/createMovement';
 import CreateMovementAsOperator from './components/CreateMovementAsOperator';
+import RegisterOpAdmins from './components/registerOpAdmins';
 
 const routes = [{
     path: '/',
@@ -127,6 +128,12 @@ const routes = [{
 {
     path: '/users',
     component: Users,
+    beforeEnter: onlyAdmins
+
+},
+{
+    path: '/users/create',
+    component: RegisterOpAdmins,
     beforeEnter: onlyAdmins
 
 }

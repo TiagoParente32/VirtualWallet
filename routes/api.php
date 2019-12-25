@@ -53,8 +53,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     });
     //group of routes to admins
     Route::group(['middleware' => 'type:a'], function () {
-        Route::post('users/operator','UserController@storeOperator');
-        Route::post('users/administrator','UserController@storeAdministrator');
+        Route::post('users/create','UserController@storeOperatorOrAdmin');
+        //Route::post('users/administrator','UserController@storeAdministrator');
         Route::get('users','UserController@index');
         Route::delete('users/{id}','UserController@destroy');
         Route::patch('users/{id}','UserController@DeactivateReactivateUser');
