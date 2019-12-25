@@ -2022,7 +2022,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("api/movement/create", this.movementData).then(function (response) {
         console.log(response);
 
-        _this2.$router.push("/users/me/wallet");
+        _this2.$router.push("/wallet");
 
         _this2.$socket.emit("userUpdated", _this2.movementData.email);
       })["catch"](function (err) {
@@ -2222,7 +2222,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("api/users/me/edit", formData).then(function (response) {
         _this.$store.commit("setUser", response.data);
 
-        _this.$router.push("/users/me/profile");
+        _this.$router.push("/profile");
       })["catch"](function (err) {
         console.log(err.response.data);
       });
@@ -3122,6 +3122,7 @@ __webpack_require__.r(__webpack_exports__);
     updateData: function updateData(email) {
       if (email == this.$store.state.user.email) {
         console.log("A mostrar movimentos atualizados");
+        this.getWallet();
         this.clear();
       }
     }
@@ -56637,7 +56638,7 @@ var render = function() {
                   {
                     staticClass:
                       "nav-link list-group-item list-group-item-action active",
-                    attrs: { to: "/users/me/edit" }
+                    attrs: { to: "/profile/edit" }
                   },
                   [_vm._v("Edit Profile")]
                 )
@@ -56649,7 +56650,7 @@ var render = function() {
                   {
                     staticClass:
                       "nav-link list-group-item list-group-item-action",
-                    attrs: { to: "/users/me/profile" }
+                    attrs: { to: "/profile" }
                   },
                   [_vm._v("Profile")]
                 )
@@ -57852,7 +57853,7 @@ var render = function() {
       _vm._v(" "),
       _c("h2", [_vm._v(_vm._s(_vm.balance) + " €")]),
       _vm._v(" "),
-      _c("router-link", { attrs: { to: "/users/me/wallet/statistics" } }, [
+      _c("router-link", { attrs: { to: "/wallet/statistics" } }, [
         _vm._v("wallet stats")
       ]),
       _vm._v(" "),
@@ -75013,41 +75014,100 @@ Vue.use(new vue_socket_io__WEBPACK_IMPORTED_MODULE_3___default.a({
 
 
 
+
+function requireAuth(to, from, next) {
+  if (sessionStorage.getItem('token') != null) {
+    next();
+  } else {
+    next('/login');
+  }
+}
+
+function requireNoAuth(to, from, next) {
+  if (sessionStorage.getItem('token') == null) {
+    next();
+  } else {
+    next('/profile');
+  }
+}
+
+function onlyAdmins(to, from, next) {
+  requireAuth(to, from, next);
+  var user = JSON.parse(sessionStorage.getItem('user'));
+  console.log(user);
+
+  if (user.type == 'a') {
+    next();
+  } else {
+    next('/profile');
+  }
+}
+
+function onlyOperators(to, from, next) {
+  requireAuth(to, from, next);
+  var user = JSON.parse(sessionStorage.getItem('user'));
+
+  if (user.type === 'o' && user.active == 1) {
+    next();
+  } else {
+    next('/profile');
+  }
+}
+
+function onlyUsers(to, from, next) {
+  requireAuth(to, from, next);
+  var user = JSON.parse(sessionStorage.getItem('user'));
+
+  if (user.type === 'u' && user.active == 1) {
+    next();
+  } else {
+    next('/profile');
+  }
+}
+
 var routes = [{
   path: '/',
   component: _components_welcome__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
   path: '/register',
-  component: _components_register__WEBPACK_IMPORTED_MODULE_5__["default"]
+  component: _components_register__WEBPACK_IMPORTED_MODULE_5__["default"],
+  beforeEnter: requireNoAuth
 }, {
   path: '/login',
-  component: _components_login__WEBPACK_IMPORTED_MODULE_7__["default"]
+  component: _components_login__WEBPACK_IMPORTED_MODULE_7__["default"],
+  beforeEnter: requireNoAuth
 }, {
   path: '/logout',
-  component: _components_logout__WEBPACK_IMPORTED_MODULE_8__["default"]
+  component: _components_logout__WEBPACK_IMPORTED_MODULE_8__["default"],
+  beforeEnter: requireAuth
 }, {
-  path: '/users/me/profile',
-  component: _components_profile__WEBPACK_IMPORTED_MODULE_9__["default"]
+  path: '/profile',
+  component: _components_profile__WEBPACK_IMPORTED_MODULE_9__["default"],
+  beforeEnter: requireAuth
 }, {
-  path: '/users/me/edit',
-  component: _components_editprofile__WEBPACK_IMPORTED_MODULE_6__["default"]
+  path: '/profile/edit',
+  component: _components_editprofile__WEBPACK_IMPORTED_MODULE_6__["default"],
+  beforeEnter: requireAuth
 }, {
-  path: '/users/me/wallet',
-  component: _components_wallet__WEBPACK_IMPORTED_MODULE_10__["default"]
+  path: '/wallet',
+  component: _components_wallet__WEBPACK_IMPORTED_MODULE_10__["default"],
+  beforeEnter: onlyUsers
 }, {
-  path: '/users/me/wallet/statistics',
-  component: _components_walletStats__WEBPACK_IMPORTED_MODULE_12__["default"]
+  path: '/wallet/statistics',
+  component: _components_walletStats__WEBPACK_IMPORTED_MODULE_12__["default"],
+  beforeEnter: onlyUsers
+}, {
+  path: '/movements/create',
+  component: _components_createMovement__WEBPACK_IMPORTED_MODULE_13__["default"],
+  beforeEnter: onlyUsers
 }, {
   path: '/users',
-  component: _components_usersList__WEBPACK_IMPORTED_MODULE_11__["default"]
-}, {
-  path: '/users/me/movements/create',
-  component: _components_createMovement__WEBPACK_IMPORTED_MODULE_13__["default"]
+  component: _components_usersList__WEBPACK_IMPORTED_MODULE_11__["default"],
+  beforeEnter: onlyAdmins
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   //mode: 'history',
-  routes: routes // == routes:routes
-
+  routes: routes
 });
 var app = new Vue({
   el: '#app',

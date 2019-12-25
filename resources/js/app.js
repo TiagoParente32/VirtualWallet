@@ -18,7 +18,7 @@ Vue.use(VueRouter);
 Vue.use(new VueSocketIO({
     debug: true,
     connection: 'http://127.0.0.1:8080'
-})); 
+}));
 
 import VueSocketIO from "vue-socket.io";
 import Welcome from './components/welcome'
@@ -32,48 +32,104 @@ import Users from './components/usersList'
 import WalletStats from './components/walletStats';
 import CreateMovement from './components/createMovement';
 
+function requireAuth(to, from, next) {
+    if (sessionStorage.getItem('token') != null) {
+        next();
+    } else {
+        next('/login');
+    }
+}
+function requireNoAuth(to, from, next) {
+    if (sessionStorage.getItem('token') == null) {
+        next();
+    } else {
+        next('/profile');
+    }
+}
+function onlyAdmins(to, from, next) {
+    requireAuth(to, from, next);
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    console.log(user);
+    if (user.type == 'a') {
+        next();
+    } else {
+        next('/profile');
+    }
+}
+
+function onlyOperators(to, from, next) {
+    requireAuth(to, from, next);
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    if (user.type === 'o' && user.active == 1) {
+        next();
+    } else {
+        next('/profile');
+    }
+}
+
+function onlyUsers(to, from, next) {
+    requireAuth(to, from, next);
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    if (user.type === 'u' && user.active == 1) {
+        next();
+    } else {
+        next('/profile');
+    }
+}
+
+
 const routes = [{
     path: '/',
     component: Welcome
 }, {
     path: '/register',
-    component: Register
+    component: Register,
+    beforeEnter: requireNoAuth
 }, {
     path: '/login',
-    component: Login
+    component: Login,
+    beforeEnter: requireNoAuth
 },
 {
     path: '/logout',
-    component: Logout
+    component: Logout,
+    beforeEnter: requireAuth
 },
 {
-    path: '/users/me/profile',
-    component: Profile
+    path: '/profile',
+    component: Profile,
+    beforeEnter: requireAuth
 },
 {
-    path: '/users/me/edit',
-    component: EditProfile
+    path: '/profile/edit',
+    component: EditProfile,
+    beforeEnter: requireAuth
 },
 {
-    path: '/users/me/wallet',
-    component: Wallet
+    path: '/wallet',
+    component: Wallet,
+    beforeEnter: onlyUsers
 },
 {
-    path: '/users/me/wallet/statistics',
-    component: WalletStats
+    path: '/wallet/statistics',
+    component: WalletStats,
+    beforeEnter: onlyUsers
+},
+{
+    path: '/movements/create',
+    component: CreateMovement,
+    beforeEnter: onlyUsers
 },
 {
     path: '/users',
-    component: Users
-},
-{
-    path: '/users/me/movements/create',
-    component: CreateMovement
+    component: Users,
+    beforeEnter: onlyAdmins
+
 }
 ]
 const router = new VueRouter({
     //mode: 'history',
-    routes // == routes:routes
+    routes
 })
 
 const app = new Vue({

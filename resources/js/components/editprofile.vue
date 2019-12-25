@@ -8,12 +8,12 @@
         <div class="list-group">
           <router-link
             class="nav-link list-group-item list-group-item-action active"
-            to="/users/me/edit"
+            to="/profile/edit"
             v-if="this.$store.state.token"
           >Edit Profile</router-link>
           <router-link
             class="nav-link list-group-item list-group-item-action"
-            to="/users/me/profile"
+            to="/profile"
             v-if="this.$store.state.token"
           >Profile</router-link>
         </div>
@@ -169,7 +169,7 @@ export default {
         .post("api/users/me/edit", formData)
         .then(response => {
           this.$store.commit("setUser", response.data);
-          this.$router.push("/users/me/profile");
+          this.$router.push("/profile");
         })
         .catch(err => {
           console.log(err.response.data);

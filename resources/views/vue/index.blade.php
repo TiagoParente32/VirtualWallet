@@ -21,16 +21,16 @@
                 <router-link  class="nav-link" to="/register" v-if="!this.$store.state.token">Register</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/users/me/profile" v-if="this.$store.state.token" >Profile</router-link>
+                <router-link class="nav-link" to="/profile" v-if="this.$store.state.token" >Profile</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/users/me/edit" v-if="this.$store.state.token" >Edit Profile</router-link>
+                <router-link class="nav-link" to="/profile/edit" v-if="this.$store.state.token" >Edit Profile</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/users/me/wallet" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Wallet</router-link>
+                <router-link class="nav-link" to="/wallet" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Wallet</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/users/me/movements/create" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Create Movement</router-link>
+                <router-link class="nav-link" to="/movements/create" v-if="this.$store.state.token && this.$store.state.user.type === 'u'" >Create Movement</router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link" to="/users" v-if="this.$store.state.token && this.$store.state.user.type === 'a'" >Users</router-link>

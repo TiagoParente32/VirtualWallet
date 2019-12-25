@@ -174,8 +174,8 @@ export default {
         .post("api/movement/create", this.movementData)
         .then(response => {
           console.log(response);
-          this.$router.push("/users/me/wallet");
-          this.$socket.emit("userUpdated",  this.movementData.email);
+          this.$router.push("/wallet");
+          this.$socket.emit("userUpdated", this.movementData.email);
         })
         .catch(err => {
           console.log(err.response.data);
@@ -185,11 +185,9 @@ export default {
   mounted() {
     this.getCategories();
   },
-  sockets:{
+  sockets: {
     connect() {
-      console.log(
-          "socket connected (socketID = " + this.$socket.id + ")"
-      );
+      console.log("socket connected (socketID = " + this.$socket.id + ")");
     }
   }
 };

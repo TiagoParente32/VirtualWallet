@@ -2,7 +2,7 @@
   <div>
     <h1>Balance</h1>
     <h2>{{balance}} €</h2>
-    <router-link to="/users/me/wallet/statistics">wallet stats</router-link>
+    <router-link to="/wallet/statistics">wallet stats</router-link>
 
     <div>
       <div class="row">
@@ -272,13 +272,12 @@ export default {
   },
   sockets: {
     connect() {
-      console.log(
-          "socket connected (socketID = " + this.$socket.id + ")"
-      );
+      console.log("socket connected (socketID = " + this.$socket.id + ")");
     },
-    updateData(email){
-      if(email == this.$store.state.user.email){
+    updateData(email) {
+      if (email == this.$store.state.user.email) {
         console.log("A mostrar movimentos atualizados");
+        this.getWallet();
         this.clear();
       }
     }
