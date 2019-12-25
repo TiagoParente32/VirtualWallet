@@ -56,8 +56,9 @@ class MovementController extends Controller
             $movements = $movements->where('date', '>=', $request->dataMin);
         }
         $movements->where(function($query) use($request){
-            $query->where('wallet_id', $request->user()->wallet->id)->orWhere('transfer_wallet_id', $request->user()->wallet->id);
+            $query->where('wallet_id', $request->user()->wallet->id);//->orWhere('transfer_wallet_id', $request->user()->wallet->id);
         });
+        //normal com paginate
         if($request->has('page')){
             $movements = $movements->orderBy('date', 'desc')->paginate(10);
             return MovementResource::collection($movements);
