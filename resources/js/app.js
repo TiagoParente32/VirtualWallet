@@ -4,11 +4,9 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router'
 import store from './stores/store';
-
-//import BootstrapVue from 'bootstrap-vue'
-
-//Vue.use(BootstrapVue)
+import VueSocketIO from "vue-socket.io";
 import Paginate from 'vuejs-paginate'
+
 Vue.component('paginate', Paginate)
 
 //Vue.use(BootstrapVue)
@@ -20,17 +18,7 @@ Vue.use(new VueSocketIO({
     connection: 'http://127.0.0.1:8080'
 }));
 
-import VueSocketIO from "vue-socket.io";
-import Welcome from './components/welcome'
-import Register from './components/register'
-import EditProfile from './components/editprofile'
-import Login from './components/login'
-import Logout from './components/logout'
-import Profile from './components/profile'
-import Wallet from './components/wallet'
-import Users from './components/usersList'
-import WalletStats from './components/walletStats';
-import CreateMovement from './components/createMovement';
+
 
 function requireAuth(to, from, next) {
     if (sessionStorage.getItem('token') != null) {
@@ -77,6 +65,17 @@ function onlyUsers(to, from, next) {
     }
 }
 
+import Welcome from './components/welcome'
+import Register from './components/register'
+import EditProfile from './components/editprofile'
+import Login from './components/login'
+import Logout from './components/logout'
+import Profile from './components/profile'
+import Wallet from './components/wallet'
+import Users from './components/usersList'
+import WalletStats from './components/walletStats';
+import CreateMovement from './components/createMovement';
+import CreateMovementAsOperator from './components/CreateMovementAsOperator';
 
 const routes = [{
     path: '/',
@@ -116,9 +115,14 @@ const routes = [{
     beforeEnter: onlyUsers
 },
 {
-    path: '/movements/create',
+    path: '/movements/create/expense',
     component: CreateMovement,
     beforeEnter: onlyUsers
+},
+{
+    path: '/movements/create/income',
+    component: CreateMovementAsOperator,
+    beforeEnter: onlyOperators
 },
 {
     path: '/users',

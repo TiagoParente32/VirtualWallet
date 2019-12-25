@@ -83,18 +83,17 @@ class MovementController extends Controller
     public function storeAsOperator(Request $request)
     {
         $movement = new Movement;
-        $valid = Validator::make($request->only('email', 'value', 'type_payment', 'source_description'), [
+        $valid = Validator::make($request->only('email', 'value', 'type_payment'), [
             'email' => 'required|string|email|max:255',
             'value' => 'required | numeric|between:0.01,5000.00',
             'type_payment' => 'required | in:c,bt',
-            'source_description' => 'required | string | max:500',
         ]);
         if ($valid->fails()) {
             return response()->json(['message' => $valid->errors()->all()], 400);
         }
 
         //If payment type is cash
-        $movement->fill($request->except(['type', 'transfer', 'transfer_movement_id', 'mb_entity_code', 'mb_payment_reference', 'description', 'updated_at', 'created_at', 'iban']));
+        $movement->fill($request->only('email', 'value', 'type_payment'));
 
         //receiver wallet
         $receiver = Wallet::where('email', '=', $request->email)->get()->first();
@@ -105,7 +104,8 @@ class MovementController extends Controller
 
         if ($request->type_payment == 'bt') {
             $valid = Validator::make($request->only('iban'), [
-                'iban' => 'required|regex:/([A-Z]){2}[0-9]{23}/'
+                'iban' => 'required|regex:/([A-Z]){2}[0-9]{23}/',
+                'source_description' => 'required | string | max:500'
             ]);
 
             if ($valid->fails()) {
@@ -113,6 +113,7 @@ class MovementController extends Controller
             }
             $movement->type_payment = "bt";
             $movement->iban = $request->iban;
+            $movement->source_description = $request->source_description;
         } else {
             $movement->type_payment = "c";
         }
