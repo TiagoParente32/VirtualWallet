@@ -59,6 +59,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('users/{id}','UserController@destroy');
         Route::patch('users/{id}','UserController@DeactivateReactivateUser');
         Route::post('users/filter','UserController@filterUsers');
+        Route::get('statistics/countTypeOfPayment','MovementController@countTypeOfPayment');
+        Route::get('statistics/countActiveUsers','UserController@countActiveUsers');
+        Route::get('statistics/countRegistedUsers','UserController@countRegistedUsers');
     });
 
 });

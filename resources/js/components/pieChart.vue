@@ -1,7 +1,7 @@
 <script>
-import { Pie } from "vue-chartjs";
+import { Doughnut } from "vue-chartjs";
 export default {
-  extends: Pie,
+  extends: Doughnut,
   props: {
     chartData: {
       type: Array,

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -252,4 +253,22 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
+    public function countActiveUsers(Request $request){
+        $countActiveUsers = DB::select("SELECT COUNT(*) as count
+                                        FROM users
+                                        WHERE TYPE = 'u' AND active = '1' ");
+        return $countActiveUsers;
+    }
+
+    public function countRegistedUsers(Request $request){
+        $today = date('Y/m/d H:i:s', time());
+        $lastMonth = date('Y/m/d H:i:s',strtotime("-1 month"));
+        // dd($today . " + " .$lastMonth);
+        $countActiveUsers = DB::select("SELECT COUNT(*) AS count
+                                        FROM users
+                                        WHERE TYPE = 'u' AND
+                                        created_at BETWEEN :lastMonth AND :today",
+                                        array('lastMonth' =>$lastMonth,'today' => $today));
+        return $countActiveUsers;
+    }
 }

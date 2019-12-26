@@ -42,6 +42,9 @@
             <li class="nav-item">
                 <router-link class="nav-link" to="/users" v-if="this.$store.state.token && this.$store.state.user.type === 'a'" >Users</router-link>
             </li>
+            <li class="nav-item">
+                <router-link class="nav-link" to="/statistics" v-if="this.$store.state.token && this.$store.state.user.type === 'a'" >Statistics</router-link>
+            </li>
         </ul>
     </div>
 </nav>

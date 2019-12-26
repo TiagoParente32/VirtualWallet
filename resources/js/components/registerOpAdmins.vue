@@ -88,7 +88,7 @@
 export default {
   data: function() {
     return {
-      title: "Register",
+      title: "Register User",
       userData: {
         type: "",
         name: "",

@@ -77,6 +77,7 @@ import WalletStats from './components/walletStats';
 import CreateMovement from './components/createMovement';
 import CreateMovementAsOperator from './components/CreateMovementAsOperator';
 import RegisterOpAdmins from './components/registerOpAdmins';
+import PlatformStats from './components/platformStats';
 
 const routes = [{
     path: '/',
@@ -134,6 +135,12 @@ const routes = [{
 {
     path: '/users/create',
     component: RegisterOpAdmins,
+    beforeEnter: onlyAdmins
+
+},
+{
+    path: '/statistics',
+    component: PlatformStats,
     beforeEnter: onlyAdmins
 
 }

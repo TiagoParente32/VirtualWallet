@@ -256,8 +256,8 @@ class MovementController extends Controller
     }
 
     function sumExpensesPerCategory(Request $request,$type){
-        $today = date('Y/m/d h:i:s', time());
-        $lastMonth = date('Y/m/d h:i:s',strtotime("-1 month"));
+        $today = date('Y/m/d H:i:s', time());
+        $lastMonth = date('Y/m/d H:i:s',strtotime("-1 month"));
         $sumExpensesByCategory = DB::select("SELECT SUM(m.value) as sum,c.name
                                             FROM movements m JOIN categories c ON m.category_id = c.id
                                             WHERE m.wallet_id = :id AND m.type = :e AND
@@ -268,4 +268,14 @@ class MovementController extends Controller
                                                             'e' => $type));
         return $sumExpensesByCategory;
     }
+
+    function countTypeOfPayment(Request $request){
+
+       $countTypeofPayment = DB::select("SELECT COUNT(*) as count, m.type_payment
+                                        FROM movements m
+                                        WHERE m.type_payment IS NOT NULL
+                                        GROUP BY m.type_payment");
+        return $countTypeofPayment;
+    }
+
 }
