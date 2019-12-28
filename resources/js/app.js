@@ -13,7 +13,9 @@ Vue.use(VueToast);
 //import BootstrapVue from 'bootstrap-vue'
 
 //Vue.use(BootstrapVue)
+import VueSocketIO from "vue-socket.io";
 import Paginate from 'vuejs-paginate'
+
 Vue.component('paginate', Paginate)
 
 //Vue.use(BootstrapVue)
@@ -25,17 +27,7 @@ Vue.use(new VueSocketIO({
     connection: 'http://127.0.0.1:8080'
 }));
 
-import VueSocketIO from "vue-socket.io";
-import Welcome from './components/welcome'
-import Register from './components/register'
-import EditProfile from './components/editprofile'
-import Login from './components/login'
-import Logout from './components/logout'
-import Profile from './components/profile'
-import Wallet from './components/wallet'
-import Users from './components/usersList'
-import WalletStats from './components/walletStats';
-import CreateMovement from './components/createMovement';
+
 
 function requireAuth(to, from, next) {
     if (sessionStorage.getItem('token') != null) {
@@ -65,7 +57,7 @@ function onlyAdmins(to, from, next) {
 function onlyOperators(to, from, next) {
     requireAuth(to, from, next);
     let user = JSON.parse(sessionStorage.getItem('user'));
-    if (user.type === 'o' && user.active == 1) {
+    if (user.type == 'o') {
         next();
     } else {
         next('/profile');
@@ -75,13 +67,26 @@ function onlyOperators(to, from, next) {
 function onlyUsers(to, from, next) {
     requireAuth(to, from, next);
     let user = JSON.parse(sessionStorage.getItem('user'));
-    if (user.type === 'u' && user.active == 1) {
+    if (user.type == 'u') {
         next();
     } else {
         next('/profile');
     }
 }
 
+import Welcome from './components/welcome'
+import Register from './components/register'
+import EditProfile from './components/editprofile'
+import Login from './components/login'
+import Logout from './components/logout'
+import Profile from './components/profile'
+import Wallet from './components/wallet'
+import Users from './components/usersList'
+import WalletStats from './components/walletStats';
+import CreateMovement from './components/createMovement';
+import CreateMovementAsOperator from './components/CreateMovementAsOperator';
+import RegisterOpAdmins from './components/registerOpAdmins';
+import PlatformStats from './components/platformStats';
 
 const routes = [{
     path: '/',
@@ -121,13 +126,30 @@ const routes = [{
     beforeEnter: onlyUsers
 },
 {
-    path: '/movements/create',
+    path: '/movements/create/expense',
     component: CreateMovement,
     beforeEnter: onlyUsers
 },
 {
+    path: '/movements/create/income',
+    component: CreateMovementAsOperator,
+    beforeEnter: onlyOperators
+},
+{
     path: '/users',
     component: Users,
+    beforeEnter: onlyAdmins
+
+},
+{
+    path: '/users/create',
+    component: RegisterOpAdmins,
+    beforeEnter: onlyAdmins
+
+},
+{
+    path: '/statistics',
+    component: PlatformStats,
     beforeEnter: onlyAdmins
 
 }

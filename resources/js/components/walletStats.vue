@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-8">
         <bar-chart
-          v-if="this.loaded"
+          v-if="this.loadedExp"
           :chartData="chartBarData"
           :chartLabels="chartBarLabels"
           :title="expense"
@@ -22,7 +22,7 @@
       </div>
       <div class="col-4">
         <pie-chart
-          v-if="this.loaded"
+          v-if="this.loadedExp"
           :chartData="chartBarData"
           :chartLabels="chartBarLabels"
           :colors="colorArrayExp"
@@ -35,7 +35,7 @@
     <div class="row">
       <div class="col-8">
         <bar-chart
-          v-if="this.loaded"
+          v-if="this.loadedInc"
           :chartData="chartBarIncomeData"
           :chartLabels="chartBarIncomeLabels"
           :title="income"
@@ -44,7 +44,7 @@
       </div>
       <div class="col-4">
         <pie-chart
-          v-if="this.loaded"
+          v-if="this.loadedInc"
           :chartData="chartBarIncomeData"
           :chartLabels="chartBarIncomeLabels"
           :colors="colorArrayInc"
@@ -59,9 +59,9 @@
 </template>
 
 <script>
-import WalletChart from "./walletChart";
-import WalletBarChart from "./walletBarChart";
-import WalletPieChart from "./walletPieChart";
+import WalletChart from "./lineChart";
+import WalletBarChart from "./barChart";
+import WalletPieChart from "./pieChart";
 export default {
   components: {
     "line-chart": WalletChart,
@@ -77,6 +77,8 @@ export default {
       chartBarIncomeData: [],
       chartBarIncomeLabels: [],
       loaded: false,
+      loadedInc: false,
+      loadedExp: false,
       filterData: {
         dataMin: null,
         dataMax: null
@@ -111,6 +113,7 @@ export default {
         });
     },
     requestExpensesCategories() {
+      this.loadedExp = false;
       axios
         .get("/api/users/me/wallet/movements/sumExpensesPerCategory/e")
         .then(response => {
@@ -123,15 +126,19 @@ export default {
           this.chartBarData = response.data.map(d => {
             return d.sum;
           });
+          this.loadedExp = true;
         })
         .catch(err => {
           console.log(err.response.data);
         });
     },
     requestIncomeCategories() {
+      this.loadedInc = false;
+
       axios
         .get("/api/users/me/wallet/movements/sumExpensesPerCategory/i")
         .then(response => {
+          console.log(response);
           this.chartBarIncomeLabels = response.data.map(d => {
             return d.name;
           });
@@ -139,6 +146,7 @@ export default {
           this.chartBarIncomeData = response.data.map(d => {
             return d.sum;
           });
+          this.loadedInc = true;
         })
         .catch(err => {
           console.log(err.response.data);

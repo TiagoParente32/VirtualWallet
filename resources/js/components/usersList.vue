@@ -53,7 +53,7 @@
           <td v-if="user.photo !== null">
             <img
               :src="`./storage/fotos/${user.photo}`"
-              class="img-thumbnail"
+              style="border-radius: 50%"
               height="200"
               width="200"
             />
@@ -61,7 +61,7 @@
           <td v-else>
             <img
               :src="`./storage/fotos/default.png`"
-              class="img-thumbnail"
+              style="border-radius: 50%"
               height="200"
               width="200"
             />
