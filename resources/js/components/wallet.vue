@@ -271,15 +271,20 @@ export default {
     "movement-details": MovementDetails
   },
   sockets: {
-    connect() {
-      console.log("socket connected (socketID = " + this.$socket.id + ")");
-    },
     updateData(email) {
-      if (email == this.$store.state.user.email) {
-        console.log("A mostrar movimentos atualizados");
-        this.getWallet();
-        this.clear();
-      }
+      console.log("A mostrar movimentos atualizados");
+      this.getWallet();
+      this.clear();
+    },
+    notificationFromServer(msg) {
+      Vue.$toast.open(msg);
+    },
+    sendEmail(email) {
+      console.log("a enviar mail"); 
+      var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"}; 
+      axios.post("api/sendemail", emailData).then(response => {
+          console.log(response.data);
+      });
     }
   }
 };

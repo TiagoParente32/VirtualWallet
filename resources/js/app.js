@@ -5,6 +5,11 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router'
 import store from './stores/store';
 
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/index.css';
+Vue.use(VueToast);
+
+
 //import BootstrapVue from 'bootstrap-vue'
 
 //Vue.use(BootstrapVue)

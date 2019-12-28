@@ -18,6 +18,8 @@ export default {
   },
   methods: {
     logout() {
+      console.log(this.$store.state.user.email);
+      this.$socket.emit("disconnect", this.$store.state.user.email);
       axios
         .post("api/logout")
         .then(response => {
@@ -29,6 +31,8 @@ export default {
           this.$router.push("/");
         });
     }
+  },
+  sockets: {
   }
 };
 </script>

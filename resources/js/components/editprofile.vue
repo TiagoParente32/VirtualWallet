@@ -175,6 +175,11 @@ export default {
           console.log(err.response.data);
         });
     }
+  },
+  sockets: {
+    notificationFromServer(msg) {
+      Vue.$toast.open(msg);
+    }
   }
 };
 </script>

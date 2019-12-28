@@ -69,6 +69,11 @@ export default {
     return {
       title: "Profile"
     };
+  },
+  sockets: {
+    notificationFromServer(msg) {
+      Vue.$toast.open(msg);
+    }
   }
 };
 </script>

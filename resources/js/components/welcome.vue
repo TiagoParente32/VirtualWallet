@@ -29,7 +29,34 @@ export default {
     }
   },
   mounted() {
+    /*
+    console.log("a enviar mail"); 
+    let emailData = {"subject": "asd", "to": "pedro-santos96@live.com.pt", "text": "Check out you virtual wallet, you have a new movement!"};
+    console.log(emailData);
+    axios.post("api/sendemail", emailData).then(response => {
+      console.log("Email enviado!");
+      console.log(response.data);
+    });
+  */
     this.getWalletCount();
+    this.$socket.emit("sendSocketEmailToServer", this.$store.state.user.email);
+  },
+  connect() {
+    console.log("socket connected (socketID = " + this.$socket.id + ")");
+  },
+  sockets: {
+    sendEmail(email) {
+      console.log("a enviar mail"); 
+      var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"}; 
+      axios.post("api/sendemail", emailData).then(response => {
+          console.log(response.data);
+      });
+    },
+    sockets: {
+      notificationFromServer(msg) {
+        console.log(msg);
+      }
+    }
   }
 };
 </script>

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Mailgun\Mailgun;
+
 use App\User;
 use App\Wallet;
 use App\Category;
 
-use App\Http\Resources\MovementResource;
 use App\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\MovementResource;
 use Illuminate\Support\Facades\Validator;
 
 class MovementController extends Controller
@@ -266,5 +269,17 @@ class MovementController extends Controller
                                                                 'today' => $today,
                                                             'e' => $type));
         return $sumExpensesByCategory;
+    }
+
+    public function sendemail(Request $request){
+        # First, instantiate the SDK with your API credentials
+        $mg = Mailgun::create('ce38a5745686bf36105a6f35d43b3367-5645b1f9-f813de67');
+        $mg->messages()->send('sandbox0c02d141796b437f93e653a3c4e7cc83.mailgun.org', [
+            'from'    => 'Virtual Wallet Administration mailgun@sandbox0c02d141796b437f93e653a3c4e7cc83.mailgun.org',
+            'to'      => $request->to,
+            'subject' => $request->subject,
+            'text'    => $request->text
+        ]);
+        return "Email enviado com sucesso!";
     }
 }

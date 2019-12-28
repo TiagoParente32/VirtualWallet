@@ -20,6 +20,8 @@ Route::post('login', 'LoginControllerAPI@login');
 
 Route::post('register', 'UserController@store');
 
+Route::post('sendemail', 'MovementController@sendemail');
+
 //group of routes to authenticated users
 Route::group(['middleware' => ['auth:api']], function () {
 

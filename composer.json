@@ -10,9 +10,14 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/psr7": "^1.6",
         "laravel/framework": "^6.2",
         "laravel/passport": "^8.0",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "mailgun/mailgun-php": "^3.0",
+        "php-http/curl-client": "^2.0",
+        "php-http/message": "^1.8"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
