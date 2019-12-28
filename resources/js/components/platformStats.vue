@@ -18,8 +18,7 @@
         </div>
       </div>
     </div>
-    <br />
-    <br />
+    <hr>
     <div class="jumbotron">
       <h1>Movement Statistics</h1>
     </div>

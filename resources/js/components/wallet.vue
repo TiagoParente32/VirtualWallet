@@ -1,8 +1,13 @@
 <template>
   <div>
     <h1>Balance</h1>
-    <h2>{{balance}} €</h2>
-    <router-link to="/wallet/statistics">wallet stats</router-link>
+    <h2>
+      {{balance}} €
+      <router-link to="/wallet/statistics">
+        <button class="btn btn-primary">Wallet Statistics</button>
+      </router-link>
+    </h2>
+    <hr />
 
     <div>
       <div class="row">

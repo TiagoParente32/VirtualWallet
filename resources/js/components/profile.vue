@@ -1,23 +1,18 @@
 <template>
   <div>
-    <div class="jumbotron">
+    <!-- <div class="jumbotron">
       <h1>{{ title }}</h1>
-    </div>
+    </div>-->
     <div>
       <div>
-        <h2>{{this.$store.state.user.name}}</h2>
-
         <div v-if="this.$store.state.user.photo !== null">
-          <img
-            :src="`./storage/fotos/${this.$store.state.user.photo}`"
-            class="img-thumbnail"
-            height="200"
-            width="200"
-          />
+          <img :src="`./storage/fotos/${this.$store.state.user.photo}`" style="border-radius: 50%" />
         </div>
         <div v-else>
-          <img :src="`./storage/fotos/default.png`" class="img-thumbnail" height="200" width="200" />
+          <img :src="`./storage/fotos/default.png`" style="border-radius: 50%" />
         </div>
+        <h2>{{this.$store.state.user.name}}</h2>
+        <hr />
       </div>
       <div>
         <div>

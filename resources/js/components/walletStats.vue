@@ -138,6 +138,7 @@ export default {
       axios
         .get("/api/users/me/wallet/movements/sumExpensesPerCategory/i")
         .then(response => {
+          console.log(response);
           this.chartBarIncomeLabels = response.data.map(d => {
             return d.name;
           });

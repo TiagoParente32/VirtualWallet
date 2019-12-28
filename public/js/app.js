@@ -2746,7 +2746,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2830,11 +2829,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3556,6 +3550,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3996,9 +3995,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lineChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lineChart */ "./resources/js/components/lineChart.vue");
+/* harmony import */ var _lineChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lineChart */ "./resources/js/components/lineChart.vue");
 /* harmony import */ var _barChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./barChart */ "./resources/js/components/barChart.vue");
-/* harmony import */ var _pieChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pieChart */ "./resources/js/components/pieChart.vue");
+/* harmony import */ var _pieChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pieChart */ "./resources/js/components/pieChart.vue");
 //
 //
 //
@@ -4064,9 +4063,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    "line-chart": _lineChart__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "line-chart": _lineChart__WEBPACK_IMPORTED_MODULE_0__["default"],
     "bar-chart": _barChart__WEBPACK_IMPORTED_MODULE_1__["default"],
-    "pie-chart": _pieChart__WEBPACK_IMPORTED_MODULE_3__["default"]
+    "pie-chart": _pieChart__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -4134,6 +4133,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loadedInc = false;
       axios.get("/api/users/me/wallet/movements/sumExpensesPerCategory/i").then(function (response) {
+        console.log(response);
         _this3.chartBarIncomeLabels = response.data.map(function (d) {
           return d.name;
         });
@@ -20393,7 +20393,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nimg {\r\n  height: 70px;\r\n  width: 70px;\n}\r\n", ""]);
+exports.push([module.i, "\nimg {\n  height: 70px;\n  width: 70px;\n}\n", ""]);
 
 // exports
 
@@ -57790,9 +57790,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("br"),
+    _c("hr"),
     _vm._v(" "),
     _vm._m(1),
     _vm._v(" "),
@@ -57873,35 +57871,27 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v(_vm._s(_vm.title))])
-    ]),
-    _vm._v(" "),
     _c("div", [
       _c("div", [
-        _c("h2", [_vm._v(_vm._s(this.$store.state.user.name))]),
-        _vm._v(" "),
         this.$store.state.user.photo !== null
           ? _c("div", [
               _c("img", {
-                staticClass: "img-thumbnail",
+                staticStyle: { "border-radius": "50%" },
                 attrs: {
-                  src: "./storage/fotos/" + this.$store.state.user.photo,
-                  height: "200",
-                  width: "200"
+                  src: "./storage/fotos/" + this.$store.state.user.photo
                 }
               })
             ])
           : _c("div", [
               _c("img", {
-                staticClass: "img-thumbnail",
-                attrs: {
-                  src: "./storage/fotos/default.png",
-                  height: "200",
-                  width: "200"
-                }
+                staticStyle: { "border-radius": "50%" },
+                attrs: { src: "./storage/fotos/default.png" }
               })
-            ])
+            ]),
+        _vm._v(" "),
+        _c("h2", [_vm._v(_vm._s(this.$store.state.user.name))]),
+        _vm._v(" "),
+        _c("hr")
       ]),
       _vm._v(" "),
       _c("div", [
@@ -58706,7 +58696,7 @@ var render = function() {
               user.photo !== null
                 ? _c("td", [
                     _c("img", {
-                      staticClass: "img-thumbnail",
+                      staticStyle: { "border-radius": "50%" },
                       attrs: {
                         src: "./storage/fotos/" + user.photo,
                         height: "200",
@@ -58716,7 +58706,7 @@ var render = function() {
                   ])
                 : _c("td", [
                     _c("img", {
-                      staticClass: "img-thumbnail",
+                      staticStyle: { "border-radius": "50%" },
                       attrs: {
                         src: "./storage/fotos/default.png",
                         height: "200",
@@ -58892,11 +58882,20 @@ var render = function() {
     [
       _c("h1", [_vm._v("Balance")]),
       _vm._v(" "),
-      _c("h2", [_vm._v(_vm._s(_vm.balance) + " €")]),
+      _c(
+        "h2",
+        [
+          _vm._v("\n    " + _vm._s(_vm.balance) + " €\n    "),
+          _c("router-link", { attrs: { to: "/wallet/statistics" } }, [
+            _c("button", { staticClass: "btn btn-primary" }, [
+              _vm._v("Wallet Statistics")
+            ])
+          ])
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("router-link", { attrs: { to: "/wallet/statistics" } }, [
-        _vm._v("wallet stats")
-      ]),
+      _c("hr"),
       _vm._v(" "),
       _c("div", [
         _c("div", { staticClass: "row" }, [
