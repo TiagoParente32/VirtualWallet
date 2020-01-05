@@ -65,6 +65,8 @@
       </div>
 
       <br />
+      <div v-if="error" class="alert alert-danger" role="alert">{{error}}</div>
+      <hr />
       <div>
         <button type="button" class="btn btn-primary" v-on:click.prevent="createMovement">Create</button>
       </div>
@@ -86,7 +88,8 @@ export default {
       optionsPayment: [
         { text: "Bank Transfer", value: "bt" },
         { text: "Cash", value: "c" }
-      ]
+      ],
+      error: null
     };
   },
   methods: {
@@ -97,6 +100,7 @@ export default {
     },
     createMovement: function() {
       console.log(this.movementData);
+      this.error = null;
       axios
         .post("api/movement/create", this.movementData)
         .then(response => {
@@ -106,6 +110,7 @@ export default {
           this.$router.push("/profile");
         })
         .catch(err => {
+          this.error = err.response.data.message;
           console.log(err.response.data);
         });
     }

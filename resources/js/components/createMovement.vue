@@ -127,6 +127,8 @@
         </div>
       </div>
       <br />
+      <div v-if="error" class="alert alert-danger" role="alert">{{error}}</div>
+      <hr />
       <div>
         <button type="button" class="btn btn-primary" v-on:click.prevent="createMovement">Create</button>
       </div>
@@ -159,7 +161,8 @@ export default {
       optionsPayment: [
         { text: "Bank Transfer", value: "bt" },
         { text: "MB Payment", value: "mb" }
-      ]
+      ],
+      error: null
     };
   },
   methods: {
@@ -169,7 +172,8 @@ export default {
       });
     },
     createMovement: function() {
-      console.log(this.movementData);
+      //   console.log(this.movementData);
+      this.error = null;
       axios
         .post("api/movement/create", this.movementData)
         .then(response => {
@@ -178,6 +182,7 @@ export default {
           this.$socket.emit("userUpdated", this.movementData.email);
         })
         .catch(err => {
+          this.error = err.response.data.message;
           console.log(err.response.data);
         });
     }
@@ -188,6 +193,13 @@ export default {
   sockets: {
     connect() {
       console.log("socket connected (socketID = " + this.$socket.id + ")");
+    },
+    sendEmail(email) {
+      console.log("a enviar mail");
+      var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"};
+      axios.post("api/sendemail", emailData).then(response => {
+          console.log(response.data);
+      });
     }
   }
 };
