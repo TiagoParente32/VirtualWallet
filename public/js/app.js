@@ -1829,151 +1829,6 @@ module.exports = {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateMovementAsOperator.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateMovementAsOperator.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      movementData: {
-        value: null,
-        type_payment: null,
-        iban: null,
-        email: null,
-        source_description: null
-      },
-      optionsPayment: [{
-        text: "Bank Transfer",
-        value: "bt"
-      }, {
-        text: "Cash",
-        value: "c"
-      }],
-      error: null
-    };
-  },
-  methods: {
-    getCategories: function getCategories() {
-      var _this = this;
-
-      axios.get("api/categories/e").then(function (response) {
-        _this.categories = response.data.data;
-      });
-    },
-    createMovement: function createMovement() {
-      var _this2 = this;
-
-      console.log(this.movementData);
-      this.error = null;
-      axios.post("api/movement/create", this.movementData).then(function (response) {
-        console.log(response);
-
-        _this2.$router.push("/profile");
-
-        _this2.$socket.emit("userUpdated", _this2.movementData.email);
-      })["catch"](function (err) {
-        _this2.error = err.response.data.message;
-        console.log(err.response.data);
-      });
-    }
-  },
-  mounted: function mounted() {
-    this.getCategories();
-  },
-  sockets: {
-    connect: function connect() {
-      console.log("socket connected (socketID = " + this.$socket.id + ")");
-    }
-  }
-});
-
-/***/ }),
-
->>>>>>> f17bebdb2dfb41dcf1d3cb4423259bd74b688ee0
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/barChart.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/barChart.vue?vue&type=script&lang=js& ***!
@@ -2263,8 +2118,18 @@ __webpack_require__.r(__webpack_exports__);
   sockets: {
     connect: function connect() {
       console.log("socket connected (socketID = " + this.$socket.id + ")");
+    },
+    sendEmail: function sendEmail(email) {
+      console.log("a enviar mail");
+      var emailData = {
+        "subject": "Check out your wallet",
+        "to": email,
+        "text": "Check out you virtual wallet, you have a new movement!"
+      };
+      axios.post("api/sendemail", emailData).then(function (response) {
+        console.log(response.data);
+      });
     }
-<<<<<<< HEAD
   }
 });
 
@@ -2279,6 +2144,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -2369,7 +2236,8 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Cash",
         value: "c"
-      }]
+      }],
+      error: null
     };
   },
   methods: {
@@ -2384,27 +2252,17 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       console.log(this.movementData);
+      this.error = null;
       axios.post("api/movement/create", this.movementData).then(function (response) {
         console.log(response);
 
         _this2.$socket.emit("teste", "aasdad");
-=======
-    /*,
-    sendEmail(email) {
-    console.log("a enviar mail");
-    var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"};
-    axios.post("api/sendemail", emailData).then(response => {
-        console.log(response.data);
-    });
-    }
-    */
-    //SE CALHAR NÂO E' PRECISO PORQUE O UTILIZADOR QUANDO RECEBER A RESPSTA DO SERVIDOR JA VAI ESTAR NA PAGINA DOS MOVIMENTOS
->>>>>>> f17bebdb2dfb41dcf1d3cb4423259bd74b688ee0
 
         _this2.$socket.emit("userUpdated", _this2.movementData.email);
 
         _this2.$router.push("/profile");
       })["catch"](function (err) {
+        _this2.error = err.response.data.message;
         console.log(err.response.data);
       });
     }
@@ -3001,6 +2859,95 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3907,20 +3854,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     notificationFromServer: function notificationFromServer(msg) {
       Vue.$toast.open(msg);
-<<<<<<< HEAD
-=======
-    },
-    sendEmail: function sendEmail(email) {
-      console.log("a enviar mail");
-      var emailData = {
-        subject: "Check out your wallet",
-        to: email,
-        text: "Check out you virtual wallet, you have a new movement!"
-      };
-      axios.post("api/sendemail", emailData).then(function (response) {
-        console.log(response.data);
-      });
->>>>>>> f17bebdb2dfb41dcf1d3cb4423259bd74b688ee0
     }
   }
 });
@@ -20615,7 +20548,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nimg {\r\n  height: 70px;\r\n  width: 70px;\n}\r\n", ""]);
+exports.push([module.i, "\nimg {\n  height: 70px;\n  width: 70px;\n}\n", ""]);
 
 // exports
 
@@ -56822,258 +56755,6 @@ var reactiveProp = {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateMovementAsOperator.vue?vue&type=template&id=e7fafbe8&":
-/*!***************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateMovementAsOperator.vue?vue&type=template&id=e7fafbe8& ***!
-  \***************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", [
-      _c("div", [
-        _c("label", { attrs: { for: "value" } }, [_vm._v("Value")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.movementData.value,
-              expression: "movementData.value"
-            }
-          ],
-          ref: "value",
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            step: "0.01",
-            min: "0",
-            max: "5000",
-            id: "value",
-            required: ""
-          },
-          domProps: { value: _vm.movementData.value },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.movementData, "value", $event.target.value)
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("label", { attrs: { for: "destinationEmail" } }, [
-          _vm._v("Email of the destination wallet")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.movementData.email,
-              expression: "movementData.email"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            id: "destinationEmail",
-            placeholder: "Email",
-            required: ""
-          },
-          domProps: { value: _vm.movementData.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.movementData, "email", $event.target.value)
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("label", { attrs: { for: "type" } }, [_vm._v("Type of Payment")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.movementData.type_payment,
-                expression: "movementData.type_payment"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { id: "type", name: "type" },
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.$set(
-                  _vm.movementData,
-                  "type_payment",
-                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                )
-              }
-            }
-          },
-          _vm._l(_vm.optionsPayment, function(option) {
-            return _c(
-              "option",
-              { key: option.value, domProps: { value: option.value } },
-              [_vm._v(_vm._s(option.text))]
-            )
-          }),
-          0
-        )
-      ]),
-      _vm._v(" "),
-      _vm.movementData.type_payment == "bt"
-        ? _c("div", [
-            _c("div", [
-              _c("label", { attrs: { for: "iban" } }, [_vm._v("IBAN")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.movementData.iban,
-                    expression: "movementData.iban"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "iban",
-                  pattern: "/([A-Z]){2}[0-9]{23}/",
-                  id: "iban"
-                },
-                domProps: { value: _vm.movementData.iban },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.movementData, "iban", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("label", { attrs: { for: "sourceDescription" } }, [
-                _vm._v("Source Description")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.movementData.source_description,
-                    expression: "movementData.source_description"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "sourceDescription",
-                  id: "sourceDescription"
-                },
-                domProps: { value: _vm.movementData.source_description },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.movementData,
-                      "source_description",
-                      $event.target.value
-                    )
-                  }
-                }
-              })
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _vm.error
-        ? _c(
-            "div",
-            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-            [_vm._v(_vm._s(_vm.error))]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "button" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.createMovement($event)
-              }
-            }
-          },
-          [_vm._v("Create")]
-        )
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v("Create Movement")])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
->>>>>>> f17bebdb2dfb41dcf1d3cb4423259bd74b688ee0
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/createMovement.vue?vue&type=template&id=0b97c954&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/createMovement.vue?vue&type=template&id=0b97c954& ***!
@@ -57725,6 +57406,16 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
+      _vm.error
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_vm._v(_vm._s(_vm.error))]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
       _c("div", [
         _c(
           "button",
@@ -58359,130 +58050,197 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", [
-      _c("div", [
-        this.$store.state.user.photo !== null
-          ? _c("div", [
-              _c("img", {
-                staticStyle: { "border-radius": "50%" },
-                attrs: {
-                  src: "./storage/fotos/" + this.$store.state.user.photo
-                }
-              })
-            ])
-          : _c("div", [
-              _c("img", {
-                staticStyle: { "border-radius": "50%" },
-                attrs: { src: "./storage/fotos/default.png" }
-              })
-            ]),
-        _vm._v(" "),
-        _c("h2", [_vm._v(_vm._s(this.$store.state.user.name))]),
-        _vm._v(" "),
-        _c("hr")
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-2" }, [
+        _c(
+          "div",
+          { staticClass: "list-group" },
+          [
+            this.$store.state.token
+              ? _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "nav-link list-group-item list-group-item-action",
+                    attrs: { to: "/profile/edit" }
+                  },
+                  [_vm._v("Edit Profile")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            this.$store.state.token
+              ? _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "nav-link list-group-item list-group-item-action active",
+                    attrs: { to: "/profile" }
+                  },
+                  [_vm._v("Profile")]
+                )
+              : _vm._e()
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
-      _c("div", [
-        _c("div", [
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: this.$store.state.user.email,
-                expression: "this.$store.state.user.email"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", id: "email", readonly: "" },
-            domProps: { value: this.$store.state.user.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(this.$store.state.user, "email", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("label", { attrs: { for: "nif" } }, [_vm._v("Nif")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: this.$store.state.user.nif,
-                expression: "this.$store.state.user.nif"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              min: "000000001",
-              max: "999999999",
-              minlength: "9",
-              maxlength: "9",
-              type: "text",
-              id: "nif",
-              readonly: ""
-            },
-            domProps: { value: this.$store.state.user.nif },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(this.$store.state.user, "nif", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("label", { attrs: { for: "type" } }, [_vm._v("Type")]),
-          _vm._v(" "),
-          this.$store.state.user.type === "u"
-            ? _c("div", [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    id: "type",
-                    value: "User",
-                    readonly: ""
-                  }
-                })
+      _c("div", { staticClass: "col-md-10" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("h4", [
+                  _vm._v(_vm._s(this.$store.state.user.name) + " Profile")
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  this.$store.state.user.photo !== null
+                    ? _c("div", [
+                        _c("img", {
+                          staticStyle: { "border-radius": "50%" },
+                          attrs: {
+                            src:
+                              "./storage/fotos/" + this.$store.state.user.photo
+                          }
+                        })
+                      ])
+                    : _c("div", [
+                        _c("img", {
+                          staticStyle: { "border-radius": "50%" },
+                          attrs: { src: "./storage/fotos/default.png" }
+                        })
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("hr")
               ])
-            : this.$store.state.user.type === "o"
-            ? _c("div", [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    id: "type",
-                    value: "Operator",
-                    readonly: ""
-                  }
-                })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("form", [
+                  _c("div", [
+                    _c("div", [
+                      _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: this.$store.state.user.name,
+                            expression: "this.$store.state.user.name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "name",
+                          type: "text",
+                          id: "name",
+                          placeholder: "Name",
+                          readonly: ""
+                        },
+                        domProps: { value: this.$store.state.user.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              this.$store.state.user,
+                              "name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("label", { attrs: { for: "name" } }, [
+                        _vm._v("Email")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: this.$store.state.user.email,
+                            expression: "this.$store.state.user.email"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "name",
+                          type: "text",
+                          id: "name",
+                          placeholder: "Name",
+                          readonly: ""
+                        },
+                        domProps: { value: this.$store.state.user.email },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              this.$store.state.user,
+                              "email",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    this.$store.state.user.type == "u"
+                      ? _c("div", [
+                          _c("label", { attrs: { for: "nif" } }, [
+                            _vm._v("Nif")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: this.$store.state.user.nif,
+                                expression: "this.$store.state.user.nif"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              min: "100000000",
+                              max: "999999999",
+                              minlength: "9",
+                              maxlength: "9",
+                              type: "number",
+                              id: "nif",
+                              placeholder: "000000000",
+                              readonly: ""
+                            },
+                            domProps: { value: this.$store.state.user.nif },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  this.$store.state.user,
+                                  "nif",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      : _vm._e()
+                  ])
+                ])
               ])
-            : this.$store.state.user.type === "a"
-            ? _c("div", [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    id: "type",
-                    value: "Admin",
-                    readonly: ""
-                  }
-                })
-              ])
-            : _vm._e()
+            ])
+          ])
         ])
       ])
     ])
@@ -76561,11 +76319,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_usersList__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/usersList */ "./resources/js/components/usersList.vue");
 /* harmony import */ var _components_walletStats__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/walletStats */ "./resources/js/components/walletStats.vue");
 /* harmony import */ var _components_createMovement__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/createMovement */ "./resources/js/components/createMovement.vue");
-<<<<<<< HEAD
 /* harmony import */ var _components_createMovementAsOperator__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/createMovementAsOperator */ "./resources/js/components/createMovementAsOperator.vue");
-=======
-/* harmony import */ var _components_CreateMovementAsOperator__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/CreateMovementAsOperator */ "./resources/js/components/CreateMovementAsOperator.vue");
->>>>>>> f17bebdb2dfb41dcf1d3cb4423259bd74b688ee0
 /* harmony import */ var _components_registerOpAdmins__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/registerOpAdmins */ "./resources/js/components/registerOpAdmins.vue");
 /* harmony import */ var _components_platformStats__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/platformStats */ "./resources/js/components/platformStats.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
@@ -76688,11 +76442,7 @@ var routes = [{
   beforeEnter: onlyUsers
 }, {
   path: '/movements/create/income',
-<<<<<<< HEAD
   component: _components_createMovementAsOperator__WEBPACK_IMPORTED_MODULE_16__["default"],
-=======
-  component: _components_CreateMovementAsOperator__WEBPACK_IMPORTED_MODULE_16__["default"],
->>>>>>> f17bebdb2dfb41dcf1d3cb4423259bd74b688ee0
   beforeEnter: onlyOperators
 }, {
   path: '/users',
