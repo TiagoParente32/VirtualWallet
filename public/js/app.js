@@ -1912,6 +1912,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1928,7 +1930,8 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Cash",
         value: "c"
-      }]
+      }],
+      error: null
     };
   },
   methods: {
@@ -1943,6 +1946,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       console.log(this.movementData);
+      this.error = null;
       axios.post("api/movement/create", this.movementData).then(function (response) {
         console.log(response);
 
@@ -1950,6 +1954,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.$socket.emit("userUpdated", _this2.movementData.email);
       })["catch"](function (err) {
+        _this2.error = err.response.data.message;
         console.log(err.response.data);
       });
     }
@@ -56891,6 +56896,16 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _c("br"),
+      _vm._v(" "),
+      _vm.error
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_vm._v(_vm._s(_vm.error))]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("hr"),
       _vm._v(" "),
       _c("div", [
         _c(

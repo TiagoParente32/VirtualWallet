@@ -87,7 +87,7 @@ class MovementController extends Controller
     {
         $movement = new Movement;
         $valid = Validator::make($request->only('email', 'value', 'type_payment'), [
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:255|exists:users',
             'value' => 'required | numeric|between:0.01,5000.00',
             'type_payment' => 'required | in:c,bt',
         ]);
