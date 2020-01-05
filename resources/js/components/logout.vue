@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$socket.emit("disconnect", "");
+      this.$socket.emit("logout", this.$socket.id);
       axios
         .post("api/logout")
         .then(response => {
