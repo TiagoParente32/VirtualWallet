@@ -158,8 +158,12 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->all()], 400);
         }
+        if($user->type != 'u'){
+            $user->fill($request->except(['type', 'active', 'email', 'password', 'photo','nif']));
+        }else{
 
-        $user->fill($request->except(['type', 'active', 'email', 'password', 'photo']));
+            $user->fill($request->except(['type', 'active', 'email', 'password', 'photo']));
+        }
 
         if (!is_null($request->password)) {
             //caso a current password nao seja igual a do user nao alterar

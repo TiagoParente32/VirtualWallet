@@ -3768,9 +3768,9 @@ __webpack_require__.r(__webpack_exports__);
     sendEmail: function sendEmail(email) {
       console.log("a enviar mail");
       var emailData = {
-        "subject": "Check out your wallet",
-        "to": email,
-        "text": "Check out you virtual wallet, you have a new movement!"
+        subject: "Check out your wallet",
+        to: email,
+        text: "Check out you virtual wallet, you have a new movement!"
       };
       axios.post("api/sendemail", emailData).then(function (response) {
         console.log(response.data);
@@ -57507,39 +57507,43 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", [
-                      _c("label", { attrs: { for: "nif" } }, [_vm._v("Nif")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.nif,
-                            expression: "nif"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          min: "100000000",
-                          max: "999999999",
-                          minlength: "9",
-                          maxlength: "9",
-                          type: "number",
-                          id: "nif",
-                          placeholder: "000000000"
-                        },
-                        domProps: { value: _vm.nif },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    this.$store.state.user.type == "u"
+                      ? _c("div", [
+                          _c("label", { attrs: { for: "nif" } }, [
+                            _vm._v("Nif")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.nif,
+                                expression: "nif"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              min: "100000000",
+                              max: "999999999",
+                              minlength: "9",
+                              maxlength: "9",
+                              type: "number",
+                              id: "nif",
+                              placeholder: "000000000"
+                            },
+                            domProps: { value: _vm.nif },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.nif = $event.target.value
+                              }
                             }
-                            _vm.nif = $event.target.value
-                          }
-                        }
-                      })
-                    ]),
+                          })
+                        ])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", [
                       _c("label", { attrs: { for: "passwordCurrent" } }, [

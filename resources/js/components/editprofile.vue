@@ -58,7 +58,7 @@
                       </div>
                     </div>
 
-                    <div>
+                    <div v-if="this.$store.state.user.type == 'u'">
                       <label for="nif">Nif</label>
                       <input
                         v-model="nif"
