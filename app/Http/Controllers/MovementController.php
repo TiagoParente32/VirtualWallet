@@ -101,6 +101,9 @@ class MovementController extends Controller
         //receiver wallet
         $receiver = Wallet::where('email', '=', $request->email)->get()->first();
 
+        if(is_null($receiver)){
+            return response()->json(['message' => 'Wallet not found'], 404);
+        }
         $movement->wallet_id = $receiver->id;
         $movement->type = "i";
         $movement->transfer = 0;
@@ -222,6 +225,9 @@ class MovementController extends Controller
         if($request->transfer == 1){
             //Para transferencias
             $receiver_wallet = Wallet::where('email', '=', $request->email)->get()->first();
+            if(is_null($receiver_wallet)){
+                return response()->json(['message' => 'Wallet not found'], 404);
+            }
             $income_movement->type = "i";
             $income_movement->transfer_wallet_id = $sender_wallet->id;
             $income_movement->transfer =  $request->transfer;
