@@ -2188,6 +2188,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 //import { Socket } from 'dgram';
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2218,7 +2220,8 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "MB Payment",
         value: "mb"
-      }]
+      }],
+      error: null
     };
   },
   methods: {
@@ -2232,7 +2235,8 @@ __webpack_require__.r(__webpack_exports__);
     createMovement: function createMovement() {
       var _this2 = this;
 
-      console.log(this.movementData);
+      //   console.log(this.movementData);
+      this.error = null;
       axios.post("api/movement/create", this.movementData).then(function (response) {
         console.log(response);
 
@@ -2240,6 +2244,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.$socket.emit("userUpdated", _this2.movementData.email);
       })["catch"](function (err) {
+        _this2.error = err.response.data.message;
         console.log(err.response.data);
       });
     }
@@ -2253,11 +2258,11 @@ __webpack_require__.r(__webpack_exports__);
     }
     /*,
     sendEmail(email) {
-     console.log("a enviar mail"); 
-     var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"}; 
-     axios.post("api/sendemail", emailData).then(response => {
-         console.log(response.data);
-     });
+    console.log("a enviar mail");
+    var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"};
+    axios.post("api/sendemail", emailData).then(response => {
+        console.log(response.data);
+    });
     }
     */
     //SE CALHAR NÂO E' PRECISO PORQUE O UTILIZADOR QUANDO RECEBER A RESPSTA DO SERVIDOR JA VAI ESTAR NA PAGINA DOS MOVIMENTOS
@@ -2913,6 +2918,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       title: "Profile"
     };
+  },
+  sockets: {
+    notificationFromServer: function notificationFromServer(msg) {
+      Vue.$toast.open(msg);
+    }
   }
 });
 
@@ -20452,7 +20462,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* .active {\r\n  background-color: black !important;\r\n} */\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .active {\n  background-color: black !important;\n} */\n", ""]);
 
 // exports
 
@@ -57319,6 +57329,16 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
+      _vm.error
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_vm._v(_vm._s(_vm.error))]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
       _c("div", [
         _c(
           "button",
@@ -76133,23 +76153,27 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _stores_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stores/store */ "./resources/js/stores/store.js");
-/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-socket.io */ "./node_modules/vue-socket.io/dist/vue-socketio.js");
-/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_socket_io__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vuejs_paginate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuejs-paginate */ "./node_modules/vuejs-paginate/dist/index.js");
-/* harmony import */ var vuejs_paginate__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuejs_paginate__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _components_welcome__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/welcome */ "./resources/js/components/welcome.vue");
-/* harmony import */ var _components_register__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/register */ "./resources/js/components/register.vue");
-/* harmony import */ var _components_editprofile__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/editprofile */ "./resources/js/components/editprofile.vue");
-/* harmony import */ var _components_login__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/login */ "./resources/js/components/login.vue");
-/* harmony import */ var _components_logout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/logout */ "./resources/js/components/logout.vue");
-/* harmony import */ var _components_profile__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/profile */ "./resources/js/components/profile.vue");
-/* harmony import */ var _components_wallet__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/wallet */ "./resources/js/components/wallet.vue");
-/* harmony import */ var _components_usersList__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/usersList */ "./resources/js/components/usersList.vue");
-/* harmony import */ var _components_walletStats__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/walletStats */ "./resources/js/components/walletStats.vue");
-/* harmony import */ var _components_createMovement__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/createMovement */ "./resources/js/components/createMovement.vue");
-/* harmony import */ var _components_CreateMovementAsOperator__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/CreateMovementAsOperator */ "./resources/js/components/CreateMovementAsOperator.vue");
-/* harmony import */ var _components_registerOpAdmins__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/registerOpAdmins */ "./resources/js/components/registerOpAdmins.vue");
-/* harmony import */ var _components_platformStats__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/platformStats */ "./resources/js/components/platformStats.vue");
+/* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-toast-notification */ "./node_modules/vue-toast-notification/dist/index.min.js");
+/* harmony import */ var vue_toast_notification__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_toast_notification__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_toast_notification_dist_index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-toast-notification/dist/index.css */ "./node_modules/vue-toast-notification/dist/index.css");
+/* harmony import */ var vue_toast_notification_dist_index_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_toast_notification_dist_index_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-socket.io */ "./node_modules/vue-socket.io/dist/vue-socketio.js");
+/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_socket_io__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vuejs_paginate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuejs-paginate */ "./node_modules/vuejs-paginate/dist/index.js");
+/* harmony import */ var vuejs_paginate__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vuejs_paginate__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _components_welcome__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/welcome */ "./resources/js/components/welcome.vue");
+/* harmony import */ var _components_register__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/register */ "./resources/js/components/register.vue");
+/* harmony import */ var _components_editprofile__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/editprofile */ "./resources/js/components/editprofile.vue");
+/* harmony import */ var _components_login__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/login */ "./resources/js/components/login.vue");
+/* harmony import */ var _components_logout__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/logout */ "./resources/js/components/logout.vue");
+/* harmony import */ var _components_profile__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/profile */ "./resources/js/components/profile.vue");
+/* harmony import */ var _components_wallet__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/wallet */ "./resources/js/components/wallet.vue");
+/* harmony import */ var _components_usersList__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/usersList */ "./resources/js/components/usersList.vue");
+/* harmony import */ var _components_walletStats__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/walletStats */ "./resources/js/components/walletStats.vue");
+/* harmony import */ var _components_createMovement__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/createMovement */ "./resources/js/components/createMovement.vue");
+/* harmony import */ var _components_CreateMovementAsOperator__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/CreateMovementAsOperator */ "./resources/js/components/CreateMovementAsOperator.vue");
+/* harmony import */ var _components_registerOpAdmins__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/registerOpAdmins */ "./resources/js/components/registerOpAdmins.vue");
+/* harmony import */ var _components_platformStats__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/platformStats */ "./resources/js/components/platformStats.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -76157,10 +76181,15 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 
-Vue.component('paginate', vuejs_paginate__WEBPACK_IMPORTED_MODULE_3___default.a); //Vue.use(BootstrapVue)
+Vue.use(vue_toast_notification__WEBPACK_IMPORTED_MODULE_2___default.a); //import BootstrapVue from 'bootstrap-vue'
+//Vue.use(BootstrapVue)
+
+
+
+Vue.component('paginate', vuejs_paginate__WEBPACK_IMPORTED_MODULE_5___default.a); //Vue.use(BootstrapVue)
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.use(new vue_socket_io__WEBPACK_IMPORTED_MODULE_2___default.a({
+Vue.use(new vue_socket_io__WEBPACK_IMPORTED_MODULE_4___default.a({
   debug: true,
   connection: 'http://127.0.0.1:8080'
 }));
@@ -76261,11 +76290,11 @@ var routes = [{
   beforeEnter: onlyUsers
 }, {
   path: '/movements/create/expense',
-  component: _components_createMovement__WEBPACK_IMPORTED_MODULE_13__["default"],
+  component: _components_createMovement__WEBPACK_IMPORTED_MODULE_15__["default"],
   beforeEnter: onlyUsers
 }, {
   path: '/movements/create/income',
-  component: _components_CreateMovementAsOperator__WEBPACK_IMPORTED_MODULE_14__["default"],
+  component: _components_CreateMovementAsOperator__WEBPACK_IMPORTED_MODULE_16__["default"],
   beforeEnter: onlyOperators
 }, {
   path: '/users',
@@ -76273,11 +76302,11 @@ var routes = [{
   beforeEnter: onlyAdmins
 }, {
   path: '/users/create',
-  component: _components_registerOpAdmins__WEBPACK_IMPORTED_MODULE_15__["default"],
+  component: _components_registerOpAdmins__WEBPACK_IMPORTED_MODULE_17__["default"],
   beforeEnter: onlyAdmins
 }, {
   path: '/statistics',
-  component: _components_platformStats__WEBPACK_IMPORTED_MODULE_16__["default"],
+  component: _components_platformStats__WEBPACK_IMPORTED_MODULE_18__["default"],
   beforeEnter: onlyAdmins
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({

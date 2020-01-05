@@ -146,9 +146,12 @@ class MovementController extends Controller
         }
         if ($request->transfer == 1) {
             $valid = Validator::make($request->only('email', 'source_description'), [
-                'email' => 'required|string|email|max:255',
+                'email' => 'required|string|email|max:255| exists:users',
                 'source_description' => 'required | string | max:500'
             ]);
+            if($request->email == $request->user()->email){
+                return response()->json(['message' => "Cant Create an Expense to your own email"], 401);
+            }
             if ($valid->fails()) {
                 return response()->json(['message' => $valid->errors()->all()], 400);
             }
@@ -204,6 +207,12 @@ class MovementController extends Controller
         $sender_wallet->balance -= $request->value;
         $expense_movement->date = date('Y-m-d H:i:s');
         $expense_movement->transfer = $request->transfer;
+
+        if($expense_movement->end_balance<0){
+            return response()->json(['message' => "You Don't have enough money to do that operation!"], 401);
+
+
+        }
 
         $sender_wallet->save();
         $expense_movement->save();
