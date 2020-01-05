@@ -188,15 +188,7 @@ export default {
   sockets: {
     connect() {
       console.log("socket connected (socketID = " + this.$socket.id + ")");
-    }/*,
-    sendEmail(email) {
-      console.log("a enviar mail"); 
-      var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"}; 
-      axios.post("api/sendemail", emailData).then(response => {
-          console.log(response.data);
-      });
     }
-    */ //SE CALHAR NÂO E' PRECISO PORQUE O UTILIZADOR QUANDO RECEBER A RESPSTA DO SERVIDOR JA VAI ESTAR NA PAGINA DOS MOVIMENTOS
   }
 };
 </script>

@@ -283,13 +283,6 @@ export default {
     },
     notificationFromServer(msg) {
       Vue.$toast.open(msg);
-    },
-    sendEmail(email) {
-      console.log("a enviar mail"); 
-      var emailData = {"subject": "Check out your wallet", "to": email, "text": "Check out you virtual wallet, you have a new movement!"}; 
-      axios.post("api/sendemail", emailData).then(response => {
-          console.log(response.data);
-      });
     }
   }
 };

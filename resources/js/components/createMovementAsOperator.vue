@@ -101,8 +101,9 @@ export default {
         .post("api/movement/create", this.movementData)
         .then(response => {
           console.log(response);
-          this.$router.push("/profile");
+          this.$socket.emit("teste", "aasdad");
           this.$socket.emit("userUpdated", this.movementData.email);
+          this.$router.push("/profile");
         })
         .catch(err => {
           console.log(err.response.data);

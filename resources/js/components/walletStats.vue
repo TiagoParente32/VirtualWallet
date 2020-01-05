@@ -157,6 +157,11 @@ export default {
     this.requestIncomeCategories();
     this.requestExpensesCategories();
     this.requestData();
+  },
+  sockets: {
+    notificationFromServer(msg) {
+      Vue.$toast.open(msg);
+    }
   }
 };
 </script>

@@ -106,14 +106,15 @@ class MovementController extends Controller
         $movement->transfer = 0;
 
         if ($request->type_payment == 'bt') {
-            $valid = Validator::make($request->only('iban'), [
+            $valid = Validator::make($request->only('iban', 'source_description'), [
                 'iban' => 'required|regex:/([A-Z]){2}[0-9]{23}/',
                 'source_description' => 'required | string | max:500'
             ]);
-
+            
             if ($valid->fails()) {
                 return response()->json(['message' => $valid->errors()->all()], 400);
             }
+            
             $movement->type_payment = "bt";
             $movement->iban = $request->iban;
             $movement->source_description = $request->source_description;

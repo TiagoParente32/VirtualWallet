@@ -27,8 +27,6 @@ Vue.use(new VueSocketIO({
     connection: 'http://127.0.0.1:8080'
 }));
 
-
-
 function requireAuth(to, from, next) {
     if (sessionStorage.getItem('token') != null) {
         next();
@@ -84,7 +82,7 @@ import Wallet from './components/wallet'
 import Users from './components/usersList'
 import WalletStats from './components/walletStats';
 import CreateMovement from './components/createMovement';
-import CreateMovementAsOperator from './components/CreateMovementAsOperator';
+import CreateMovementAsOperator from './components/createMovementAsOperator';
 import RegisterOpAdmins from './components/registerOpAdmins';
 import PlatformStats from './components/platformStats';
 

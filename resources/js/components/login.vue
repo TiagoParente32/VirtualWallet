@@ -69,7 +69,7 @@ export default {
           document.querySelector("#error").innerHTML = err.response.data.msg;
         });
     }
-  }
+  } 
 };
 </script>
 
