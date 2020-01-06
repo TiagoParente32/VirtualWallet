@@ -108,6 +108,8 @@
                   </div>
                   <!-- end form group -->
                   <br />
+                  <div v-if="error" class="alert alert-danger" role="alert">{{error}}</div>
+                  <br />
                   <div class="text-center">
                     <button
                       type="button"
@@ -135,7 +137,8 @@ export default {
       nif: this.$store.state.user.nif || "",
       password: "",
       passwordConfirmation: "",
-      currentPassword: ""
+      currentPassword: "",
+      error: null
     };
   },
   methods: {
@@ -165,6 +168,7 @@ export default {
 
       //console.log(user);
       //console.log(formData.get("photo"));
+      this.error = null;
       axios
         .post("api/users/me/edit", formData)
         .then(response => {
@@ -172,6 +176,7 @@ export default {
           this.$router.push("/profile");
         })
         .catch(err => {
+          this.error = err.response.data.message;
           console.log(err.response.data);
         });
     }

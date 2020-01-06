@@ -2415,6 +2415,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2424,7 +2426,8 @@ __webpack_require__.r(__webpack_exports__);
       nif: this.$store.state.user.nif || "",
       password: "",
       passwordConfirmation: "",
-      currentPassword: ""
+      currentPassword: "",
+      error: null
     };
   },
   methods: {
@@ -2456,11 +2459,13 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("_method", "PUT"); //console.log(user);
       //console.log(formData.get("photo"));
 
+      this.error = null;
       axios.post("api/users/me/edit", formData).then(function (response) {
         _this.$store.commit("setUser", response.data);
 
         _this.$router.push("/profile");
       })["catch"](function (err) {
+        _this.error = err.response.data.message;
         console.log(err.response.data);
       });
     }
@@ -2652,7 +2657,7 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.$socket.emit("disconnect", "");
+      this.$socket.emit("logout", this.$socket.id);
       axios.post("api/logout").then(function (response) {
         _this.$store.commit("clearUserAndToken");
 
@@ -20529,7 +20534,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .active {\n  background-color: black !important;\n} */\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .active {\n  background-color: black !important;\n} */\n", ""]);
 
 // exports
 
@@ -57703,6 +57708,19 @@ var render = function() {
                       })
                     ])
                   ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _vm.error
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-danger",
+                          attrs: { role: "alert" }
+                        },
+                        [_vm._v(_vm._s(_vm.error))]
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("br"),
                   _vm._v(" "),
