@@ -25,7 +25,7 @@ class UserResource extends Resource
             'email' => $this->email,
             'photo' => $this->photo,
             'active' => $this->active,
-            'balance' => $this->wallet['balance'] ? 1:0,
+            'balance' => $this->wallet['balance'] >0 ? 1:0,
             //'nif' => $this->nif
         ];
     }

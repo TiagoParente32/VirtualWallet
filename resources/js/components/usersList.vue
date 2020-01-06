@@ -73,7 +73,7 @@
           <td class="align-middle" v-else>User</td>
           <td class="align-middle" v-if="user.active">Active</td>
           <td class="align-middle" v-else>Inactive</td>
-          <td class="align-middle" v-if="user.balance">Has Money</td>
+          <td class="align-middle" v-if="user.balance == '1'">Has Money</td>
           <td class="align-middle" v-else>Empty</td>
 
           <td class="align-middle">
@@ -83,12 +83,12 @@
               v-on:click.prevent="deleteUser(user.id)"
             >Delete</button>
             <button
-              v-else-if="user.type == 'u' && user.active"
+              v-else-if="user.type == 'u' && user.active && user.balance == '0'"
               class="btn btn-sm btn-danger"
               v-on:click.prevent="activateUser(user.id)"
             >Deactivate</button>
             <button
-              v-else-if="user.type == 'u' && !user.active"
+              v-else-if="user.type == 'u' && !user.active && user.balance == '0'"
               class="btn btn-sm btn-success"
               v-on:click.prevent="activateUser(user.id)"
             >Activate</button>

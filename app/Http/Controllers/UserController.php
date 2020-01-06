@@ -231,6 +231,10 @@ class UserController extends Controller
         if($user->type !== "u"){
             return response()->json(['message' => "cant deactivate or reactivate Operators Or Admins"], 400);
         }
+        if($user->wallet->balance != 0){
+            return response()->json(['message' => "User cant be deactivated, he has money"], 400);
+        }
+
 
         $user->active = !$user->active;
         $user->save();

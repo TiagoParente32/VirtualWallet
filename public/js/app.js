@@ -59003,7 +59003,7 @@ var render = function() {
                     _vm._v("Inactive")
                   ]),
               _vm._v(" "),
-              user.balance
+              user.balance == "1"
                 ? _c("td", { staticClass: "align-middle" }, [
                     _vm._v("Has Money")
                   ])
@@ -59024,7 +59024,7 @@ var render = function() {
                       },
                       [_vm._v("Delete")]
                     )
-                  : user.type == "u" && user.active
+                  : user.type == "u" && user.active && user.balance == "0"
                   ? _c(
                       "button",
                       {
@@ -59038,7 +59038,7 @@ var render = function() {
                       },
                       [_vm._v("Deactivate")]
                     )
-                  : user.type == "u" && !user.active
+                  : user.type == "u" && !user.active && user.balance == "0"
                   ? _c(
                       "button",
                       {
